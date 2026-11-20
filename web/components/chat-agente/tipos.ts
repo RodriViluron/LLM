@@ -21,6 +21,7 @@ export type ReglaCompatibilidad = {
   regla: string;
   estado: "cumple" | "no_cumple" | "sin_datos";
   detalle: string;
+  critica?: boolean;
 };
 
 export type Armado = {

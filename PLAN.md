@@ -22,6 +22,7 @@ Hay que construir el agente de `CLAUDE.md` sin tener todavía la API ni la BD de
 | 3 | 7. `app.py` (demo Streamlit) + `servicio.py` y chat web + selector de modelo | Hecho |
 | 3+ | Paso 9. Reglas para catálogo real, cantidades y segundo disco | Hecho |
 | 3+ | Paso 10. Entrevista (v1 con `preguntar_al_usuario`), `validar_presupuesto` (jerga, números en palabras, «2,8M», «y medio») y cierre | En curso — código mergeado en `main`; falta la medición con el modelo local |
+| 3+ | Paso 11. Recorte de contexto (`#22`), presupuesto como texto (`#31`), experimento HyDE (`#30`), RAG (`#29`) y guía Ollama (`#27`) | Hecho en `paso-11-otros-problemas`; falta prueba manual en notebook de 4 GB |
 | 4–5 | Fine-tuning, evaluación e informe | Pendiente (fine-tuning queda fuera de la presentación) |
 
 ## El catálogo no depende de la tienda
@@ -164,7 +165,7 @@ Correr todo `evaluacion/` y armar el informe con las seis tablas de `CLAUDE.md`,
 | El modelo chico falla en tool calling o en armados largos | Fase 0/1 por debajo del criterio | Candidatos compatibles, contexto explícito, skill de armado, TODOs; si no alcanza, `proponer_configuracion` o un modelo más grande |
 | La API no llega | Fecha de corte en Fase 2 | Escenario B completo |
 | Las regex rinden peor con datos reales | Muestra real etiquetada | Ajustar regex; respaldo LLM solo si no agrega erróneos |
-| Lento en CPU | Segundos por turno en las evaluaciones | Modelo más chico, sin razonamiento, respuestas cortas |
+| Lento en CPU | Segundos por turno en las evaluaciones | Modelo más chico, sin razonamiento, respuestas cortas y ajustes de `docs/AJUSTES_OLLAMA.md` (KV comprimida, contexto 8192 y recorte de historial) |
 | Sin conexión el día de la demo | — | Caché web precargada; todo lo demás es local |
 | Colab corta la sesión | — | Checkpoints en Drive; pocas épocas; modelo de 4B o menor |
 

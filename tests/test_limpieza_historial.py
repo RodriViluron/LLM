@@ -89,3 +89,27 @@ def test_el_modelo_no_recibe_el_razonamiento_pero_la_memoria_lo_conserva(cliente
     assert all(m.text.startswith(PENSADO) for m in guardados)
     eventos_turno_1 = saved_turns(config, agente)[0][1]
     assert [e["tipo"] for e in eventos_turno_1] == ["razonamiento", "llamada", "resultado", "razonamiento", "texto"]
+
+
+def test_respuesta_solo_razonamiento_pide_texto_visible_una_vez_sin_guardar_vacio(cliente, tmp_path):
+    modelo = ModeloQueAnota(messages=iter([
+        texto("<think>Thinking in English without closing..."),
+        texto("¡Hola! Contame qué uso le querés dar a la PC."),
+    ]))
+    agente = crear_agente(modelo, cliente, crear_checkpointer(tmp_path / "memoria.db"))
+    config = new_thread()
+    list(stream_turn("Hola", config, 1, agente))
+
+    assert len(modelo.recibidos) == 2
+    assert "no tuvo texto visible" in modelo.recibidos[1][-1].text
+    guardados = saved_state(config, agente)["messages"]
+    assert [m.type for m in guardados] == ["human", "ai"]
+    assert guardados[-1].text == "¡Hola! Contame qué uso le querés dar a la PC."
+
+
+def test_respuesta_vacia_insistente_no_entra_en_bucle(cliente, tmp_path):
+    modelo = ModeloQueAnota(messages=iter([texto("<think>solo think 1"), texto("<think>solo think 2")]))
+    agente = crear_agente(modelo, cliente, crear_checkpointer(tmp_path / "memoria.db"))
+    config = new_thread()
+    list(stream_turn("Hola", config, 1, agente))
+    assert len(modelo.recibidos) == 2

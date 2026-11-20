@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { ConversacionGuardada, EventoAgente, Item, Turno } from "./tipos";
+import type { Armado, ConversacionGuardada, EventoAgente, Item, Turno } from "./tipos";
 
 const CLAVE_CONVERSACION = "chat-agente:conversacion";
 
@@ -89,6 +89,7 @@ const ERROR_DE_RED = "No pude conectarme con el asistente. Revisá tu conexión 
 
 export function useChatAgente(endpoint: string) {
   const [turnos, setTurnos] = useState<Turno[]>([]);
+  const [armadoGuardado, setArmadoGuardado] = useState<Armado | null>(null);
   const [respondiendo, setRespondiendo] = useState(false);
   const [recuperando, setRecuperando] = useState(false);
   const conversacion = useRef<string | null>(null);
@@ -116,6 +117,7 @@ export function useChatAgente(endpoint: string) {
       const respuesta = await fetch(`${endpoint}/conversaciones/${encodeURIComponent(id)}`, { cache: "no-store" });
       if (!respuesta.ok) return;
       const guardada = (await respuesta.json()) as ConversacionGuardada;
+      setArmadoGuardado((previo) => previo ?? guardada.armado ?? null);
       setTurnos((actuales) =>
         actuales.length
           ? actuales
@@ -179,13 +181,18 @@ export function useChatAgente(endpoint: string) {
           } else if (evento.tipo === "estado") {
             actualizarUltimo((turno) => ({ ...turno, estado: evento.texto }));
           } else if (evento.tipo !== "fin") {
+            if (evento.tipo === "armado") setArmadoGuardado(null);
             // Después de cada resultado el agente vuelve a pensar: el estado vuelve a «Pensando…» hasta el próximo paso.
             actualizarUltimo((turno) => ({ ...turno, estado: "Pensando…", items: aplicarEvento(turno.items, evento) }));
           }
         }
       } catch (error) {
         const cancelado = error instanceof DOMException && error.name === "AbortError";
-        if (!cancelado) {
+        if (cancelado) {
+          actualizarUltimo((turno) =>
+            turno.items.length ? turno : { ...turno, items: [{ tipo: "texto", texto: "Respuesta detenida." }] },
+          );
+        } else {
           actualizarUltimo((turno) => ({ ...turno, items: [...turno.items, { tipo: "error", mensaje: ERROR_DE_RED }] }));
         }
       } finally {
@@ -203,10 +210,11 @@ export function useChatAgente(endpoint: string) {
     corte.current?.abort();
     conversacion.current = null;
     guardarConversacion(null);
+    setArmadoGuardado(null);
     setTurnos([]);
   }, []);
 
   useEffect(() => () => corte.current?.abort(), []);
 
-  return { turnos, respondiendo, recuperando, enviar, detener, recuperar, nuevaConversacion };
+  return { turnos, armadoGuardado, respondiendo, recuperando, enviar, detener, recuperar, nuevaConversacion };
 }

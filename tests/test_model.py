@@ -8,6 +8,7 @@ from model import OPCION_GEMINI, OPCION_LOCAL, es_error_de_cuota, get_embeddings
 @pytest.fixture(autouse=True)
 def _entorno_limpio(monkeypatch):
     for variable in ["MODEL_PROVIDER", "MODEL_NAME", "MODEL_NUM_CTX", "MODEL_RAZONAMIENTO",
+                     "MODEL_KEEP_ALIVE", "MODEL_NUM_GPU",
                      "OLLAMA_BASE_URL", "LMSTUDIO_BASE_URL", "EMBEDDINGS_PROVIDER", "EMBEDDINGS_MODEL",
                      "GOOGLE_API_KEY", "GEMINI_MODEL"]:
         monkeypatch.delenv(variable, raising=False)
@@ -97,3 +98,13 @@ def test_embeddings_no_aceptan_proveedor_en_la_nube(monkeypatch):
     monkeypatch.setenv("EMBEDDINGS_PROVIDER", "google_genai")
     with pytest.raises(RuntimeError, match="locales"):
         get_embeddings()
+
+
+def test_ollama_acepta_keep_alive_y_num_gpu_opcionales_desde_env(monkeypatch):
+    sin_extras = get_model()
+    assert sin_extras.keep_alive is None and sin_extras.num_gpu is None
+
+    monkeypatch.setenv("MODEL_KEEP_ALIVE", "-1")
+    monkeypatch.setenv("MODEL_NUM_GPU", "20")
+    con_extras = get_model()
+    assert con_extras.keep_alive == "-1" and con_extras.num_gpu == 20

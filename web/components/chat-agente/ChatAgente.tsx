@@ -120,6 +120,18 @@ function enLinea(texto: string): ReactNode[] {
   });
 }
 
+const ES_FILA_TABLA = /^\|.+\|$/;
+const ES_SEPARADOR_TABLA = /^\|(\s*:?-{3,}:?\s*\|)+\s*$/;
+
+function separarCeldas(linea: string): string[] {
+  return linea
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((celda) => celda.trim());
+}
+
 function TextoAgente({ texto }: { texto: string }) {
   const bloques: ReactNode[] = [];
   let parrafo: string[] = [];
@@ -148,8 +160,35 @@ function TextoAgente({ texto }: { texto: string }) {
     }
   };
 
-  for (const cruda of texto.split("\n")) {
-    const linea = cruda.trim();
+  const crudas = texto.split("\n");
+  for (let idx = 0; idx < crudas.length; idx++) {
+    const linea = crudas[idx].trim();
+    if (ES_FILA_TABLA.test(linea) && idx + 1 < crudas.length && ES_SEPARADOR_TABLA.test(crudas[idx + 1].trim())) {
+      cerrar();
+      const encabezados = separarCeldas(linea);
+      const filas: string[][] = [];
+      idx += 2;
+      while (idx < crudas.length && ES_FILA_TABLA.test(crudas[idx].trim())) {
+        filas.push(separarCeldas(crudas[idx].trim()));
+        idx++;
+      }
+      idx--;
+      bloques.push(
+        <div key={bloques.length} className={estilos.tablaEnvuelta}>
+          <table className={estilos.tabla}>
+            <thead>
+              <tr>{encabezados.map((celda, j) => <th key={j}>{enLinea(celda)}</th>)}</tr>
+            </thead>
+            <tbody>
+              {filas.map((fila, r) => (
+                <tr key={r}>{encabezados.map((_, j) => <td key={j}>{enLinea(fila[j] ?? "")}</td>)}</tr>
+              ))}
+            </tbody>
+          </table>
+        </div>,
+      );
+      continue;
+    }
     const vineta = /^[-*•]\s+(.*)$/.exec(linea);
     const numerada = /^\d+[.)]\s+(.*)$/.exec(linea);
     const titulo = /^#{1,6}\s+(.*)$/.exec(linea);
@@ -250,9 +289,14 @@ function TarjetaArmado({ armado, vigente, textoConfirmar, alConfirmar }: {
             <span className={estilos.lugar}>{LUGARES[lugar] ?? lugar}</span>
             <span className={estilos.nombrePieza}>
               {cantidad > 1 ? `${cantidad} × ` : ""}{producto.nombre}
-              <span className={estilos.codigo}>{producto.codigo}</span>
+              <span className={estilos.codigo}>
+                {producto.codigo}
+                {cantidad > 1 && producto.precio != null ? ` · ${cantidad} × ${precio(producto.precio)}` : ""}
+              </span>
             </span>
-            <span className={estilos.precioPieza}>{precio(producto.precio)}</span>
+            <span className={estilos.precioPieza}>
+              {precio(producto.precio != null ? producto.precio * cantidad : null)}
+            </span>
           </li>
         ))}
       </ul>
@@ -269,7 +313,12 @@ function TarjetaArmado({ armado, vigente, textoConfirmar, alConfirmar }: {
         <ul className={estilos.reglas}>
           {pendientes.map((regla) => (
             <li key={regla.regla} className={regla.estado === "no_cumple" ? estilos.mal : estilos.duda}>
-              {regla.estado === "no_cumple" ? "No es compatible: " : "Sin datos: "}{regla.detalle}
+              {regla.estado === "no_cumple"
+                ? "No es compatible: "
+                : regla.critica === false
+                  ? "Aviso: "
+                  : "Sin datos: "}
+              {regla.detalle}
             </li>
           ))}
         </ul>
@@ -325,22 +374,23 @@ export function ChatAgente({
   const [abierto, setAbierto] = useState(abiertoInicial);
   const [borrador, setBorrador] = useState("");
   const [modelo, setModelo] = useState(modelos[0]?.valor ?? "local");
-  const { turnos, respondiendo, recuperando, enviar, detener, recuperar, nuevaConversacion } = useChatAgente(endpoint);
+  const { turnos, armadoGuardado, respondiendo, recuperando, enviar, detener, recuperar, nuevaConversacion } =
+    useChatAgente(endpoint);
   const idPanel = useId();
   const idModelo = useId();
   const lista = useRef<HTMLDivElement>(null);
   const entrada = useRef<HTMLTextAreaElement>(null);
   const boton = useRef<HTMLButtonElement>(null);
+  const pegadoAbajo = useRef(true);
 
-  // El armado vigente es el último que mandó el agente. Se avisa solo cuando cambia (cada evento
-  // trae un objeto nuevo; los cambios de estado «Pensando…» no lo tocan).
+  // El armado vigente es el último que mandó el agente (o el recuperado del servidor).
   const armadoActual = useMemo(() => {
     for (let t = turnos.length - 1; t >= 0; t--) {
       const item = [...turnos[t].items].reverse().find((i) => i.tipo === "armado");
       if (item?.tipo === "armado") return item.armado;
     }
-    return null;
-  }, [turnos]);
+    return armadoGuardado;
+  }, [turnos, armadoGuardado]);
   const avisarArmado = useRef(onArmado);
   avisarArmado.current = onArmado;
   useEffect(() => {
@@ -349,13 +399,14 @@ export function ChatAgente({
 
   useEffect(() => {
     if (!abierto) return;
+    pegadoAbajo.current = true;
     void recuperar();
     entrada.current?.focus();
   }, [abierto, recuperar]);
 
-  // Con cada novedad, la conversación baja hasta lo último.
+  // Con cada novedad, baja solo si el usuario no desplazó el historial hacia arriba.
   useEffect(() => {
-    lista.current?.scrollTo({ top: lista.current.scrollHeight });
+    if (pegadoAbajo.current) lista.current?.scrollTo({ top: lista.current.scrollHeight });
   }, [turnos, abierto]);
 
   const cerrar = () => {
@@ -364,6 +415,7 @@ export function ChatAgente({
   };
 
   const mandar = (texto: string) => {
+    pegadoAbajo.current = true;
     void enviar(texto, modoDesarrollo ? modelo : undefined);
     setBorrador("");
     if (entrada.current) entrada.current.style.height = "auto";
@@ -413,8 +465,19 @@ export function ChatAgente({
       }
       case "fuentes":
         return <Fuentes key={i} fuentes={item.fuentes} />;
-      case "error":
-        return <p key={i} className={estilos.error} role="alert">{item.mensaje}</p>;
+      case "error": {
+        const puedeReintentar = turno === ultimo && !respondiendo;
+        return (
+          <div key={i} className={estilos.bloqueError}>
+            <p className={estilos.error} role="alert">{item.mensaje}</p>
+            {puedeReintentar && (
+              <button type="button" className={estilos.enlace} onClick={() => mandar(turno.usuario)}>
+                Reintentar
+              </button>
+            )}
+          </div>
+        );
+      }
     }
   };
 
@@ -449,7 +512,15 @@ export function ChatAgente({
             </div>
           )}
 
-          <div ref={lista} className={estilos.mensajes} aria-live="polite">
+          <div
+            ref={lista}
+            className={estilos.mensajes}
+            aria-live="polite"
+            onScroll={(evento) => {
+              const el = evento.currentTarget;
+              pegadoAbajo.current = el.scrollHeight - el.scrollTop - el.clientHeight < 96;
+            }}
+          >
             {turnos.length === 0 && (
               <div className={estilos.bienvenida}>
                 <p className={estilos.saludo}>¡Hola! Soy el asistente de Todo Computación.</p>

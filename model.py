@@ -130,6 +130,12 @@ def get_model(name: str | None = None, opcion: str = OPCION_LOCAL) -> BaseChatMo
     if provider == "ollama":
         from langchain_ollama import ChatOllama
 
+        extras = {}
+        if keep_alive := os.getenv("MODEL_KEEP_ALIVE"):
+            extras["keep_alive"] = keep_alive
+        if num_gpu := os.getenv("MODEL_NUM_GPU"):
+            extras["num_gpu"] = int(num_gpu)
+
         return ChatOllama(
             model=name,
             base_url=_ollama_url(),
@@ -140,6 +146,7 @@ def get_model(name: str | None = None, opcion: str = OPCION_LOCAL) -> BaseChatMo
             # Qwen3 «piensa» antes de responder. Apagado es más rápido; MODEL_RAZONAMIENTO=1 lo
             # prende y la interfaz muestra el razonamiento.
             reasoning=os.getenv("MODEL_RAZONAMIENTO", "0") == "1",
+            **extras,
         )
 
     return init_chat_model(name, model_provider=provider, temperature=0)

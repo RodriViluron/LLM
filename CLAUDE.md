@@ -81,7 +81,7 @@ Los datos para la pantalla (productos completos, configuración) viajan en el ca
 | `buscar_especificaciones_web` | local | Es el `web_search` de la cátedra (Tavily), limitado con `include_domains` a sitios de requisitos de juegos y programas y de benchmarks. Devuelve CPU, GPU, RAM y almacenamiento con la fuente, guarda las fuentes en el estado y el resultado en una caché local. |
 | `write_todos`, `read_todos` | local | Lista de TODOs en el estado, igual que la cátedra. Se usa para planificar el armado de PC paso a paso. |
 | `load_skill` | local | Carga bajo demanda las instrucciones de `skills/armado_pc.md`: el procedimiento para armar y ajustar una configuración. |
-| `iniciar_configuracion` | local · armado | Crea en el estado una configuración vacía con presupuesto y perfil de uso. |
+| `iniciar_configuracion` | local · armado | Crea en el estado una configuración vacía con presupuesto (número o texto en pesos interpretado con `interpretar_monto`, sin adivinar rangos ni dólares) y perfil de uso. |
 | `agregar_o_reemplazar_componente` | local · armado | Pone un producto del catálogo en un lugar de la configuración: cpu, motherboard, ram, gpu, almacenamiento, fuente, gabinete o cooler. Pide el producto y la verificación al servidor MCP y guarda el resultado en el estado. |
 | `ajustar_presupuesto` | local · armado | Propone reemplazos más baratos **de la misma gama** hasta entrar en el presupuesto. Tiene un **tope de iteraciones**. |
 | `obtener_configuracion` | local · armado | Lee la configuración actual del estado (como `read_todos`). |
@@ -140,7 +140,7 @@ Cada documento lleva al principio un encabezado con título, fecha y fuente, par
 
 ## Modelo de lenguaje
 
-- **LLM local** servido con Ollama o LM Studio: un modelo chico con soporte de *tool calling*. Partimos de la familia Qwen3. `model.py` expone `get_model()`, que lee el proveedor y el modelo del `.env` (`MODEL_PROVIDER`, `MODEL_NAME`), igual que en el ejemplo de la cátedra: pasar del modelo base al afinado, o a uno más grande, es cambiar una línea del `.env`.
+- **LLM local** servido con Ollama o LM Studio: un modelo chico con soporte de *tool calling*. Partimos de la familia Qwen3. `model.py` expone `get_model()`, que lee el proveedor y el modelo del `.env` (`MODEL_PROVIDER`, `MODEL_NAME`), igual que en el ejemplo de la cátedra: pasar del modelo base al afinado, o a uno más grande, es cambiar una línea del `.env`. En `agente.py`, `historial_en_contexto` recorta resultados viejos de tools si excede `MODEL_NUM_CTX` (8192 para notebook de 4 GB) conservando fuentes y códigos sin usar `[cleared]`; los parámetros están en `docs/AJUSTES_OLLAMA.md`.
 - **Selector de modelo (local o Gemini):** además del modelo local, se puede usar **Gemini por API** si están definidas `GOOGLE_API_KEY` y `GEMINI_MODEL` en `.env` (`opciones_de_modelo()` y `get_model(opcion=...)` en `model.py`, `get_agent(opcion)` en `agente.py`). Todos los modelos comparten la misma memoria (`memoria.db`), así que se puede cambiar de modelo en medio de una conversación: desde la barra lateral en Streamlit (`app.py`), con `--modelo` en consola (`agente.py`) o mediante el campo opcional `modelo` en `POST /chat` de `servicio.py`, validado contra `AGENTE_MODELOS_PERMITIDOS` (por defecto solo `local`). En el chat web (`web/components/chat-agente/`), el selector solo se muestra en modo desarrollo (`NEXT_PUBLIC_MODO_DESARROLLO` o prop `modoDesarrollo`) y no aparece en producción.
 - **Embeddings del RAG locales** (`get_embeddings()`), servidos por el mismo Ollama o LM Studio, incluso cuando el chat usa Gemini.
 - **Fine-tuning:** se afina con **LoRA** (PEFT, en Colab con T4) para que el modelo local siga bien el formato de las tools y el estilo de la tienda. Las trazas de entrenamiento salen de un modelo maestro más grande que resuelve conversaciones de ejemplo usando las tools; es la misma idea de destilación del Laboratorio 4. Hay que **entrenar las filas de los tokens especiales** que use el formato de tool calling. Después se exporta a GGUF para cargarlo en Ollama.
@@ -165,7 +165,7 @@ La base es la del ejemplo de la cátedra; lo nuestro se suma.
 ├─ CLAUDE.md, PLAN.md, README.md
 ├─ servicio.py       servicio HTTP del agente (FastAPI): es lo que integra la tienda
 ├─ web/              página de prueba en Next.js y el componente del chat (components/chat-agente/)
-├─ docs/             guía de integración y mejoras propuestas a la API
+├─ docs/             guía de integración, ajustes de Ollama (`AJUSTES_OLLAMA.md`) y mejoras propuestas a la API
 ├─ app.py            demo en Streamlit: chat con razonamiento y tools a la vista + panel de configuración
 ├─ agente.py         prompt, create_agent, streaming, conversaciones, consola
 ├─ tools.py          estado (EstadoTienda) y tools locales
@@ -193,6 +193,7 @@ El detalle, los criterios de salida y qué depende de la API de la tienda están
 - **Fase 3:** `app.py` en Streamlit como demo (con razonamiento y tools a la vista), las tarjetas y los botones Cambiar y Confirmar. El chat web de la tienda (`servicio.py` + componente) muestra solo los estados cortos.
 - **Paso 9 (hecho):** reglas de compatibilidad para el catálogo real, cantidades y segundo disco.
 - **Paso 10 (en curso — código mergeado en `main`, falta la medición con el modelo local):** entrevista por código en versión 1 (`siguiente_pregunta_armado` devuelve la pregunta y el agente la muestra con `preguntar_al_usuario`), perfil convertido en filtros, `validar_presupuesto` (entiende jerga, números en palabras, «2,8M» y «y medio») y estados del chat web.
+- **Paso 11 (en `paso-11-otros-problemas`):** recorte de contexto con fuentes conservadas para 8192 tokens (`#22`), presupuesto como texto en `iniciar_configuracion` (`#31`), experimento HyDE en `evaluacion/rag.py` (`#30`), actualización del conjunto RAG (`#29`) y `docs/AJUSTES_OLLAMA.md` (`#27`); falta prueba manual en notebook de 4 GB.
 - **Fase 4:** generación de trazas, fine-tuning con LoRA y comparación del modelo base contra el afinado.
 - **Fase 5:** evaluación completa e informe.
 

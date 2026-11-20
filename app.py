@@ -33,8 +33,12 @@ ESTADOS = {"compatible": "✅ Compatible", "incompatible": "❌ Incompatible",
 st.set_page_config(page_title="Asistente AMN", page_icon="🖥️", layout="wide")
 
 
-def pesos(valor: float | None) -> str:
-    return "—" if valor is None else f"$ {valor:,.0f}".replace(",", ".")
+def pesos(valor: float | int | str | None) -> str:
+    if valor is None:
+        return "—"
+    if isinstance(valor, (int, float)) and not isinstance(valor, bool):
+        return f"$ {valor:,.0f}".replace(",", ".")
+    return str(valor)
 
 
 def init_session(config) -> None:
@@ -62,6 +66,11 @@ def titulo_llamada(e: dict) -> str:
     if nombre == "buscar_productos":
         filtros = ", ".join(f"{k}={v}" for k, v in args.items() if v not in (None, "", {}))
         return f"🔎 Buscó productos: {filtros}"
+    if nombre == "buscar_pieza_armado":
+        lugar = NOMBRES_LUGAR.get(args.get("lugar"), args.get("lugar") or "el armado")
+        return f"🔎 Buscó piezas para {lugar}"
+    if nombre == "validar_presupuesto":
+        return "💰 Validó el presupuesto"
     if nombre == "obtener_producto":
         return f"📦 Producto {args.get('codigo', '')}"
     if nombre == "verificar_compatibilidad":
@@ -140,7 +149,7 @@ def detalle_resultado(llamada: dict, r: dict) -> str | None:
         st.caption("Skill cargada" + (f" — {descripcion}" if descripcion else "."))
         if cuerpo:
             st.markdown(cuerpo)
-    elif nombre == "buscar_productos":
+    elif nombre in {"buscar_productos", "buscar_pieza_armado"}:
         productos = (datos or {}).get("productos", [])
         st.markdown("\n".join(_linea_producto(p) for p in productos) or "_Sin resultados._")
         for nota in (datos or {}).get("notas", []):

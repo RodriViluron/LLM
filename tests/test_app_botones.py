@@ -70,3 +70,19 @@ def test_los_botones_solo_valen_para_la_ultima_pregunta(app_entrevista):
     next(b for b in at.button if b.label == "Oficina o estudio").click().run()
     assert "Jugar" not in _botones(at)
     assert all(b.key.startswith("opcion_1_") for b in at.button if b.key and b.key.startswith("opcion_"))
+
+
+def test_app_soporta_presupuesto_texto_y_tools_entrevista():
+    import app as modulo_app
+
+    assert modulo_app.pesos("2 palos") == "2 palos"
+    assert modulo_app.pesos(2_800_000) == "$ 2.800.000"
+    assert modulo_app.titulo_llamada({"nombre": "iniciar_configuracion", "args": {"presupuesto": "2 palos"}}) == (
+        "🖥️ Inició un armado (presupuesto 2 palos)"
+    )
+    assert modulo_app.titulo_llamada({"nombre": "buscar_pieza_armado", "args": {"lugar": "ram"}}) == (
+        "🔎 Buscó piezas para Memoria RAM"
+    )
+    assert modulo_app.titulo_llamada({"nombre": "validar_presupuesto", "args": {"texto": "2 palos"}}) == (
+        "💰 Validó el presupuesto"
+    )

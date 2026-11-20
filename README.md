@@ -5,7 +5,7 @@ Qué hace y cómo trabajamos: [`CLAUDE.md`](CLAUDE.md). Plan por fases y estado:
 
 Sigue la estructura del agente investigador que mostró la cátedra ([fmaya02/AgenteInvestigadorVerFinal](https://github.com/fmaya02/AgenteInvestigadorVerFinal)): `create_agent` de LangChain, tools con estado, memoria con `SqliteSaver`, RAG sobre Chroma, skills y UI en Streamlit (demo/banco de pruebas). `chat_lmstudio.py` está copiado de ese repositorio. Lo nuestro se suma: servidor MCP de la tienda, armado de PC, servicio HTTP + componente de chat web para la tienda y fine-tuning.
 
-El proyecto trabaja con **cuatro gamas** (`baja`, `media`, `alta` y `premium`). El estado de cada paso está en `PLAN.md`. En el paso 10 (código mergeado en `main`; falta la medición con el modelo local), la entrevista del armado usa la versión 1 (`siguiente_pregunta_armado` devuelve la pregunta y `preguntar_al_usuario` muestra los botones) y `validar_presupuesto` interpreta jerga, números en palabras, «2,8M» y «y medio».
+El proyecto trabaja con **cuatro gamas** (`baja`, `media`, `alta` y `premium`). El estado de cada paso está en `PLAN.md`. En el paso 10 (código mergeado en `main`; falta la medición con el modelo local), la entrevista del armado usa la versión 1 (`siguiente_pregunta_armado` devuelve la pregunta y `preguntar_al_usuario` muestra los botones) y `validar_presupuesto` interpreta jerga, números en palabras, «2,8M» y «y medio». En `paso-11-otros-problemas` se agregaron el recorte de contexto conservando fuentes para `MODEL_NUM_CTX=8192` (`agente.py`), presupuesto como texto en `iniciar_configuracion`, experimento HyDE en `evaluacion/rag.py` y la guía `docs/AJUSTES_OLLAMA.md`.
 
 ### Principio de diseño: El modelo propone, el código verifica
 Para evitar alucinaciones en decisiones críticas, este proyecto no le permite al LLM inventar la gama de los componentes. La clasificación en las cuatro gamas (`baja`, `media`, `alta`, `premium`) se hace por código puro leyendo una tabla estricta (`tabla_cpu_gpu_por_gama.md`).
@@ -94,7 +94,7 @@ Se configura en el `.env`, sin tocar código (`model.py`):
 | Reglas de compatibilidad con el catálogo: cobertura, sin datos y falsos compatibles | `uv run python -m evaluacion.reglas_catalogo` |
 | Reparto del presupuesto por gama (y escribir `rag/docs/reparto_presupuesto.md`) | `uv run python -m evaluacion.reparto_presupuesto --escribir-doc` |
 | Guía de compatibilidad: regenerar el bloque de números desde las reglas | `uv run python -m mcp_tienda.armado.guia_compatibilidad --escribir-doc` |
-| Evaluación del RAG (consultas de `evaluacion/conjuntos/rag_consultas.yaml`) | `uv run python -m evaluacion.rag` |
+| Evaluación del RAG (`--solo-vectores` o experimento `--hyde`) | `uv run python -m evaluacion.rag [--solo-vectores | --hyde]` |
 
 Para medir con un catálogo distinto del `.env`, anteponé `AMN_CATALOGO_DB=ruta/a/la/base.sqlite` al comando. Las mediciones con el modelo local tardan varios minutos por corrida.
 
@@ -118,6 +118,7 @@ El módulo que suma el grupo es **solo el agente**. La página y su lógica son 
 | El componente del chat (botón flotante + panel), sin dependencias fuera de React | `web/components/chat-agente/` |
 | Guía para integrarlo: qué mostrar y qué no, el puente en NestJS, cómo cargar el armado | `docs/GUIA_INTEGRACION.md` |
 | Mejoras propuestas a la API y al armado de PC | `docs/MEJORAS_API_ARMADO_PC.md` |
+| Ajustes de Ollama / LM Studio (notebook 4 GB y escritorio 8 GB) | `docs/AJUSTES_OLLAMA.md` |
 
 La página de `web/` es una maqueta para probar el chat; a la tienda va solo la carpeta del componente.
 Copiar `web/.env.example` a `web/.env.local` para indicar dónde está el servicio.
@@ -127,7 +128,7 @@ Copiar `web/.env.example` a `web/.env.local` para indicar dónde está el servic
 ```
 ├── servicio.py       servicio HTTP del agente (FastAPI): es lo que integra la tienda
 ├── web/              página de prueba en Next.js y el componente del chat
-├── docs/             guía de integración y mejoras propuestas a la API
+├── docs/             guía de integración, ajustes de Ollama (4 GB / 8 GB) y mejoras a la API
 ├── app.py            banco de pruebas en Streamlit: chat + panel de configuración
 ├── agente.py         prompt, create_agent, streaming, conversaciones, consola
 ├── tools.py          estado (EstadoTienda) y tools locales

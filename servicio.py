@@ -132,7 +132,7 @@ def _resultado_publico(nombre: str, datos) -> Iterator[dict]:
     """Solo algunos resultados de tools tienen algo para mostrar; el resto es para el modelo."""
     if not isinstance(datos, dict):
         return
-    if nombre == "buscar_productos" and datos.get("productos"):
+    if nombre in {"buscar_productos", "buscar_pieza_armado"} and datos.get("productos"):
         # Las «notas» de la búsqueda no se envían: son indicaciones para el modelo, no para el cliente.
         yield {"tipo": "productos", "visibilidad": MOSTRAR,
                "productos": [producto_publico(p) for p in datos["productos"]]}

@@ -6,7 +6,7 @@
  * No es parte del chat que va a la tienda; la tienda ya tiene su propio «Armá tu PC».
  */
 
-import type { Armado, Producto } from "@/components/chat-agente";
+import type { Armado, ItemPedido, Producto } from "@/components/chat-agente";
 
 import { ImagenComponente } from "./ImagenComponente";
 import estilos from "./VistaArmado.module.css";
@@ -36,11 +36,12 @@ const COMPATIBILIDAD: Record<Armado["compatibilidad"]["estado"], { texto: string
 const pesos = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 const precio = (valor: number | null) => (valor == null ? "Consultar" : pesos.format(valor));
 
-export function VistaArmado({ piezas, armado, alQuitar }: {
+export function VistaArmado({ piezas, armado, alQuitar, alConfirmar }: {
   piezas: Record<string, Pieza>;
   /** El último armado del asistente, para la compatibilidad y el presupuesto (los calcula el servicio). */
   armado: Armado | null;
   alQuitar: (lugar: string) => void;
+  alConfirmar?: (pedido: ItemPedido[], armado: Armado) => void;
 }) {
   const elegidos = PASOS.filter((paso) => piezas[paso.lugar]);
   const actual = PASOS.findIndex((paso) => !piezas[paso.lugar]);
@@ -52,6 +53,7 @@ export function VistaArmado({ piezas, armado, alQuitar }: {
   const compatibilidad = conPiezasDelCliente
     ? { texto: "Sin verificar: incluye piezas que elegiste en el chat", tono: estilos.duda }
     : armado ? COMPATIBILIDAD[armado.compatibilidad.estado] ?? COMPATIBILIDAD.sin_verificar : null;
+  const revisionHecha = Boolean(armado?.se_puede_confirmar) && !conPiezasDelCliente;
   const excedido = armado?.presupuesto != null && total > armado.presupuesto;
 
   return (
@@ -61,8 +63,8 @@ export function VistaArmado({ piezas, armado, alQuitar }: {
 
       <ol className={estilos.pasos}>
         {[...PASOS, { lugar: "revision", nombre: "Revisión" }].map((paso, i) => {
-          const hecho = paso.lugar === "revision" ? elegidos.length === PASOS.length : Boolean(piezas[paso.lugar]);
-          const enCurso = i === (actual === -1 ? PASOS.length : actual);
+          const hecho = paso.lugar === "revision" ? revisionHecha : Boolean(piezas[paso.lugar]);
+          const enCurso = !hecho && i === (actual === -1 ? PASOS.length : actual);
           return (
             <li key={paso.lugar} className={`${estilos.paso} ${hecho ? estilos.hecho : ""} ${enCurso ? estilos.enCurso : ""}`}>
               <span className={estilos.numero}>{hecho ? "✓" : i + 1}</span>
@@ -129,16 +131,39 @@ export function VistaArmado({ piezas, armado, alQuitar }: {
             <p className={estilos.nada}>Todavía no hay componentes.</p>
           ) : (
             <ul className={estilos.lista}>
-              {elegidos.map(({ lugar, nombre }) => (
-                <li key={lugar}>
-                  <span>{nombre}{piezas[lugar].cantidad > 1 ? ` ×${piezas[lugar].cantidad}` : ""}</span>
-                  <span>{precio(piezas[lugar].producto.precio)}</span>
-                </li>
-              ))}
+              {elegidos.map(({ lugar, nombre }) => {
+                const { producto, cantidad } = piezas[lugar];
+                return (
+                  <li key={lugar}>
+                    <span>{nombre}{cantidad > 1 ? ` ×${cantidad}` : ""}</span>
+                    <span>{precio(producto.precio != null ? producto.precio * cantidad : null)}</span>
+                  </li>
+                );
+              })}
             </ul>
           )}
           {compatibilidad && (
             <p className={`${estilos.estado} ${compatibilidad.tono}`}>{compatibilidad.texto}</p>
+          )}
+          {armado && !conPiezasDelCliente && (
+            <>
+              {armado.compatibilidad.reglas.filter((regla) => regla.estado !== "cumple").length > 0 && (
+                <ul className={estilos.reglas}>
+                  {armado.compatibilidad.reglas
+                    .filter((regla) => regla.estado !== "cumple")
+                    .map((regla) => (
+                      <li key={regla.regla} className={regla.estado === "no_cumple" ? estilos.mal : estilos.duda}>
+                        {regla.estado === "no_cumple"
+                          ? "No es compatible: "
+                          : regla.critica === false
+                            ? "Aviso: "
+                            : "Sin datos: "}
+                        {regla.detalle}
+                      </li>
+                    ))}
+                </ul>
+              )}
+            </>
           )}
           <div className={estilos.total}>
             <span>Total</span>
@@ -148,6 +173,17 @@ export function VistaArmado({ piezas, armado, alQuitar }: {
             <p className={estilos.nota}>
               Presupuesto: {precio(armado.presupuesto)}{excedido ? " — el armado lo supera" : ""}
             </p>
+          )}
+          {armado && !conPiezasDelCliente && alConfirmar && (
+            <>
+              <button type="button" className={estilos.confirmar} disabled={!armado.se_puede_confirmar}
+                onClick={() => alConfirmar(armado.pedido, armado)}>
+                Cargar armado
+              </button>
+              {!armado.se_puede_confirmar && armado.motivos_para_no_confirmar.length > 0 && (
+                <p className={estilos.nota}>Falta para confirmar: {armado.motivos_para_no_confirmar.join(" · ")}</p>
+              )}
+            </>
           )}
         </aside>
       </div>

@@ -15,6 +15,8 @@ Streamlit:  streamlit run app.py
 import argparse
 import json
 import logging
+import math
+import os
 import re
 import sqlite3
 from collections.abc import Callable, Iterator
@@ -50,6 +52,7 @@ REPARTO_DOC = DIR / "rag" / "docs" / "reparto_presupuesto.md"   # totales típic
 PROMPT_SISTEMA = """\
 Sos el asistente de compra de la tienda de tecnología AMN (Todo Computación, Mendoza).
 Hablás en español rioplatense, claro y breve.
+Pensá y razoná siempre en español, nunca en inglés.
 
 Reglas:
 1. Solo recomendás productos que devolvieron las herramientas. Nunca inventes productos, códigos, precios ni stock.
@@ -167,6 +170,213 @@ def limpiar_historial_para_el_modelo(mensajes: list[BaseMessage]) -> list[BaseMe
 def sin_razonamiento_viejo(request: ModelRequest, handler: Callable[[ModelRequest], ModelResponse]) -> ModelResponse:
     """Middleware: el modelo lee el historial limpio; el estado (memoria.db) queda como estaba."""
     return handler(request.override(messages=limpiar_historial_para_el_modelo(request.messages)))
+
+
+# --- Recorte de historial para entrar en MODEL_NUM_CTX (problema 22) --------------
+
+# Parte fija medida en #22/#23: system prompt (~1.379) + 13 tools (~1.768) = 3.147 ≈ 3.150 tokens.
+# Reserva de 2.000 tokens para razonamiento + respuesta o tool call en cada llamada.
+TOKENS_FIJOS = 3150
+TOKENS_RESERVA_RESPUESTA = 2000
+
+# Factor calibrado con las conversaciones reales limpias medidas por Ollama en #22 y #23:
+# - 99c1a78e limpia: 13.175 chars de contenido + JSON de tool_calls en 31 mensajes → ~5.105 tokens reales.
+# - 4ab40d12 limpia: 17.701 chars de contenido + JSON de tool_calls en 75 mensajes → ~7.900 tokens reales.
+# Con 3,0 caracteres/token + 12 tokens de cabecera por mensaje se reproducen ambos casos sin subestimar JSON.
+CARACTERES_POR_TOKEN = 3.0
+TOKENS_POR_MENSAJE = 12
+
+
+def estimar_tokens_mensaje(mensaje: BaseMessage) -> int:
+    """Estimación por caracteres (+ JSON de tool_calls y cabecera) calibrada con #22 y #23."""
+    largo = len(mensaje.text)
+    if isinstance(mensaje, AIMessage) and mensaje.tool_calls:
+        largo += len(json.dumps(mensaje.tool_calls, ensure_ascii=False))
+    return math.ceil(largo / CARACTERES_POR_TOKEN) + TOKENS_POR_MENSAJE
+
+
+def estimar_tokens_historial(mensajes: list[BaseMessage]) -> int:
+    """Tokens estimados del historial completo."""
+    return sum(estimar_tokens_mensaje(m) for m in mensajes)
+
+
+def presupuesto_historial(num_ctx: int | None = None) -> int:
+    """Tokens libres para el historial dentro de MODEL_NUM_CTX (sin parte fija ni reserva)."""
+    ctx = num_ctx if num_ctx is not None else int(os.getenv("MODEL_NUM_CTX", "8192"))
+    return max(0, ctx - TOKENS_FIJOS - TOKENS_RESERVA_RESPUESTA)
+
+
+def _deduplicar(elementos: list[str]) -> list[str]:
+    return list(dict.fromkeys(e for e in elementos if e))
+
+
+def _resumir_web(mensaje: ToolMessage, args_llamada: dict) -> str:
+    texto = mensaje.text
+    consulta = str(args_llamada.get("consulta", "")).strip()
+    encabezado = f"búsqueda web de {consulta}" if consulta else "búsqueda web"
+    if texto.startswith(("No se pudo", "Sin resultados")):
+        return f"[{encabezado}: {texto[:140]}]"
+    partes = []
+    if coincidencia_gama := re.search(r"Gama sugerida:\s*([^\n.]+)", texto):
+        partes.append(f"gama sugerida {coincidencia_gama.group(1).strip()}")
+    urls = ([s.get("url", "") for s in mensaje.artifact if isinstance(s, dict)]
+            if isinstance(mensaje.artifact, list) else [])
+    if not any(urls):
+        urls = re.findall(r"URL:\s*(\S+)", texto)
+    if urls_unicas := _deduplicar(urls):
+        partes.append(f"fuentes: {', '.join(urls_unicas)}")
+    if not partes:
+        partes.append(texto[:160].rstrip())
+    return f"[{encabezado}: {'; '.join(partes)}]"
+
+
+def _resumir_rag(mensaje: ToolMessage) -> str:
+    texto = mensaje.text
+    fuentes = ([f.get("archivo", "") for f in mensaje.artifact if isinstance(f, dict)]
+               if isinstance(mensaje.artifact, list) else [])
+    if not any(fuentes):
+        fuentes = re.findall(r"^\[\d+\]\s*Fuente:\s*(\S+)", texto, flags=re.MULTILINE)
+    fuentes_unicas = _deduplicar(fuentes)
+    if not fuentes_unicas:
+        return f"[RAG: {texto[:140]}]"
+    filas = re.findall(r"^\|\s*(?:cpu|gpu)\s*\|[^\n]+", texto, flags=re.IGNORECASE | re.MULTILINE)
+    detalle = ", ".join(fuentes_unicas)
+    if filas:
+        detalle += f"; tabla: {'; '.join(_deduplicar(filas)[:2])}"
+    return f"[RAG: {detalle}]"
+
+
+def _resumir_busqueda_productos(nombre: str, datos: dict) -> str:
+    productos = datos.get("productos") or datos.get("productos_sin_gama") or []
+    elementos = []
+    for p in productos:
+        if not isinstance(p, dict):
+            continue
+        etiqueta = f"{p.get('codigo', '')} {p.get('nombre', '')}".strip()
+        if p.get("cantidad_sugerida", 1) > 1:
+            etiqueta += f" (x{p['cantidad_sugerida']})"
+        if etiqueta:
+            elementos.append(etiqueta)
+    cuerpo = "; ".join(elementos) if elementos else "sin resultados"
+    if datos.get("sin_dato"):
+        cuerpo += f"; sin_dato={datos['sin_dato']}"
+    return f"[{nombre}: {cuerpo}]"
+
+
+def _resumir_armado_json(nombre: str, datos: dict) -> str:
+    cfg = datos["configuracion"]
+    piezas = [
+        f"{lugar}={producto.get('codigo', '')} {producto.get('nombre', '')}".strip()
+        for lugar, producto in (cfg.get("componentes") or {}).items()
+        if isinstance(producto, dict)
+    ]
+    partes = [
+        "; ".join(piezas) or "sin piezas",
+        f"total={cfg.get('total', 0)}",
+        f"compatibilidad={cfg.get('compatibilidad', 'sin_verificar')}",
+    ]
+    if cfg.get("presupuesto") is not None:
+        partes.append(f"presupuesto={cfg['presupuesto']}")
+    return f"[{nombre}: {', '.join(partes)}]"
+
+
+def resumir_resultado_tool(mensaje: ToolMessage, args_llamada: dict | None = None) -> str:
+    """Resumen corto armado por código para un resultado de tool viejo (nunca devuelve «[cleared]»)."""
+    nombre = getattr(mensaje, "name", None) or "tool"
+    texto = mensaje.text
+    args_llamada = args_llamada or {}
+    if nombre == "buscar_especificaciones_web":
+        return _resumir_web(mensaje, args_llamada)
+    if nombre == "consultar_caracteristicas":
+        return _resumir_rag(mensaje)
+    if nombre == "load_skill":
+        skill = args_llamada.get("nombre")
+        if not skill and (coincidencia := re.search(r"^#\s*Skill:\s*(.+)$", texto, flags=re.MULTILINE)):
+            skill = coincidencia.group(1).strip()
+        return f"[skill {skill or 'cargada'} cargada en un turno anterior]"
+    if nombre in {"buscar_productos", "buscar_pieza_armado", "obtener_producto",
+                  "iniciar_configuracion", "agregar_o_reemplazar_componente",
+                  "ajustar_presupuesto", "obtener_configuracion", "verificar_compatibilidad"}:
+        try:
+            datos = json.loads(texto)
+        except (TypeError, ValueError):
+            datos = None
+        if isinstance(datos, dict):
+            if "error" in datos:
+                return f"[{nombre}: error: {datos['error']}]"
+            if nombre in {"buscar_productos", "buscar_pieza_armado"}:
+                return _resumir_busqueda_productos(nombre, datos)
+            if nombre == "obtener_producto":
+                return (f"[obtener_producto: {datos.get('codigo', '')} {datos.get('nombre', '')} "
+                        f"($ {datos.get('precio')}, stock {datos.get('stock')})]")
+            if "configuracion" in datos and isinstance(datos["configuracion"], dict):
+                return _resumir_armado_json(nombre, datos)
+            if nombre == "verificar_compatibilidad":
+                fallas = [r.get("regla") for r in datos.get("resultados", []) if r.get("estado") == "no_cumple"]
+                extra = f", no_cumple={fallas}" if fallas else ""
+                return f"[verificar_compatibilidad: {datos.get('estado_general')}, total={datos.get('total')}{extra}]"
+    if len(texto) <= 200:
+        return texto
+    return texto[:160].rstrip() + "… [resultado anterior abreviado]"
+
+
+def recortar_historial_para_el_modelo(mensajes: list[BaseMessage], presupuesto: int | None = None) -> list[BaseMessage]:
+    """Copia del historial recortada para entrar en MODEL_NUM_CTX sin perder fuentes ni el turno actual.
+
+    El estado guardado (`memoria.db`) no se modifica. Prioridad de recorte (solo en turnos anteriores,
+    nunca en `HumanMessage` ni en el turno actual, incluidos los reintentos `[Aviso del sistema]`):
+    1. Reemplaza resultados de tools viejos por un resumen corto armado por código con sus fuentes/códigos.
+    2. Si todavía no alcanza, acorta respuestas largas viejas del modelo en texto plano.
+    """
+    limite = presupuesto if presupuesto is not None else presupuesto_historial()
+    copia = list(mensajes)
+    tokens = estimar_tokens_historial(copia)
+    if tokens <= limite:
+        return copia
+
+    inicio_turno_actual = 0
+    for i in range(len(copia) - 1, -1, -1):
+        if copia[i].type == "human" and not copia[i].text.startswith("[Aviso del sistema]"):
+            inicio_turno_actual = i
+            break
+
+    args_por_id = {
+        c["id"]: c.get("args") or {}
+        for m in copia
+        if isinstance(m, AIMessage)
+        for c in (m.tool_calls or [])
+        if c.get("id")
+    }
+
+    for i in range(inicio_turno_actual):
+        if tokens <= limite:
+            break
+        m = copia[i]
+        if not isinstance(m, ToolMessage):
+            continue
+        resumen = resumir_resultado_tool(m, args_por_id.get(m.tool_call_id))
+        if len(resumen) < len(m.text):
+            actualizado = m.model_copy(update={"content": resumen})
+            tokens += estimar_tokens_mensaje(actualizado) - estimar_tokens_mensaje(m)
+            copia[i] = actualizado
+
+    for i in range(inicio_turno_actual):
+        if tokens <= limite:
+            break
+        m = copia[i]
+        if isinstance(m, AIMessage) and isinstance(m.content, str) and not m.tool_calls and len(m.content) > 220:
+            acortado = m.content[:180].rstrip() + "… [respuesta anterior abreviada]"
+            actualizado = m.model_copy(update={"content": acortado})
+            tokens += estimar_tokens_mensaje(actualizado) - estimar_tokens_mensaje(m)
+            copia[i] = actualizado
+
+    return copia
+
+
+@wrap_model_call
+def historial_en_contexto(request: ModelRequest, handler: Callable[[ModelRequest], ModelResponse]) -> ModelResponse:
+    """Middleware: recorta resultados de tools viejos si el historial no entra en MODEL_NUM_CTX (problema 22)."""
+    return handler(request.override(messages=recortar_historial_para_el_modelo(request.messages)))
 
 
 # --- Acciones afirmadas sin tool (problema 20) -----------------------------------
@@ -355,6 +565,26 @@ def sin_llamadas_como_texto(request: ModelRequest, handler: Callable[[ModelReque
     return reintento
 
 
+# --- Respuestas vacías tras razonar sin cerrar </think> -------------------------
+
+AVISO_RESPUESTA_VACIA = (
+    "[Aviso del sistema] Tu última respuesta no tuvo texto visible para el usuario (quedó vacía "
+    "o solo con razonamiento interno). Respondé de forma breve y clara en español o invocá la "
+    "herramienta que corresponda."
+)
+
+
+@wrap_model_call
+def sin_respuesta_vacia(request: ModelRequest, handler: Callable[[ModelRequest], ModelResponse]):
+    """Middleware: si el modelo devolvió solo razonamiento o vacío sin tools, pide una vez texto visible."""
+    respuesta = handler(request)
+    mensaje = respuesta.result[-1] if isinstance(respuesta, ModelResponse) else respuesta
+    if not isinstance(mensaje, AIMessage) or mensaje.tool_calls or separar_razonamiento(mensaje.text)[1].strip():
+        return respuesta
+    log.warning("El modelo respondió sin texto visible (posible <think> sin cerrar); se pide respuesta breve.")
+    return handler(request.override(messages=[*request.messages, HumanMessage(AVISO_RESPUESTA_VACIA)]))
+
+
 # --- Consultar documentación antes de responder o repreguntar (problema 32) -------
 
 _EXCLUSIONES_EXPLICACION = re.compile(
@@ -466,13 +696,15 @@ def crear_agente(modelo: BaseChatModel | None = None, cliente: ClienteTienda | N
         state_schema=EstadoTienda,      # estado extendido: messages + todos + sources + configuracion
         context_schema=Context,         # datos de solo lectura por invocación (turno)
         checkpointer=checkpointer,
-        # El primero envuelve al segundo: el reintento de sin_acciones_inventadas también pasa por la
-        # limpieza del razonamiento.
+        # Los primeros envuelven a los últimos: los reintentos también pasan por la limpieza del
+        # razonamiento y el recorte de contexto.
         middleware=[
             consultar_documentacion_antes,  # ante preguntas de explicación, consultar RAG primero (problema 32)
             sin_llamadas_como_texto,        # si escribió la llamada a una tool como texto JSON (problema 24)
+            sin_respuesta_vacia,            # si devolvió vacío o solo <think> sin texto visible
             sin_acciones_inventadas,        # no afirmar acciones sin llamar a la tool (problema 20)
             sin_razonamiento_viejo,         # no reenviar el razonamiento viejo (problema 23)
+            historial_en_contexto,          # resumir tools viejos si excede MODEL_NUM_CTX (problema 22)
         ],
     )
 

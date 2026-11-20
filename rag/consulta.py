@@ -16,6 +16,32 @@ from mcp_tienda.armado.requisitos import modelos_en_texto
 from rag.ingest import GAMA_GENERAL
 
 FUENTE_TABLA = "tabla_cpu_gpu_por_gama.md"
+FUENTE_GAMAS = "gamas.md"
+FUENTE_REPARTO = "reparto_presupuesto.md"
+
+_INTENCION_REPARTO = re.compile(
+    r"\b(cu[aá]nto\s+(cuesta|sale|vale|gastar)|porcentaje|reparto|presupuesto)\b",
+    re.IGNORECASE,
+)
+_INTENCION_COMPONENTE_GAMA = re.compile(
+    r"\b(qu[eé]\s+(procesador|disco|fuente|cooler|placa|ram|memoria)|cu[aá]nt[ao]\s+(ram|memoria)|"
+    r"lleva\s+placa\s+de\s+video)\b",
+    re.IGNORECASE,
+)
+
+
+def _ordenar_por_intencion(fragmentos: list[dict], consulta: str, gama: str | None) -> list[dict]:
+    """Desempate estable entre los fragmentos ya recuperados según la intención de la consulta (problema 29)."""
+    if _INTENCION_REPARTO.search(consulta):
+        objetivo = FUENTE_REPARTO
+    elif gama is not None and _INTENCION_COMPONENTE_GAMA.search(consulta):
+        objetivo = FUENTE_GAMAS
+    else:
+        return fragmentos
+    preferidos = [f for f in fragmentos if f["fuente"] == objetivo]
+    if not preferidos:
+        return fragmentos
+    return preferidos + [f for f in fragmentos if f["fuente"] != objetivo]
 
 
 def gama_de_la_consulta(consulta: str) -> str | None:
@@ -45,20 +71,24 @@ def _a_fragmento(chunk) -> dict:
             "gama": chunk.metadata.get("gama", GAMA_GENERAL), "exacta": False}
 
 
-def buscar_en_documentacion(store, consulta: str, k: int = 4, ruta_tabla: Path | None = None) -> list[dict]:
+def buscar_en_documentacion(store, consulta: str, k: int = 4, ruta_tabla: Path | None = None,
+                            texto_busqueda: str | None = None) -> list[dict]:
     """Fragmentos para la consulta: primero las filas exactas de la tabla (si nombra modelos), después hasta
     `k` fragmentos por parecido, filtrados por la gama de la consulta si nombra una.
 
+    `texto_busqueda` permite buscar por vectores con otro texto (por ejemplo, un documento hipotético
+    en el experimento HyDE) manteniendo el filtro de gama y la tabla exacta sobre `consulta`.
     Cada fragmento: {fuente, texto, gama, exacta}.
     """
+    consulta_vector = texto_busqueda or consulta
     exactas = _exactas(consulta, ruta_tabla)
     gama = gama_de_la_consulta(consulta)
     if gama is None:
-        chunks = store.similarity_search(consulta, k=k)
+        chunks = store.similarity_search(consulta_vector, k=k)
     else:
-        chunks = store.similarity_search(consulta, k=k, filter={"gama": gama})
+        chunks = store.similarity_search(consulta_vector, k=k, filter={"gama": gama})
         if len(chunks) < k:
-            chunks += store.similarity_search(consulta, k=k - len(chunks), filter={"gama": GAMA_GENERAL})
+            chunks += store.similarity_search(consulta_vector, k=k - len(chunks), filter={"gama": GAMA_GENERAL})
         if not chunks:   # base indexada antes de este cambio: no tiene la metadata `gama`
-            chunks = store.similarity_search(consulta, k=k)
-    return exactas + [_a_fragmento(c) for c in chunks]
+            chunks = store.similarity_search(consulta_vector, k=k)
+    return exactas + _ordenar_por_intencion([_a_fragmento(c) for c in chunks], consulta, gama)

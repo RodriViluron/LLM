@@ -112,7 +112,7 @@ export default function Pagina() {
         </p>
 
         <div id="armado">
-          <VistaArmado piezas={piezas} armado={armado} alQuitar={quitar} />
+          <VistaArmado piezas={piezas} armado={armado} alQuitar={quitar} alConfirmar={alConfirmarArmado} />
         </div>
 
         <section className="recibido">

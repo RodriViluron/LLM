@@ -10,6 +10,7 @@ tienda (mcp_tienda/servidor.py) y el agente los usa a través de mcp_tienda/clie
 
 import json
 import logging
+import math
 import os
 import re
 import sqlite3
@@ -349,6 +350,38 @@ def _pesos_de(valor: float) -> str:
     return f"$ {int(round(valor)):,}".replace(",", ".")
 
 
+def resolver_presupuesto(presupuesto: int | float | str | None) -> tuple[float | None, str | None]:
+    """Convierte el presupuesto recibido en número o texto a pesos usando `montos.interpretar_monto`.
+
+    Devuelve `(monto, None)` si es válido, `(None, None)` si es None, o `(None, mensaje_de_error)`
+    si está en dólares, es ambiguo o no contiene un monto válido (no adivina).
+    """
+    if presupuesto is None:
+        return None, None
+    if isinstance(presupuesto, bool):
+        return None, "El presupuesto tiene que ser un monto en pesos. Preguntale al usuario cuánto quiere gastar."
+    if isinstance(presupuesto, (int, float)):
+        if not math.isfinite(presupuesto) or presupuesto <= 0:
+            return None, "El presupuesto tiene que ser un monto positivo en pesos. Preguntale al usuario cuánto quiere gastar."
+        return presupuesto, None
+    if not isinstance(presupuesto, str):
+        return None, "El presupuesto tiene que ser un número o texto en pesos. Preguntale al usuario cuánto quiere gastar."
+    interpretado = montos.interpretar_monto(presupuesto)
+    if interpretado is None:
+        return None, f"No encontré un monto en {presupuesto!r}. Preguntale al usuario cuál es su presupuesto en pesos."
+    if interpretado["monto"] is None:
+        if interpretado.get("moneda") == "USD":
+            return None, f"{interpretado['motivo']} Preguntale al usuario de cuántos pesos argentinos es su presupuesto."
+        candidatos = interpretado.get("candidatos") or []
+        if candidatos:
+            opciones = " o ".join(_pesos_de(c) for c in candidatos)
+            return None, f"{interpretado['motivo']} Preguntale al usuario qué monto exacto en pesos quiere usar ({opciones})."
+        return None, f"{interpretado['motivo']} Preguntale al usuario cuánto quiere gastar en pesos."
+    if interpretado["monto"] <= 0:
+        return None, "El presupuesto tiene que ser mayor que cero. Preguntale al usuario cuánto quiere gastar en pesos."
+    return interpretado["monto"], None
+
+
 # Resultados de tools en los que un código cuenta como «visto». obtener_producto queda afuera a propósito:
 # si contara, el modelo podría «lavar» un código inventado pidiéndolo primero.
 TOOLS_QUE_MUESTRAN_CODIGOS = {"buscar_productos", "obtener_configuracion", "iniciar_configuracion",
@@ -399,15 +432,19 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
 
     @tool
     def iniciar_configuracion(
-        runtime: ToolRuntime[Context], presupuesto: float | None = None, perfil_uso: str | None = None
+        runtime: ToolRuntime[Context], presupuesto: float | str | None = None, perfil_uso: str | None = None
     ) -> Command:
         """Empieza un armado de PC nuevo y vacío (borra el anterior, si había).
 
-        `presupuesto` es el máximo a gastar, en pesos. `perfil_uso` es para qué se va a usar
-        (por ejemplo "oficina", "juegos 1080p", "edición de video").
+        `presupuesto` es el máximo a gastar en pesos (número o texto, por ejemplo "2 palos" o
+        "$ 2.800.000"). Si es ambiguo, un rango o está en dólares, devuelve error sin adivinar.
+        `perfil_uso` es para qué se va a usar (por ejemplo "oficina", "juegos 1080p", "edición de video").
         """
+        monto, error = resolver_presupuesto(presupuesto)
+        if error:
+            return _error(runtime, error)
         anterior = runtime.state.get("configuracion")
-        config = armado.nueva(presupuesto, perfil_uso)
+        config = armado.nueva(monto, perfil_uso)
         config["version"] = (anterior or {}).get("version", 0) + 1
         config["ultimos_cambios"] = ["presupuesto", "perfil_uso", *(anterior or {}).get("componentes", {})]
         return _guardar(runtime, config)
@@ -513,7 +550,7 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
                                    "CPU no tenga video integrado.")
         config = runtime.state.get("configuracion") or {}
         filtros = filtros_del_perfil(lugar, perfil)
-        respuesta, _ = cliente.llamar_json(
+        respuesta, datos = cliente.llamar_json(
             "buscar_productos", categoria=categoria_de_lugar(lugar), texto=texto, precio_max=precio_max,
             atributos=filtros["atributos"] or None, gama=filtros.get("gama"),
             compatible_con=armado.codigos(config) or None, para_lugar=lugar,
@@ -525,8 +562,11 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
             for producto in respuesta.get("productos", []):
                 producto["cantidad_sugerida"] = cantidad_de_ram(
                     perfil, producto.get("atributos", {}).get("capacidad_gb"))
-        return _respond(runtime, _json({"filtros_del_perfil": {"gama": filtros.get("gama"),
-                                                                "atributos": filtros["atributos"]}, **respuesta}))
+        return _respond(
+            runtime,
+            _json({"filtros_del_perfil": {"gama": filtros.get("gama"), "atributos": filtros["atributos"]}, **respuesta}),
+            artifact=datos,
+        )
 
     @tool
     def validar_presupuesto(texto: str, runtime: ToolRuntime[Context]) -> Command:

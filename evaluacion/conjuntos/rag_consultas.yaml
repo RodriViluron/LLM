@@ -31,9 +31,9 @@ consultas:
   - {consulta: "cuánto cuesta una PC de gama alta", fuente: reparto_presupuesto.md, debe: "Una PC de gama alta en la tienda cuesta", gama: alta}
   - {consulta: "cuánto cuesta una PC de gama baja", fuente: reparto_presupuesto.md, debe: "Una PC de gama baja en la tienda cuesta", gama: baja}
   - {consulta: "cuánto cuesta una PC de gama premium", fuente: reparto_presupuesto.md, debe: "Una PC de gama premium en la tienda cuesta", gama: premium}
-  - {consulta: "cuánto del presupuesto va al procesador en gama premium", fuente: reparto_presupuesto.md, debe: "Gama premium, procesador: 16 %", gama: premium}
+  - {consulta: "cuánto del presupuesto va al procesador en gama premium", fuente: reparto_presupuesto.md, debe: "Gama premium, procesador: 15 %", gama: premium}
   - {consulta: "reparto del presupuesto de una PC de gama media", fuente: reparto_presupuesto.md, debe: "Porcentaje del presupuesto por componente en gama media", gama: media}
-  - {consulta: "cuánto gastar en memoria RAM en gama alta", fuente: reparto_presupuesto.md, debe: "Gama alta, memoria ram: 25 %", gama: alta}
+  - {consulta: "cuánto gastar en memoria RAM en gama alta", fuente: reparto_presupuesto.md, debe: "Gama alta, memoria ram: 23 %", gama: alta}
   - {consulta: "cuánto gastar en el disco en gama baja", fuente: reparto_presupuesto.md, debe: "Gama baja, disco", gama: baja}
   - {consulta: "cuánto gastar en la fuente en gama media", fuente: reparto_presupuesto.md, debe: "Gama media, fuente: 4 %", gama: media}
   - {consulta: "qué porcentaje es el gabinete en gama baja", fuente: reparto_presupuesto.md, debe: "Gama baja, gabinete: 8 %", gama: baja}

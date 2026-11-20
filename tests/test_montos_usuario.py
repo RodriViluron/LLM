@@ -100,3 +100,58 @@ def test_con_2_8_millones_entra_la_media():
 def test_monto_sin_escala_no_inventa_una_respuesta():
     resultado = evaluar_presupuesto(1_000_000, [])
     assert resultado["alcanza"] is None and "referencia" in resultado["motivo"]
+
+
+def _iniciar_con_modelo(cliente, presupuesto, configuracion_previa=None):
+    import json
+    from agente import crear_agente
+    from tests.falsos import llamada, modelo_con, texto
+
+    agente = crear_agente(
+        modelo_con(llamada("iniciar_configuracion", {"presupuesto": presupuesto, "perfil_uso": "juegos 1080p"}, "i1"),
+                   texto("ok")),
+        cliente,
+    )
+    entrada = {"messages": [("user", "armame una PC")]}
+    if configuracion_previa is not None:
+        entrada["configuracion"] = configuracion_previa
+    resultado = agente.invoke(entrada)
+    respuesta_tool = json.loads(next(m.content for m in resultado["messages"] if m.name == "iniciar_configuracion"))
+    return resultado, respuesta_tool
+
+
+def test_iniciar_configuracion_acepta_numero_none_jerga_y_texto_con_gama(cliente):
+    res_num, _ = _iniciar_con_modelo(cliente, 2_800_000)
+    assert res_num["configuracion"]["presupuesto"] == 2_800_000
+
+    res_none, _ = _iniciar_con_modelo(cliente, None)
+    assert res_none["configuracion"]["presupuesto"] is None
+
+    res_jerga, _ = _iniciar_con_modelo(cliente, "2 palos")
+    assert res_jerga["configuracion"]["presupuesto"] == 2_000_000
+
+    for texto_gama in ("Gama media (cerca de $ 2.800.000)", "Gama media ($ 2.800.000)"):
+        res_gama, _ = _iniciar_con_modelo(cliente, texto_gama)
+        assert res_gama["configuracion"]["presupuesto"] == 2_800_000
+
+
+def test_iniciar_configuracion_rechaza_rango_ambiguo_sin_adivinar(cliente):
+    previa = {"version": 1, "ultimos_cambios": [], "presupuesto": 1_500_000, "perfil_uso": "oficina",
+              "componentes": {}, "cantidades": {}, "reporte": None, "total": 0.0}
+    res, resp = _iniciar_con_modelo(cliente, "Gama media (2.800.000 - 3.200.000 pesos)", configuracion_previa=previa)
+    assert "error" in resp
+    assert "$ 2.800.000" in resp["error"] and "$ 3.200.000" in resp["error"]
+    assert "Preguntale al usuario" in resp["error"]
+    assert res["configuracion"]["presupuesto"] == 1_500_000   # no pisa el armado previo si falla
+
+
+@pytest.mark.parametrize("texto_invalido, palabra_clave", [
+    ("USD 1000", "dólares"),
+    ("1000 dólares", "dólares"),
+    ("20", "Preguntale al usuario"),
+    ("gama media", "Preguntale al usuario"),
+])
+def test_iniciar_configuracion_rechaza_dolares_y_textos_sin_monto(cliente, texto_invalido, palabra_clave):
+    res, resp = _iniciar_con_modelo(cliente, texto_invalido)
+    assert "error" in resp and palabra_clave in resp["error"]
+    assert not res.get("configuracion")

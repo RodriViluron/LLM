@@ -394,6 +394,40 @@
   font-size: 12px;
 }
 
+.reglas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.confirmar {
+  height: 38px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--brand-blue);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.confirmar:hover:not(:disabled) {
+  background: var(--brand-blue-hover);
+}
+
+.confirmar:disabled {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  cursor: not-allowed;
+}
+
 @media (max-width: 860px) {
   .cuerpo {
     grid-template-columns: minmax(0, 1fr);

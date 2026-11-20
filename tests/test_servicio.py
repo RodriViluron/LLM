@@ -264,3 +264,29 @@ def test_siguiente_pregunta_armado_no_emite_estado_ni_pregunta(cliente):
     assert [e["tipo"] for e in eventos] == ["inicio", "pregunta", "fin"]
     assert eventos[1] == {"tipo": "pregunta", "visibilidad": "mostrar", "pregunta": "¿Para qué la vas a usar?",
                           "opciones": ["Oficina o estudio", "Jugar"]}
+
+
+def test_buscar_pieza_armado_emite_estado_y_productos(cliente):
+    from mcp_tienda.armado.entrevista import siguiente
+
+    perfil = siguiente({"uso": "Oficina o estudio", "multitarea": "Lo normal", "archivos": "No tanto", "mejora": "No"})[
+        "perfil"
+    ]
+    memoria = InMemorySaver()
+    agente = crear_agente(
+        modelo=modelo_con(llamada("buscar_pieza_armado", {"lugar": "cpu"}, "bp1"), texto("Te recomiendo este CPU.")),
+        cliente=cliente,
+        checkpointer=memoria,
+    )
+    config = {"configurable": {"thread_id": "conv-pieza-armado"}}
+    agente.update_state(config, {"entrevista": {"respuestas": {}, "pendiente": None, "perfil": perfil}})
+    http = TestClient(crear_app(agente))
+
+    eventos = _chat(http, "Buscá un procesador", "conv-pieza-armado")
+    assert [e["tipo"] for e in eventos] == ["inicio", "estado", "productos", "texto", "fin"]
+    assert eventos[1] == {"tipo": "estado", "visibilidad": "opcional", "paso": "buscar_pieza_armado",
+                          "texto": "Buscando piezas para el armado…"}
+    assert eventos[2]["productos"]
+    assert all(p["categoria"] == "cpu" for p in eventos[2]["productos"])
+    assert set(eventos[2]["productos"][0]) == {"codigo", "nombre", "categoria", "marca", "precio", "stock",
+                                               "imagen", "url", "atributos"}
