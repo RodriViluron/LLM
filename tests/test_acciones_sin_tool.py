@@ -117,5 +117,5 @@ def test_reintenta_una_sola_vez(cliente, tmp_path):
 def test_sin_afirmacion_no_hay_reintento(cliente, tmp_path):
     modelo = ModeloQueAnota(messages=iter([texto("¿Qué presupuesto tenés?")]))
     agente = crear_agente(modelo, cliente, crear_checkpointer(tmp_path / "memoria.db"))
-    list(stream_turn("Quiero una PC", new_thread(), 1, agente))
+    list(stream_turn("Busco un monitor", new_thread(), 1, agente))
     assert len(modelo.recibidos) == 1

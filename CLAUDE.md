@@ -24,7 +24,7 @@ Las cuatro capacidades conviven en el mismo chat.
    - **RAG** sobre la documentación propia, para ubicar esos requisitos en una gama (baja, media, alta o premium) y en un perfil de uso (oficina, estudio, juegos, diseño, edición).
 4. **Explicar para elegir bien.** Responde qué es una gama media, qué características importan para cada actividad y cómo elegir productos (UPS, cables, cámaras, discos, monitores). Todo sale de la documentación del RAG, sin inventar. No hay tutorial de ensamblado: la tienda entrega la PC armada.
 
-**Resultado tangible:** no hay PDF (no usamos `create_pdf`). La configuración se muestra **en la interfaz** (en la demo, Streamlit; en el chat web de la tienda, la misma información) como tarjetas, una por componente, con código, nombre, precio, stock y atributos clave. Además se ven el reporte de compatibilidad y el total. Cada tarjeta tiene un botón **Cambiar** y la configuración entera tiene un botón **Confirmar pedido**.
+**Resultado tangible:** al confirmar, el código genera un PDF con el presupuesto de la PC confirmada (`presupuesto_pdf.py`); sigue sin existir ninguna tool del agente para el PDF ni para confirmar. La configuración se muestra **en la interfaz** (en la demo, Streamlit; en el chat web de la tienda, la misma información) como tarjetas, una por componente, con código, nombre, precio, stock y atributos clave. Además se ven el reporte de compatibilidad y el total. Cada tarjeta tiene un botón **Cambiar** y la configuración entera tiene un botón **Confirmar pedido**.
 
 **Quién confirma:** el pedido lo confirma **siempre** el usuario con un clic. El agente nunca confirma por su cuenta. «Confirmar» significa agregar al carrito o enviar el pedido al vendedor. Quedan fuera de alcance los pagos, la gestión posterior del pedido, el soporte técnico, el ensamblado (la tienda entrega la PC armada) y todo lo que no sea elegir productos de la tienda.
 
@@ -44,9 +44,9 @@ Reglas que salen de esto:
 ## Arquitectura
 
 ```
-[app.py — Streamlit, la demo: chat con razonamiento y tools a la vista + panel "Armá tu PC" (tarjetas, Cambiar, Confirmar)]
-[servicio.py — servicio HTTP con eventos (SSE) → chat web de la tienda: respuesta, estados cortos, botones, tarjetas]
-        │  stream_turn() para el chat · update_state() para los clics
+[app.py — Streamlit, la demo: chat con razonamiento y tools a la vista + panel "Armá tu PC" (tarjetas, Cambiar, Confirmar + PDF)]
+[servicio.py — FastAPI: POST /chat (SSE), GET /conversaciones/{id}, GET .../armado/alternativas, POST .../armado/cambiar, POST .../armado/confirmar (PDF)]
+        │  stream_turn() para el chat · update_state() + armado.py para los clics · presupuesto_pdf.py para el PDF
         ▼
 [agente.py — create_agent + EstadoTienda + SqliteSaver (memoria.db)] ── model.py: get_model(opcion) → LLM local o Gemini
    ├─ tools.py (tools locales)
@@ -172,6 +172,7 @@ La base es la del ejemplo de la cátedra; lo nuestro se suma.
 ├─ model.py          get_model() y get_embeddings()
 ├─ chat_lmstudio.py  cliente de LM Studio que conserva el razonamiento
 ├─ armado.py         operaciones sobre la configuración (las usan el chat y los clics)
+├─ presupuesto_pdf.py  generación del presupuesto en PDF al confirmar (fpdf2)
 ├─ rag/              store.py, ingest.py, docs/ (nuestros documentos)
 ├─ skills/           armado_pc.md
 ├─ mcp_tienda/       servidor.py, cliente.py, catálogo, modelos, armado/ (reglas), ingesta/ (carga del catálogo)

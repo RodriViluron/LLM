@@ -14,6 +14,22 @@ Para evitar alucinaciones en decisiones críticas, este proyecto no le permite a
 * **Hardware legacy y exclusiones:** Los componentes antiguos se trajeron a la escala actual mediante factorizaciones y regresiones lineales (R² ≈ 0.98). Si un procesador o placa no tiene datos oficiales, se excluye de la tabla y el sistema responde «sin datos», bloqueando cualquier intento del LLM de adivinar por nombre o antigüedad.
 * **Trazabilidad:** Toda la matemática detrás de las estimaciones y el error típico está documentada y reproducible mediante el script `construir_tabla_gamas.py` y el archivo `gamas_trazabilidad.csv`.
 
+## Diagrama del flujo del agente
+
+![Diagrama del flujo del agente](docs/diagrama_flujo.svg)
+
+Los números siguen un pedido como «Quiero armar una PC para jugar al Wukong en 1080p»:
+
+1. El cliente escribe en el chat web. `servicio.py` lo manda al agente y devuelve eventos: la respuesta, los botones y estados cortos, sin el razonamiento.
+2. El middleware ve que nombró un juego: el modelo busca primero sus requisitos (`buscar_especificaciones_web`) y el código los ubica en una gama con la tabla de CPU y GPU.
+3. La entrevista la sigue el código. Lo que el pedido ya dice (uso, pantalla) no se pregunta. Cada pregunta sale con sus botones; un clic avanza sin llamar al modelo.
+4. Con el perfil listo, el modelo propone: elige piezas entre los candidatos que devuelven las tools de armado.
+5. El código verifica: el servidor MCP busca en el catálogo y aplica las reglas de compatibilidad. Precios, stock y total nunca los calcula el LLM.
+6. La configuración queda en el estado de la conversación (`memoria.db`) y viaja a la pantalla como tarjetas, con el total y el reporte de compatibilidad.
+7. Los botones Cambiar y Confirmar pedido van directo a `servicio.py` y `armado.py`, sin pasar por el modelo. Confirmar genera el PDF con el presupuesto.
+
+Verde: decide el código. Naranja: modelos de lenguaje. Azul: datos y documentos.
+
 ## Requisitos
 
 - Python 3.11 o superior

@@ -75,7 +75,7 @@ def test_dos_llamadas_a_la_entrevista_en_el_mismo_paso_no_rompen_el_turno(client
         {"name": SIGUIENTE, "args": {}, "id": "d1"},
         {"name": SIGUIENTE, "args": {"respuesta": "Oficina o estudio"}, "id": "d2"}])
     agente = crear_agente(modelo_con(doble, texto("ok")), cliente)
-    resultado = agente.invoke({"messages": [("user", "PC para oficina")]})
+    resultado = agente.invoke({"messages": [("user", "Necesito ayuda con una compra")]})
     assert resultado["entrevista"]["pendiente"] == "uso"
 
 
@@ -119,7 +119,7 @@ def test_un_codigo_de_buscar_pieza_armado_se_puede_agregar(cliente):
     agente = crear_agente(modelo_con(
         llamada("buscar_pieza_armado", {"lugar": "cpu"}, "b1"),
         llamada("agregar_o_reemplazar_componente", {"lugar": "cpu", "codigo": codigo}, "a1"),
-        texto("ok")), cliente)
+        texto("ok"), texto("ok")), cliente)
     resultado = agente.invoke({"messages": [("user", "PC para oficina")], **estado_inicial})
     assert resultado["configuracion"]["componentes"]["cpu"]["codigo"] == codigo
 

@@ -19,16 +19,19 @@ Tres reglas que ordenan todo:
 
 1. **El navegador nunca habla directo con el agente.** Siempre pasa por NestJS, que agrega la clave del servicio y aplica sus límites.
 2. **El agente solo lee.** No crea carritos, no toca «Armá tu PC» y no envía pedidos. Devuelve códigos y cantidades.
-3. **Confirmar es del usuario.** El chat tiene un botón «Cargar en Armá tu PC»; al tocarlo, el componente le avisa a la página y la página hace la carga con la sesión del usuario.
+3. **Confirmar y cambiar son clics del usuario.** Cada componente del armado tiene botón **Cambiar** (busca alternativas compatibles y reemplaza sin pasar por el modelo), y el armado entero tiene botón **Confirmar pedido** (revalida y descarga el presupuesto en PDF). Si se pasa `onConfirmarArmado`, también recibe el pedido y el armado para cargarlo en la página.
 
 ## 2. El servicio del agente
 
-Se levanta aparte (ver sección 7). Expone tres rutas:
+Se levanta aparte (ver sección 7). Expone estas rutas:
 
 | Ruta | Para qué |
 |---|---|
 | `POST /chat` | Un turno de conversación. Responde un flujo `text/event-stream` |
 | `GET /conversaciones/{id}` | Historial visible y armado actual, para reabrir el chat |
+| `GET /conversaciones/{id}/armado/alternativas?lugar=…` | Alternativas compatibles y con stock para ese lugar del armado |
+| `POST /conversaciones/{id}/armado/cambiar` | Reemplaza un componente (`{lugar, codigo}`), guarda el estado y devuelve el armado nuevo |
+| `POST /conversaciones/{id}/armado/confirmar` | Revalida el armado, registra el pedido y devuelve el presupuesto en PDF (`409` si hay motivos) |
 | `GET /salud` | Prueba de vida. Responde `{"estado": "ok"}` |
 
 La documentación interactiva queda en `/docs` del servicio (la genera FastAPI).
@@ -70,6 +73,43 @@ La documentación interactiva queda en `/docs` del servicio (la genera FastAPI).
 ```
 
 Una conversación que no existe devuelve `turnos: []` y `armado: null` (no es un error).
+
+### `GET /conversaciones/{id}/armado/alternativas?lugar=…`
+
+Devuelve las alternativas compatibles con el resto del armado actual y con stock para ese lugar (`cpu`, `motherboard`, `ram`, `gpu`, `almacenamiento`, `almacenamiento_extra`, `fuente`, `gabinete`, `cooler`):
+
+```jsonc
+{
+  "lugar": "gpu",
+  "alternativas": [
+    { "codigo": "GPU005", "nombre": "…", "categoria": "gpu", "marca": "MSI", "precio": 650000, "stock": 3, "imagen": "…", "url": null, "atributos": { "vram_gb": 8 } }
+  ]
+}
+```
+
+- `400`: `lugar` inválido o identificador de conversación inválido.
+- `404`: todavía no hay armado en esa conversación.
+
+### `POST /conversaciones/{id}/armado/cambiar`
+
+```jsonc
+// Pedido
+{ "lugar": "gpu", "codigo": "GPU005" }
+```
+
+Reemplaza la pieza con `armado.poner_componente` (sin pasar por el modelo), persiste la configuración con `update_state` y devuelve `{"armado": { ... }}` con la misma forma que el evento SSE `armado` y la versión incrementada.
+
+- `400`: el código no existe, no corresponde a esa categoría o falló la validación de la tienda (el detalle viene en `detail`).
+- `404`: no hay armado en esa conversación.
+- `409`: la conversación tiene un turno en curso.
+
+### `POST /conversaciones/{id}/armado/confirmar`
+
+Revalida precios, stock y compatibilidad con `armado.confirmar_pedido`:
+
+- `200`: devuelve el presupuesto en PDF (`Content-Type: application/pdf`, `Content-Disposition: attachment; filename=presupuesto-<referencia>.pdf`, cabecera `X-Pedido-Referencia`).
+- `409`: el armado no se puede confirmar (`detail.motivos` trae los motivos y `detail.armado` el armado fresco si cambió algo, por ejemplo el precio).
+- `404`: no hay armado en esa conversación.
 
 ## 3. Los eventos: qué mostrar y qué no
 
@@ -176,6 +216,10 @@ Reglas para dibujarla:
 
 La compatibilidad, los precios y el total los calcula el servicio con reglas fijas. El modelo de lenguaje no decide ninguna de esas tres cosas.
 
+**Botones en la tarjeta del armado:**
+- **Cambiar** (por pieza): pide `GET /conversaciones/{id}/armado/alternativas?lugar=…`, muestra nombre, precio y stock de cada alternativa compatible, y al elegir una muestra `«Cambiando pieza…»`, llama `POST /armado/cambiar` y actualiza la tarjeta + `onArmado`.
+- **Confirmar pedido**: muestra `«Generando presupuesto…»`, llama `POST /conversaciones/{id}/armado/confirmar` y descarga el PDF (`presupuesto-<referencia>.pdf`). Si vuelve `409`, muestra los motivos sin confirmar.
+
 ## 4. El puente en NestJS
 
 Es un controlador que reenvía el pedido y devuelve el flujo sin acumularlo. Lo que tiene que hacer:
@@ -225,6 +269,41 @@ export class AgenteController {
       headers: { 'X-Agente-Clave': process.env.AGENTE_CLAVE ?? '' },
     });
     return delAgente.json();
+  }
+
+  @Get('conversaciones/:id/armado/alternativas')
+  async alternativas(@Param('id') id: string, @Query('lugar') lugar: string) {
+    const delAgente = await fetch(
+      `${process.env.AGENTE_URL}/conversaciones/${encodeURIComponent(id)}/armado/alternativas?lugar=${encodeURIComponent(lugar ?? '')}`,
+      { headers: { 'X-Agente-Clave': process.env.AGENTE_CLAVE ?? '' } },
+    );
+    return delAgente.json();
+  }
+
+  @Post('conversaciones/:id/armado/cambiar')
+  async cambiar(@Param('id') id: string, @Body() cuerpo: { lugar: string; codigo: string }) {
+    const delAgente = await fetch(`${process.env.AGENTE_URL}/conversaciones/${encodeURIComponent(id)}/armado/cambiar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Agente-Clave': process.env.AGENTE_CLAVE ?? '' },
+      body: JSON.stringify(cuerpo),
+    });
+    return delAgente.json();
+  }
+
+  @Post('conversaciones/:id/armado/confirmar')
+  async confirmar(@Param('id') id: string, @Res() respuesta: Response) {
+    const delAgente = await fetch(`${process.env.AGENTE_URL}/conversaciones/${encodeURIComponent(id)}/armado/confirmar`, {
+      method: 'POST',
+      headers: { 'X-Agente-Clave': process.env.AGENTE_CLAVE ?? '' },
+    });
+    if (!delAgente.ok) {
+      return respuesta.status(delAgente.status).json(await delAgente.json());
+    }
+    respuesta.status(200).set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': delAgente.headers.get('content-disposition') ?? 'attachment; filename=presupuesto.pdf',
+    });
+    return respuesta.send(Buffer.from(await delAgente.arrayBuffer()));
   }
 }
 ```
@@ -279,14 +358,16 @@ Es un componente de cliente (`"use client"`). Si el layout es de servidor, alcan
 
 | Propiedad | Por defecto | Para qué |
 |---|---|---|
-| `endpoint` | `/api/agente` | Ruta del puente. Tiene que exponer `/chat` y `/conversaciones/:id` |
-| `onConfirmarArmado` | — | El usuario tocó «Cargar en Armá tu PC». Recibe `pedido` (SKU y cantidades) y el `armado` completo. **Sin esta función el botón no aparece** |
+| `endpoint` | `/api/agente` | Ruta del puente. Tiene que exponer `/chat`, `/conversaciones/:id` y `/conversaciones/:id/armado/{alternativas,cambiar,confirmar}` |
+| `onConfirmarArmado` | — | Callback opcional tras confirmar: además de descargar el PDF desde `/armado/confirmar`, recibe `pedido` (SKU y cantidades) y `armado` |
 | `onVerProducto` | — | El usuario tocó una tarjeta de producto. Sin esta función las tarjetas no son clicables |
-| `onArmado` | — | El armado de la conversación cambió: el agente puso o cambió una pieza, se recuperó la conversación o se empezó una nueva (llega `null`). Sirve para mostrar el armado en vivo, por ejemplo en «Armá tu PC». No confirma nada. La página de prueba lo usa en `components/vista-armado/` |
+| `onArmado` | — | El armado de la conversación cambió: el agente puso o cambió una pieza, el usuario usó «Cambiar», se recuperó la conversación o se empezó una nueva (llega `null`). Sirve para mostrar el armado en vivo, por ejemplo en «Armá tu PC». La página de prueba lo usa en `components/vista-armado/` |
+| `onConversacionId` | — | Avisa el identificador de la conversación activa (o `null` al iniciar una nueva) |
+| `armadoExterno` | — | Permite reflejar en el chat un cambio hecho desde fuera del componente |
 | `titulo`, `subtitulo` | «Asistente de compra», «Todo Computación» | Cabecera del panel |
 | `sugerencias` | tres ejemplos | Pedidos de ejemplo con el chat vacío |
 | `mostrarEstados` | `true` | Con `false`, en vez de «Buscando productos…» muestra solo «Escribiendo…» |
-| `textoConfirmar` | «Cargar en Armá tu PC» | Texto del botón del armado |
+| `textoConfirmar` | «Confirmar pedido» | Texto del botón de confirmación del armado |
 | `abiertoInicial` | `false` | Arranca con el panel abierto |
 | `modoDesarrollo` | Según `NEXT_PUBLIC_MODO_DESARROLLO` (`1` o `true`) | Solo desarrollo: muestra el selector de modelo y envía `modelo` en `POST /chat`. En producción no aparece |
 | `modelos` | `Local` y `Gemini` | Opciones del selector cuando `modoDesarrollo` está activo |

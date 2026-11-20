@@ -114,3 +114,147 @@ Commits agregados luego de la revisión y actualización de documentación (`4e9
 
 - **32 suites de Python (`uv run pytest -q -m "not ollama and not embeddings and not tavily" tests/<archivo>.py`):** **470 passed, 0 failed** (`3 deselected` por marcadores, `1 skipped` en `test_contrato_fuente.py`). Incluyen los nuevos tests en `test_servicio.py` (`18`), `test_app_botones.py` (`4`), `test_limpieza_historial.py` (`7`), `test_model.py` (`12`) y `test_rag_secciones.py` (`11`).
 - **Web (`npm --prefix web run typecheck` y `npm --prefix web run build`):** ambos pasaron sin errores (`tsc --noEmit` y `next build` compilado y exportado con éxito).
+
+---
+
+## Paso 12: entrevista conducida por código (`#26`)
+
+Trabajo realizado sin supervisión en la rama **`paso-12-entrevista-por-codigo`** (partiendo de `paso-11-otros-problemas` `d9e0d1d`), sin modificar `web/`, `.env`, `TURNOS_MAXIMOS=8` ni pasar el estado de `#26` a `[x]`.
+
+### Commits del paso 12
+
+- `9470f49` — Paso 12 (`#26`): conducir la entrevista del armado por código sin pasar opciones por el modelo (`agente.py`, `tools.py`, `mcp_tienda/armado/montos.py`, `mcp_tienda/armado/requisitos.py`, `tests/test_entrevista_por_codigo.py` y ajustes en tests previos).
+- Commit siguiente de cierre — Guardar `evaluacion/resultados/armado_con_entrevista_paso12.json` y actualizar `PROBLEMAS_DETECTADOS.md` y `RESUMEN_NOCHE.md`.
+
+### Suites de tests (paso 12)
+
+- **33 suites completas de Python (`uv run pytest -q -m "not ollama and not embeddings and not tavily" tests/<archivo>.py` de a una):** **479 passed, 0 failed** (`3 deselected`, `1 skipped` en `test_contrato_fuente.py`).
+- **Suite nueva `tests/test_entrevista_por_codigo.py`:** `9 passed` (avance con 0 llamadas al modelo falso, texto libre no registra opción, entrevista completa guarda perfil y avisa al modelo, argumentos inventados ignorados, presupuesto en frases con `1080p`/`4K` y detección de ambiguo, requisitos `sin datos` sin preguntar gama).
+- **Suites clave verificadas:** `test_entrevista_tools.py` (`12 passed`), `test_entrevista.py` (`22 passed`), `test_servicio.py` (`18 passed`), `test_app_botones.py` (`4 passed`), `test_requisitos.py` (`32 passed`), `test_model.py` (`12 passed`).
+
+### Medición única (`evaluacion/resultados/armado_con_entrevista_paso12.json`)
+
+Corrida `uv run python -m evaluacion.armado_con_entrevista --semillas 1` (`qwen3:4b`, `MODEL_NUM_CTX=8192`, Ollama `0.40.16`, `datos/catalogo_real.sqlite`):
+
+| Métrica | Paso 10 cierre (9 corridas) | Paso 10 cierre (semilla 1) | Paso 12 (semilla 1) |
+|---|---|---|---|
+| Entrevista completa | `1/9` | `0/3` | **`3/3`** |
+| Perfil correcto | `1/9` | `0/3` | **`3/3`** |
+| Preguntas de gama fuera de entrevista | `19` | `9` | **`0`** |
+| Armados completos | `0/9` | `0/3` | **`2/3`** |
+| Compatibles | `0/9` | `0/3` | **`2/3`** |
+| Se pueden confirmar | `0/9` | `0/3` | **`2/3`** |
+| Dentro del presupuesto | `5/9` | `1/3` | **`3/3`** |
+| Con críticas sin datos | `0/9` | `0/3` | **`0/3`** |
+| Afirmaciones sin tool | `0` | `0` | **`0`** |
+| Llamadas promedio | `15,3` | `14,3` | **`22,7`** |
+| Llamadas con error | `15` | `5` | **`3`** |
+| Tiempo promedio | `4,7 min` | `4,1 min` | **`3,1 min`** |
+
+**Turnos por etapa (`TURNOS_MAXIMOS=8`):**
+- **Fortnite 1080p** (`Tengo 2.800.000 y prefiero Intel`): 8 turnos totales — 6 preguntas de entrevista (turnos 1–6), armado completo y compatible de 7 piezas en turno 7 (`$ 1.677.300 <= $ 2.800.000`, `confirmar=True`, `0` errores) y cierre en turno 8 (`208,4 s`).
+- **Oficina** (`Tengo un millón`): 5 turnos totales — 4 preguntas de entrevista (turnos 1–4); en turno 5 inició configuración con `$ 1.000.000` y buscó `cpu`, pero preguntó `"¿Prefieres Intel o AMD?"` (el simulador no responde preferencia de marca y cerró sin agregar piezas, `0` errores, `34,7 s`).
+- **Edición de video 4K** (`Tengo 5.500.000`): 8 turnos totales — 5 preguntas de entrevista (turnos 1–5), armado compatible y confirmable de 6 piezas obligatorias en turno 6 (`$ 2.050.200 <= $ 5.500.000`, `confirmar=True`, `3` errores iniciales de códigos inventados frenados por `codigo_visto`) y cierre en turnos 7–8 (`313,7 s`). *Observación:* eligió CPU con video integrado (`R7870G`), por lo que quedó `confirmar=True`, pero omitió GPU dedicada, segundo disco (`almacenamiento_extra`) y `cantidad=2` en RAM (puso 16 GB en lugar de 32 GB).
+
+### Qué probar a mano en la app (paso 12)
+
+1. **Entrevista con botones de punta a punta:** pedir «Armame una PC para jugar Fortnite en 1080p. Tengo 2.800.000 y prefiero Intel», hacer clic en todas las opciones y comprobar que avanza sin demoras en cada botón, arma al final con Intel y **no vuelve a preguntar gama ni presupuesto**.
+2. **Pregunta fuera de opción en mitad de la entrevista:** ante una pregunta con botones (p. ej. monitor), escribir texto libre («¿Qué diferencia hay entre 1080p y 1440p?»), comprobar que el asistente responde la duda y permite seguir la entrevista.
+3. **Monto ambiguo o en dólares:** probar «Quiero armar una PC entre 1 y 2 millones» (o en dólares) y confirmar que completa la entrevista y luego pregunta cuál presupuesto usar sin adivinar.
+4. **Edición de video / 4K:** verificar en una conversación interactiva si al terminar la entrevista agrega GPU dedicada, `cantidad=2` en RAM (32 GB) y segundo disco, o si conviene reforzarlo en el aviso del perfil o skill.
+
+---
+
+## Paso 13: armado completo controlado por código (`#26`, parte 2)
+
+Trabajo realizado sin supervisión en la rama **`paso-13-armado-completo`** (partiendo de `paso-12-entrevista-por-codigo` `b71b853`), sin modificar `web/`, `.env`, `TURNOS_MAXIMOS=8` ni pasar el estado de `#26` a `[x]`.
+
+### Commits del paso 13
+
+- `e82ec61` — Paso 13 (`#26`): controlar por código las piezas que exige el perfil y evitar que pregunte marca (`mcp_tienda/armado/entrevista.py`, `tools.py`, `agente.py`, `skills/armado_pc.md`, `evaluacion/armado_con_entrevista.py`, `tests/test_armado_completo.py` y ajustes mínimos en tests previos).
+- Commit siguiente de cierre — Documentar medición y cierre en `PROBLEMAS_DETECTADOS.md` y `RESUMEN_NOCHE.md`.
+
+### Suites de tests (paso 13)
+
+- **34 suites completas de Python (`uv run pytest -q -m "not ollama and not embeddings and not tavily" tests/<archivo>.py` de a una, cubriendo también `b71b853`):** **490 passed, 0 failed** (`3 deselected`, `1 skipped` en `test_contrato_fuente.py`).
+- **Suite nueva `tests/test_armado_completo.py`:** `9 passed` (`piezas_faltantes`, GPU si falta o sin video integrado, RAM automática con `cantidad=2` y rechazo si supera 2 módulos, `estado_perfil` solo en texto y no en `artifact`, reintento único de `armado_completo` recordando preferencia, sin bloquear presupuesto ni presupuesto insuficiente, regla 11 y skill).
+- **Suites focalizadas verificadas:** `test_entrevista_por_codigo.py` (`11 passed`), `test_entrevista_tools.py` (`12 passed`), `test_armado.py` (`22 passed`), `test_servicio.py` (`18 passed`), `test_app_botones.py` (`4 passed`), `test_model.py` (`12 passed`), `test_explicaciones_rag.py` (`16 passed`).
+
+### Medición única (`evaluacion/resultados/armado_con_entrevista_paso13.json`)
+
+Corrida `uv run python -m evaluacion.armado_con_entrevista --semillas 1` (`qwen3:4b`, `MODEL_NUM_CTX=8192`, Ollama `0.40.16`, `datos/catalogo_real.sqlite`):
+
+| Métrica (semilla 1, 3 corridas) | Paso 12 | Paso 13 |
+|---|---|---|
+| Entrevista completa | `3/3` | **`3/3`** |
+| Perfil correcto | `3/3` | **`3/3`** |
+| Preguntas de gama fuera de entrevista | `0` | **`0`** |
+| Armados completos | `2/3` | **`2/3`** |
+| Cumplen el perfil completo | `1/3` *(solo Fortnite)* | **`2/3`** *(Oficina + Edición 4K)* |
+| Compatibles (`se_pueden_confirmar`) | `2/3` | **`2/3`** |
+| Dentro del presupuesto | `3/3` | **`3/3`** |
+| Con críticas sin datos | `0/3` | **`0/3`** |
+| Afirmaciones sin tool | `0` | **`0`** |
+| Llamadas promedio | `22,7` | `22,7` |
+| Llamadas con error | `3` | **`0`** |
+| Tiempo promedio | `3,1 min` | `5,0 min` |
+
+**Turnos por etapa (`TURNOS_MAXIMOS=8`) y piezas del perfil:**
+- **Oficina (`Tengo un millón`, `oficina`):** `8` turnos (`4` entrevista + `4` armado) — **`6` piezas**, `faltan=[]`, **`cumple_perfil=True`**, `ram_total_gb=8`, `tiene_gpu=False` (CPU con integrado `IG5900`), `tiene_segundo_disco=False`, `compatible`, `confirmar=True`, `$ 705.200 <= $ 1.000.000`, `22` llamadas (`0` error), `220,6 s`. Superó el bloqueo de `"¿Prefieres Intel o AMD?"` del paso 12.
+- **Edición de video 4K (`Tengo 5.500.000`, `edicion_video`):** `7` turnos (`5` entrevista + `2` armado) — **`8` piezas**, `faltan=[]`, **`cumple_perfil=True`**, **`ram_total_gb=32`** (`162X8G` ×2 automática), **`tiene_gpu=True`** (`56TI3F`), **`tiene_segundo_disco=True`** (`WDB1TB`), `compatible`, `confirmar=True`, `$ 3.461.550 <= $ 5.500.000`, `28` llamadas (`0` error), `358,4 s`.
+- **Fortnite 1080p (`Tengo 2.800.000 y prefiero Intel`, `juegos_1080p`):** `7` turnos (`6` entrevista + `1` armado) — `0` piezas, `cumple_perfil=False`, `18` llamadas (`0` error), `317,2 s`. Buscó CPU (`12400F`) y enseguida buscó `motherboard` con `texto="LGA1700"` (`0` resultados porque el catálogo usa `"1700"`) en lugar de agregar primero la CPU para activar `compatible_con`, agotando el turno en texto sin agregar componentes.
+
+### Qué probar a mano en la app (paso 13)
+
+1. **Oficina sin preferencia de marca:** pedir «Necesito una PC para oficina: planillas y mail. Tengo un millón», responder los botones y verificar que arma las **6 piezas compatibles** sin frenar a preguntar Intel o AMD.
+2. **Edición 4K completo según perfil:** pedir «Quiero una PC para editar video en 4K, con un disco rápido y otro grande. Tengo 5.500.000», responder los botones y comprobar en el panel derecho que quedan cargados **RAM ×2 (32 GB)**, **GPU dedicada** y **segundo disco (almacenamiento_extra)** dentro del presupuesto.
+3. **Fortnite 1080p con preferencia Intel:** probar «Armame una PC para jugar Fortnite en 1080p. Tengo 2.800.000 y prefiero Intel» y verificar si agrega el procesador Intel primero y luego la motherboard compatible (o si vuelve a buscar `"LGA1700"` por texto).
+4. **Botón Cambiar después del armado:** tras armar sin preguntar marca, probar cambiar procesador o gabinete desde el botón **Cambiar** del panel derecho.
+
+---
+
+## Paso 14: Cambiar y Confirmar pedido con PDF en el chat web (`#34`) y medición (`#26`)
+
+Trabajo realizado sin supervisión en la rama **`paso-14-cambiar-confirmar`** (partiendo de `paso-13-armado-completo` `d2436a1`), sin tocar `rag/docs/`, tabla de gamas, `sin_socket`, `piezas_faltantes`, `TURNOS_MAXIMOS=8` ni `.env`.
+
+### Commits del paso 14
+
+- `65eca6e` — Paso 14 (`#34`): endpoints Cambiar/Confirmar, presupuesto en PDF con `fpdf2` y descarga en Streamlit (`pyproject.toml`, `uv.lock`, `presupuesto_pdf.py`, `servicio.py`, `app.py`, `tests/test_presupuesto_pdf.py`, `tests/test_servicio.py`, `tests/test_app.py`).
+- `6d38f66` — Paso 14 (`#34`): botones **Cambiar** y **Confirmar pedido** con PDF en el chat web y docs (`web/app/api/agente/conversaciones/[id]/armado/{alternativas,cambiar,confirmar}/route.ts`, `web/components/chat-agente/`, `web/components/vista-armado/`, `web/app/page.tsx`, `docs/GUIA_INTEGRACION.md`, `CLAUDE.md`).
+- Commit siguiente de cierre — Registrar cierre de `#34`, medición `#26` y resumen en `PROBLEMAS_DETECTADOS.md` y `RESUMEN_NOCHE.md`.
+
+### Suites de tests y build web (paso 14)
+
+- **Web (`web/`):** `npm --prefix web run typecheck` y `npm --prefix web run build` — **OK** (sin errores; compiladas las 3 nuevas rutas API `/api/agente/conversaciones/[id]/armado/{alternativas,cambiar,confirmar}`).
+- **35 suites completas de Python (`uv run pytest -q -m "not ollama and not embeddings and not tavily" tests/<archivo>.py` de a una):** **503 passed, 0 failed** (`3 deselected`, `1 skipped` en `test_contrato_fuente.py`).
+- **Suites nuevas / modificadas en este paso:** `test_presupuesto_pdf.py` (`1 passed`), `test_servicio.py` (`21 passed`), `test_app.py` (`10 passed`), `test_armado_completo.py` (`18 passed`, incluye tests de `d2436a1`), `test_web.py` (`8 passed, 1 deselected`), `test_app_botones.py` (`4 passed`).
+
+### Medición única (`evaluacion/resultados/armado_con_entrevista_paso14.json`)
+
+Corrida `uv run python -m evaluacion.armado_con_entrevista --semillas 1` (`qwen3:4b`, `MODEL_NUM_CTX=8192`, Ollama `0.40.16`, `datos/catalogo_real.sqlite`):
+
+| Métrica (semilla 1, 3 corridas) | Paso 13 | Paso 14 *(sobre `d2436a1`)* |
+|---|---|---|
+| Entrevista completa | `3/3` | **`3/3`** |
+| Perfil correcto | `3/3` | **`3/3`** |
+| Preguntas de gama fuera de entrevista | `0` | **`0`** |
+| Armados completos | `2/3` | **`3/3`** |
+| Cumplen el perfil completo | `2/3` | **`3/3`** |
+| Compatibles (`se_pueden_confirmar`) | `2/3` | **`3/3`** |
+| Dentro del presupuesto | `3/3` | **`3/3`** |
+| Con críticas sin datos | `0/3` | **`0/3`** |
+| Afirmaciones sin tool | `0` | **`0`** |
+| Llamadas promedio | `22,7` | `26,7` |
+| Llamadas con error | `0` | **`0`** |
+| Tiempo promedio | `5,0 min` | **`4,2 min`** |
+
+**Turnos por etapa (`TURNOS_MAXIMOS=8`) y detalle por corrida:**
+- **Fortnite 1080p (`Tengo 2.800.000 y prefiero Intel`, `juegos_1080p`):** `7` turnos (`6` entrevista + `1` armado) — **`7` piezas**, `faltan=[]`, **`cumple_perfil=True`**, `ram_total_gb=16` (`832BLK` ×2), `tiene_gpu=True` (`6G3050`), `tiene_segundo_disco=False`, `compatible`, `confirmar=True`, **`$ 1.678.300 <= $ 2.800.000`**, `28` llamadas (`0` error), `242,8 s`. El arreglo de `d2436a1` permitió agregar la CPU Intel `10400F` y luego la motherboard compatible `H47MDS` sin quedar bloqueado en `"LGA1700"`.
+- **Oficina (`Tengo un millón`, `oficina`):** `5` turnos (`4` entrevista + `1` armado) — **`6` piezas**, `faltan=[]`, **`cumple_perfil=True`**, `ram_total_gb=8`, `tiene_gpu=False`, `tiene_segundo_disco=False`, `compatible`, `confirmar=True`, **`$ 695.700 <= $ 1.000.000`**, `22` llamadas (`0` error), `172,5 s`.
+- **Edición de video 4K (`Tengo 5.500.000`, `edicion_video`):** `8` turnos (`5` entrevista + `3` armado) — **`9` piezas** (incluye cooler `AMDPER`), `faltan=[]`, **`cumple_perfil=True`**, **`ram_total_gb=32`** (`HKD432` ×2), **`tiene_gpu=True`** (`38TI3F`), **`tiene_segundo_disco=True`** (`WDB1TB`), `compatible`, `confirmar=True`, **`$ 3.555.500 <= $ 5.500.000`**, `30` llamadas (`0` error), `341,5 s`.
+
+### Qué probar a mano en la app (paso 14)
+
+1. **Armado completo y botón Cambiar en el chat web (`#34`):** pedir una PC (por ejemplo Fortnite 1080p con `$ 2.800.000`), responder los botones, esperar las tarjetas del panel derecho, hacer clic en **Cambiar** en una pieza (ej. almacenamiento o gabinete), elegir una alternativa compatible y comprobar que actualiza el componente y el total al instante sin consultar al modelo.
+2. **Botón Confirmar pedido y descarga de PDF (`#34`):** con el armado completo, hacer clic en **Confirmar pedido** y verificar que descarga `presupuesto-<referencia>.pdf` con la tabla de componentes, precios, total, compatibilidad y notas sin datos; luego probar **Cambiar** otra pieza y verificar que se limpia el estado de confirmación anterior.
+3. **Intento de confirmar incompleto y descarga en Streamlit (`#34` / `#26`):** comprobar que con armado incompleto o incompatible el backend devuelve `409` con motivos claros (en la UI el botón queda deshabilitado cuando faltan piezas o hay error de compatibilidad) y probar también **Confirmar pedido** → **Descargar presupuesto (PDF)** en Streamlit.

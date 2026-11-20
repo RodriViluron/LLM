@@ -112,7 +112,7 @@ def _iniciar_con_modelo(cliente, presupuesto, configuracion_previa=None):
                    texto("ok")),
         cliente,
     )
-    entrada = {"messages": [("user", "armame una PC")]}
+    entrada = {"messages": [("user", "iniciá el armado")]}
     if configuracion_previa is not None:
         entrada["configuracion"] = configuracion_previa
     resultado = agente.invoke(entrada)

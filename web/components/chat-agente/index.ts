@@ -1,3 +1,10 @@
 export { ChatAgente } from "./ChatAgente";
 export type { PropsChatAgente } from "./ChatAgente";
-export type { Armado, EventoAgente, ItemPedido, OpcionModelo, Producto } from "./tipos";
+export {
+  ErrorConfirmacion,
+  cambiarPiezaArmado,
+  confirmarArmadoPdf,
+  descargarBlobPdf,
+  pedirAlternativasArmado,
+} from "./armadoApi";
+export type { Armado, ConversacionGuardada, EventoAgente, ItemPedido, OpcionModelo, Producto } from "./tipos";

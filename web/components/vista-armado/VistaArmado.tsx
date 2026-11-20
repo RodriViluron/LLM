@@ -6,7 +6,18 @@
  * No es parte del chat que va a la tienda; la tienda ya tiene su propio «Armá tu PC».
  */
 
-import type { Armado, ItemPedido, Producto } from "@/components/chat-agente";
+import { useEffect, useState } from "react";
+
+import {
+  ErrorConfirmacion,
+  cambiarPiezaArmado,
+  confirmarArmadoPdf,
+  descargarBlobPdf,
+  pedirAlternativasArmado,
+  type Armado,
+  type ItemPedido,
+  type Producto,
+} from "@/components/chat-agente";
 
 import { ImagenComponente } from "./ImagenComponente";
 import estilos from "./VistaArmado.module.css";
@@ -36,25 +47,115 @@ const COMPATIBILIDAD: Record<Armado["compatibilidad"]["estado"], { texto: string
 const pesos = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 const precio = (valor: number | null) => (valor == null ? "Consultar" : pesos.format(valor));
 
-export function VistaArmado({ piezas, armado, alQuitar, alConfirmar }: {
+export function VistaArmado({
+  piezas,
+  armado,
+  endpoint = "/api/agente",
+  conversacionId = null,
+  alQuitar,
+  alActualizarArmado,
+  alConfirmar,
+}: {
   piezas: Record<string, Pieza>;
   /** El último armado del asistente, para la compatibilidad y el presupuesto (los calcula el servicio). */
   armado: Armado | null;
+  endpoint?: string;
+  conversacionId?: string | null;
   alQuitar: (lugar: string) => void;
+  alActualizarArmado?: (armado: Armado) => void;
   alConfirmar?: (pedido: ItemPedido[], armado: Armado) => void;
 }) {
+  const [editandoLugar, setEditandoLugar] = useState<string | null>(null);
+  const [cargandoAlt, setCargandoAlt] = useState(false);
+  const [alternativas, setAlternativas] = useState<Producto[]>([]);
+  const [estadoAccion, setEstadoAccion] = useState<string | null>(null);
+  const [errorAccion, setErrorAccion] = useState<string | null>(null);
+  const [motivosConfirmar, setMotivosConfirmar] = useState<string[]>([]);
+  const [avisoOk, setAvisoOk] = useState<string | null>(null);
+
+  useEffect(() => {
+    setEditandoLugar(null);
+    setAlternativas([]);
+    setErrorAccion(null);
+    setMotivosConfirmar([]);
+  }, [armado?.version]);
+
+  const abrirCambiar = async (lugar: string) => {
+    if (!conversacionId) return;
+    if (editandoLugar === lugar) {
+      setEditandoLugar(null);
+      setAlternativas([]);
+      return;
+    }
+    setEditandoLugar(lugar);
+    setCargandoAlt(true);
+    setErrorAccion(null);
+    setAvisoOk(null);
+    try {
+      setAlternativas(await pedirAlternativasArmado(endpoint, conversacionId, lugar));
+    } catch (e) {
+      setErrorAccion(e instanceof Error ? e.message : "No se pudieron buscar alternativas.");
+      setEditandoLugar(null);
+    } finally {
+      setCargandoAlt(false);
+    }
+  };
+
+  const elegirAlternativa = async (lugar: string, codigo: string) => {
+    if (!conversacionId) return;
+    setEstadoAccion("Cambiando pieza…");
+    setErrorAccion(null);
+    setAvisoOk(null);
+    setMotivosConfirmar([]);
+    try {
+      const actualizado = await cambiarPiezaArmado(endpoint, conversacionId, lugar, codigo);
+      alActualizarArmado?.(actualizado);
+      setEditandoLugar(null);
+      setAlternativas([]);
+    } catch (e) {
+      setErrorAccion(e instanceof Error ? e.message : "No se pudo cambiar la pieza.");
+    } finally {
+      setEstadoAccion(null);
+    }
+  };
+
+  const confirmarPedido = async () => {
+    if (!armado) return;
+    if (!conversacionId) {
+      alConfirmar?.(armado.pedido, armado);
+      return;
+    }
+    setEstadoAccion("Generando presupuesto…");
+    setErrorAccion(null);
+    setAvisoOk(null);
+    setMotivosConfirmar([]);
+    try {
+      const { blob, nombreArchivo, referencia } = await confirmarArmadoPdf(endpoint, conversacionId);
+      descargarBlobPdf(blob, nombreArchivo);
+      setAvisoOk(referencia ? `Presupuesto ${referencia} descargado.` : "Presupuesto descargado.");
+      alConfirmar?.(armado.pedido, armado);
+    } catch (e) {
+      if (e instanceof ErrorConfirmacion) {
+        if (e.armado) alActualizarArmado?.(e.armado);
+        setMotivosConfirmar(e.motivos.length ? e.motivos : [e.message]);
+      } else {
+        setErrorAccion(e instanceof Error ? e.message : "No se pudo confirmar el pedido.");
+      }
+    } finally {
+      setEstadoAccion(null);
+    }
+  };
+
   const elegidos = PASOS.filter((paso) => piezas[paso.lugar]);
   const actual = PASOS.findIndex((paso) => !piezas[paso.lugar]);
-  // El total de la vista es la suma de lo que se ve (precio por cantidad). El del asistente viene en `armado`.
   const total = elegidos.reduce((suma, { lugar }) => suma + (piezas[lugar].producto.precio ?? 0) * piezas[lugar].cantidad, 0);
-  // La compatibilidad la verificó el servicio sobre el armado del asistente. Si el cliente sumó piezas
-  // desde el chat, esas no pasaron por la verificación: no se dice «Compatible».
   const conPiezasDelCliente = elegidos.some(({ lugar }) => piezas[lugar].origen === "cliente");
   const compatibilidad = conPiezasDelCliente
     ? { texto: "Sin verificar: incluye piezas que elegiste en el chat", tono: estilos.duda }
     : armado ? COMPATIBILIDAD[armado.compatibilidad.estado] ?? COMPATIBILIDAD.sin_verificar : null;
   const revisionHecha = Boolean(armado?.se_puede_confirmar) && !conPiezasDelCliente;
   const excedido = armado?.presupuesto != null && total > armado.presupuesto;
+  const ocupado = Boolean(estadoAccion);
 
   return (
     <section className={estilos.vista} aria-labelledby="titulo-armado">
@@ -109,11 +210,34 @@ export function VistaArmado({ piezas, armado, alQuitar, alConfirmar }: {
                       <small>Precio</small>
                       {precio(producto.precio)}
                     </span>
+                    {conversacionId && armado && origen === "asistente" && (
+                      <button type="button" className={estilos.cambiar} disabled={ocupado}
+                        onClick={() => void abrirCambiar(lugar)}>
+                        {editandoLugar === lugar ? "Cerrar" : "Cambiar"}
+                      </button>
+                    )}
                     <button type="button" className={estilos.quitar} onClick={() => alQuitar(lugar)}
                       aria-label={`Quitar ${nombre}`}>
                       Quitar
                     </button>
                   </div>
+                  {conversacionId && editandoLugar === lugar && (
+                    <div className={estilos.selector}>
+                      {cargandoAlt ? (
+                        <p className={estilos.nota}>Buscando opciones…</p>
+                      ) : alternativas.length === 0 ? (
+                        <p className={estilos.nota}>No hay otras opciones compatibles con stock.</p>
+                      ) : (
+                        alternativas.map((alt) => (
+                          <button key={alt.codigo} type="button" className={estilos.opcionCambio} disabled={ocupado}
+                            onClick={() => void elegirAlternativa(lugar, alt.codigo)}>
+                            <span>{alt.nombre}</span>
+                            <small>{precio(alt.precio)} · {alt.stock != null && alt.stock > 0 ? `stock ${alt.stock}` : "sin stock"}</small>
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
                 </article>
               );
             })
@@ -174,11 +298,20 @@ export function VistaArmado({ piezas, armado, alQuitar, alConfirmar }: {
               Presupuesto: {precio(armado.presupuesto)}{excedido ? " — el armado lo supera" : ""}
             </p>
           )}
-          {armado && !conPiezasDelCliente && alConfirmar && (
+          {armado && !conPiezasDelCliente && (conversacionId || alConfirmar) && (
             <>
-              <button type="button" className={estilos.confirmar} disabled={!armado.se_puede_confirmar}
-                onClick={() => alConfirmar(armado.pedido, armado)}>
-                Cargar armado
+              {estadoAccion && <p className={estilos.nota}>{estadoAccion}</p>}
+              {errorAccion && <p className={`${estilos.nota} ${estilos.mal}`} role="alert">{errorAccion}</p>}
+              {avisoOk && <p className={`${estilos.nota} ${estilos.bien}`}>{avisoOk}</p>}
+              {motivosConfirmar.length > 0 && (
+                <p className={`${estilos.nota} ${estilos.mal}`} role="alert">
+                  No se pudo confirmar: {motivosConfirmar.join(" · ")}
+                </p>
+              )}
+              <button type="button" className={estilos.confirmar}
+                disabled={!armado.se_puede_confirmar || ocupado}
+                onClick={() => void confirmarPedido()}>
+                Confirmar pedido
               </button>
               {!armado.se_puede_confirmar && armado.motivos_para_no_confirmar.length > 0 && (
                 <p className={estilos.nota}>Falta para confirmar: {armado.motivos_para_no_confirmar.join(" · ")}</p>

@@ -8,7 +8,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 
 **Cómo agregar uno nuevo:** copiá una entrada, poné el próximo número y completá: *Qué se vio* (lo que viste en pantalla), *Causa* (si la sabés o la sospechás), *Dónde* (archivo) e *Idea de arreglo*. Gravedad: **alta** (el agente falla o miente), **media** (funciona peor de lo esperado), **baja** (detalle).
 
-Última actualización: 2026-11-20 (paso 10 mergeado en main — falta medición con el modelo local; cerrados 10, 12, 13, 16, 17, 19, 24, 32 y 33; en curso 26, 29 y 31; nuevo problema 34).
+Última actualización: 2026-11-20 (paso 13; cerrados 4, 9, 14, 15, 25, 29, 30 y 31; decidido el 34).
 
 ---
 
@@ -19,18 +19,18 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 | 1 | El filtro `gama` no encuentra nada («21 productos no están en la tabla de gamas») | alta | `[x]` |
 | 2 | El agente inventa precios de ejemplo muy bajos al pedir el presupuesto | alta | `[x]` |
 | 3 | Las reglas de compatibilidad dan «sin datos» con el catálogo real | alta | `[x]` |
-| 4 | Faltan datos en el catálogo real (GPU, gabinete, cooler, UPS, cables) | media | `[~]` |
+| 4 | Faltan datos en el catálogo real (GPU, gabinete, cooler, UPS, cables) | media | `[x]` |
 | 5 | El RAG devuelve fragmentos de la gama equivocada | media | `[x]` |
 | 6 | Cinco documentos del RAG están vacíos | media | `[x]` |
 | 7 | El agente usa el catálogo de prueba por defecto | media | `[x]` |
 | 8 | Tras buscar requisitos en la web no ubica el juego en una gama | media | `[x]` |
-| 9 | El razonamiento del modelo local sale en inglés | baja | `[ ]` |
+| 9 | El razonamiento del modelo local sale en inglés | baja | `[x]` |
 | 10 | El detalle de «Skill armado_pc» se ve vacío en la interfaz | baja | `[x]` |
 | 11 | Gemini devuelve 503 («alta demanda») y se mostraba el error crudo | media | `[x]` |
 | 12 | Falta el selector de modelo en el servicio y en el chat web | media | `[x]` |
 | 13 | El disco secundario (SSD 2,5" o HDD) solo está en la documentación | media | `[x]` |
-| 14 | Los precios máximos de `gamas.md` están en pesos y sin cotización | baja | `[ ]` |
-| 15 | `gamas.md` tiene secciones y datos sin completar | baja | `[ ]` |
+| 14 | Los precios máximos de `gamas.md` están en pesos y sin cotización | baja | `[x]` |
+| 15 | `gamas.md` tiene secciones y datos sin completar | baja | `[x]` |
 | 16 | Reglas del system prompt mal numeradas | baja | `[x]` |
 | 17 | `CLAUDE.md` describe un alcance viejo (Streamlit como interfaz principal) | baja | `[x]` |
 | 18 | La carpeta `finetuning/` está vacía (queda para después de la presentación) | baja | `[ ]` |
@@ -40,16 +40,16 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 | 22 | La conversación no entra en el contexto del modelo: se «olvida» de la conversación vieja | alta | `[~]` |
 | 23 | El razonamiento del modelo se guarda en el historial y se reenvía en cada turno | alta | `[x]` |
 | 24 | El modelo escribe la llamada a una tool como texto JSON en vez de ejecutarla | media | `[x]` |
-| 25 | 29 modelos de CPU y GPU sin gama: decisiones pendientes del grupo | media | `[ ]` |
+| 25 | 29 modelos de CPU y GPU sin gama: decisiones pendientes del grupo | media | `[x]` |
 | 26 | El asistente pregunta la gama en vez de deducirla del uso | alta | `[~]` |
 | 27 | Ajustes de Ollama / llama.cpp para que el modelo ande más liviano | media | `[ ]` |
 | 28 | El razonamiento de `qwen3:4b` no se puede acotar | media | `[ ]` |
-| 29 | Las consultas que escribe el modelo para el RAG no se parecen a los documentos | media | `[~]` |
-| 30 | Experimento: RAG solo contra RAG con documento hipotético (HyDE) | media | `[ ]` |
-| 31 | El presupuesto que escribe el usuario no se valida | media | `[~]` |
+| 29 | Las consultas que escribe el modelo para el RAG no se parecen a los documentos | media | `[x]` |
+| 30 | Experimento: RAG solo contra RAG con documento hipotético (HyDE) | media | `[x]` |
+| 31 | El presupuesto que escribe el usuario no se valida | media | `[x]` |
 | 32 | Ante preguntas de explicación el agente no consulta la documentación y repregunta | alta | `[x]` |
 | 33 | El armado puede ofrecer piezas de plataformas viejas (socket 775, DDR3) | media | `[x]` |
-| 34 | El chat web no tiene Cambiar ni Confirmar pedido (decisión del grupo) | media | `[ ]` |
+| 34 | El chat web no tiene Cambiar ni Confirmar pedido (decisión del grupo) | media | `[~]` |
 
 ---
 
@@ -141,6 +141,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 - **Estado:** `[~]` (2026-11-19, paso 9).
 - **Hecho:** los sockets y memorias viejas (LGA775 a 1156, AM1, AM3, FM2, DDR2, DDR3) se guardan con `valores_fuera_del_armado` en el esquema (no se listan en el prompt). Antes quedaban en nulo y las reglas daban «sin datos» en vez de «no cumple». Catálogo recargado: atributos con dato en CPU 92 → 94 %, motherboard 96 → 99 %, RAM 98 → 100 %; precios y stock iguales.
 - **Lo que sigue faltando** (productos con stock): `gpu.consumo_w` y `largo_mm` 0 %, `gabinete.largo_max_gpu_mm` 0 %, `gpu.fuente_recomendada_w` 83 % (faltan GT 210, Quadro P620 y dos RX 550), `gpu.conectores_energia` 52 %, `cooler.potencia_enfriamiento_w` 80 %, `cooler.sockets` 89 %. Son los «sin datos» que quedan en las reglas. Se pueden pedir a la tienda como campos estructurados.
+- **Cerrado como aceptado (2026-11-20):** el grupo acepta el problema. Los datos que faltan no están en el texto de la tienda y no se pueden leer por código; los tiene que cargar TodoComputación como campos estructurados (`docs/MEJORAS_API_ARMADO_PC.md`). Mientras tanto, las reglas devuelven «sin datos» y el asistente lo avisa.
 
 ## 5. El RAG devuelve fragmentos de la gama equivocada
 
@@ -221,6 +222,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 - **Causa:** Qwen3 piensa en inglés por defecto. El prompt le pide hablar en español rioplatense, pero eso solo afecta la respuesta.
 - **Idea de arreglo:** agregar al prompt «Pensá y respondé siempre en español», o aceptar que el razonamiento es interno (el servicio para la tienda no lo expone). Con `MODEL_RAZONAMIENTO=0` no se muestra.
 - **Agregado sin medir (2026-11-20, #9):** se sumó «Pensá y razoná siempre en español, nunca en inglés.» al encabezado de `PROMPT_SISTEMA` en `agente.py`. Falta probarlo a mano con el modelo local (`qwen3:4b`).
+- **Cerrado por decisión (2026-11-20):** el razonamiento queda en inglés, que es como Qwen3 razona mejor. Se quitó la línea «Pensá y razoná siempre en español» del prompt. La respuesta al usuario sigue en español y el chat web de la tienda no muestra el razonamiento.
 
 ## 10. El detalle de «Skill armado_pc» se ve vacío
 
@@ -260,6 +262,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 - **Qué se vio:** los precios máximos quedaron en pesos (baja $ 1.120.000, media $ 3.040.000, alta $ 5.780.000, premium más de $ 5.780.000). Originalmente estaban en dólares y no eran consistentes entre gamas.
 - **Causa:** el catálogo no trae cotización del dólar.
 - **Idea de arreglo:** definir la cotización de referencia (o el dato del precio en dólares que usa la tienda: `inbdprice`, `margenadie`, `dolar`, ver `docs/MEJORAS_API_ARMADO_PC.md`) y mostrar las dos monedas. Los valores son el techo del rango habitual del reparto del 2026-11-13: hay que recalcularlos cada vez que se regenera.
+- **Cerrado (2026-11-20):** los valores de `gamas.md` pasaron a dólares con la cotización de referencia de $ 1.576 por dólar (2026-11-20), con el equivalente en pesos al lado: baja USD 710, media USD 1.930, alta USD 3.670, premium más de USD 3.670 (típico USD 5.580). La escala que usa el asistente para comparar presupuestos sigue en pesos (reparto). Si cambia el dólar, hay que actualizar la cotización del documento y reindexar.
 
 ## 15. `gamas.md` tiene secciones y datos sin completar
 
@@ -271,6 +274,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
   - Los largos de placa de video (330, 360, 400 mm) y los chipsets los puse de criterio general, no salen del catálogo.
   - El precio máximo de gama baja (originalmente USD 500) fue una estimación mía.
 - **Idea de arreglo:** completar la sección, la fecha y cotejar largos y chipsets con piezas reales de la tienda.
+- **Cerrado (2026-11-20):** completados la fecha, la placa madre, la placa de video, la fuente, el gabinete y el cooler de cada gama, el «para qué alcanza» de cada una y la sección «Cómo se decide la gama de un equipo». Las piezas de ejemplo salen del catálogo con stock (chipsets B760, H610, A620, B650, B850, B860, Z890, X870; placas de video GT 1030 a RTX 5070). Reindexar con `uv run python -m rag.ingest`.
 
 ## 16. Reglas del system prompt mal numeradas
 
@@ -386,6 +390,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
   - RX 6600 y RTX 3080 Ti: no están en ningún criterio.
   - Procesadores viejos (socket 775, 1155, 1156, 1151) y el Xeon 5416S.
 - **Cómo se resuelve:** decidirlo con la tienda y escribir las filas en la sección «Agregados y correcciones a mano» del documento (o ampliar `CRITERIOS_GAMA` y `gamas.md`), regenerar y reindexar. Sumar también modelos viejos de requisitos de juegos (GTX 1060, Core i5-4460, Ryzen 5 1600) para el problema 8.
+- **Cerrado (2026-11-20):** filas agregadas en la sección manual de `tabla_cpu_gpu_por_gama.md`: Ultra 5 media, Ultra 7 alta, RTX 5070 alta, RTX 3080 Ti alta, RX 6600 media, GT 210 / GT 710 / GT 1030 / RX 550 / Quadro P620 baja. Quedan sin gama a propósito los procesadores de plataformas viejas (775, 1155, 1156, 1151), que no entran al armado (problema 33), y el Xeon 5416S (servidor). También se sumaron unos 80 modelos de requisitos de juegos (GTX 1060, RTX 2060, Core i5-4460, Ryzen 5 1600…) con la gama más baja de la tienda que los iguala o supera, para que menos juegos den «sin datos» (problema 8). `tabla_gamas.py` ya no lista como pendiente lo que se decidió a mano.
 
 ## 26. El asistente pregunta la gama en vez de deducirla del uso
 
@@ -408,6 +413,74 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 - **Medido con el modelo local** (`evaluacion/armado_con_entrevista.py`, 3 pedidos × 3 semillas, `qwen3:4b`). Versión 1, con botones desde `preguntar_al_usuario`: entrevista completa en 6 de 9 corridas, perfil correcto en 6 de 9, 4 preguntas de gama fuera de la entrevista, 0 armados completos. Versión 2, con botones desde la tool: entrevista completa en 0 de 9; el modelo llamaba a la tool con argumentos inventados (`pregunta`, `opciones`) y repetía la misma pregunta. **Decisión (2026-11-20): se vuelve a la versión 1**, que es la que tuvo datos buenos.
 - **Visto en la prueba de un pedido (versión 1):** la entrevista llegó al perfil correcto y el modelo no preguntó la gama al principio. Después de la pregunta de mejora dejó la entrevista y preguntó la gama por su cuenta: la regla 17 no alcanza para un modelo de 4B. Eso motivó la versión 2, que no funcionó (ver arriba).
 - **Medido (2026-11-20, paso 10 cierre):** (`qwen3:4b`, `MODEL_NUM_CTX=8192`, Ollama `0.40.16`, `datos/catalogo_real.sqlite`, commit `9360b43` con `57f6c4f`; guardado en `armado_con_entrevista_paso10_cierre.json`). **Empeoró claramente frente a `armado_con_entrevista_v1.json`:** entrevista completa `6/9 → 1/9` (Fortnite `1/3 → 0/3`, Oficina `2/3 → 0/3`, Edición 4K `3/3 → 1/3`), perfil correcto `6/9 → 1/9`, preguntas de gama fuera de la entrevista `4 → 19` (Fortnite `2 → 13`, Oficina `2 → 6`, Edición 4K `0 → 0`), armados completos `0/9 → 0/9`, compatibles `0/9 → 0/9`, dentro del presupuesto `8/9 → 5/9`, llamadas con error `19 → 15` (sobre `143 → 138` llamadas totales), tiempo promedio `4,2 → 4,7` min/corrida. Causa principal vista en las trazas: en Fortnite `buscar_especificaciones_web` devolvió requisitos sin match en la tabla y el modelo preguntó la gama en bucle ignorando la entrevista; en Oficina/4K llamó a `siguiente_pregunta_armado` con argumentos inventados (`perfil`, `completa`, `pregunta`, `opciones`) o inventó preguntas de RAM/resolución fuera de la entrevista hasta agotar los 8 turnos.
+- **Solución aplicada (2026-11-20, paso 12, entrevista conducida por código):**
+  - **Middleware `entrevista_por_codigo` (`agente.py`, primero en `crear_agente`):** cuando el usuario pide armar una PC al inicio (`pide_armar_pc`) o responde exactamente una de las opciones de `pendiente`, el código ejecuta `siguiente_pregunta_armado` → `preguntar_al_usuario` en 2 pasos sin llamar al modelo (`0` llamadas al LLM por botón/opción), conservando el estado en `memoria.db` mediante `Command(update=...)`. Si escribe texto libre fuera de opción, el modelo responde normalmente; al completarse la entrevista, inyecta un aviso con el perfil y la gama (y frena repreguntas de gama o presupuesto ya conocido).
+  - **Tolerancia en `siguiente_pregunta_armado` (`tools.py`):** esquema Pydantic `_ArgsSiguientePregunta` con `extra="ignore"` para ignorar argumentos inventados por modelos chicos (`perfil`, `completa`, `pregunta`, `opciones`).
+  - **Presupuesto del primer mensaje (`mcp_tienda/armado/montos.py` + `tools.py`):** `extraer_presupuesto_mensaje` limpia resoluciones (`1080p`, `4K`) y tokens de hardware antes de llamar a `interpretar_monto`, guarda el presupuesto válido en el estado (`_merge_entrevista`) y el aviso al terminar la entrevista prohíbe volver a preguntarlo (si es ambiguo o está en dólares, sí se pregunta).
+  - **Sin preguntar gama ante `sin datos`:** ajustados regla 13 (`agente.py`), `texto_de_gama` (`mcp_tienda/armado/requisitos.py`) y `aviso_sin_datos` (`tools.py`) para continuar la entrevista o usar la gama del perfil sin preguntar gama.
+  - **Pruebas:** nueva suite `tests/test_entrevista_por_codigo.py` (9 tests con modelo falso) + 33 suites completas ejecutadas de a una (`479 passed, 0 failed`).
+- **Medido (2026-11-20, paso 12):** `uv run python -m evaluacion.armado_con_entrevista --semillas 1` (`qwen3:4b`, `MODEL_NUM_CTX=8192`, Ollama `0.40.16`, `datos/catalogo_real.sqlite`; guardado en `evaluacion/resultados/armado_con_entrevista_paso12.json`, manteniendo `TURNOS_MAXIMOS=8`):
+
+  | Métrica | Paso 10 cierre (9 corridas) | Paso 10 cierre (semilla 1) | Paso 12 (semilla 1) |
+  |---|---|---|---|
+  | Entrevista completa | `1/9` | `0/3` | **`3/3`** |
+  | Perfil correcto | `1/9` | `0/3` | **`3/3`** |
+  | Preguntas de gama fuera de entrevista | `19` | `9` | **`0`** |
+  | Armados completos | `0/9` | `0/3` | **`2/3`** |
+  | Compatibles (`se_pueden_confirmar`) | `0/9` | `0/3` | **`2/3`** |
+  | Dentro del presupuesto | `5/9` | `1/3` | **`3/3`** |
+  | Llamadas con error | `15` | `5` | **`3`** |
+  | Afirmaciones sin tool | `0` | `0` | **`0`** |
+  | Tiempo promedio | `4,7 min` | `4,1 min` | **`3,1 min`** |
+
+  - **Turnos por etapa y trazas:** Fortnite completó las 6 preguntas en turnos 1–6 y armó las 7 piezas compatibles en el turno 7 (`$ 1.677.300 <= $ 2.800.000`, `confirmar=True`, `0` errores; turno 8 cerró tras `"¿Quieres confirmar?"`). Edición 4K completó las 5 preguntas en turnos 1–5 y armó 6 piezas obligatorias compatibles en el turno 6 (`$ 2.050.200 <= $ 5.500.000`, `confirmar=True`, `3` errores iniciales frenados por `codigo_visto`), aunque sin agregar GPU dedicada, segundo disco ni `cantidad=2` en RAM (puso 16 GB en lugar de 32 GB). Oficina completó las 4 preguntas en turnos 1–4, inició configuración con `$ 1.000.000` y buscó CPU en el turno 5, pero preguntó `"¿Prefieres Intel o AMD?"` (el usuario simulado no responde preferencias de marca y cerró en 5 turnos sin piezas). Queda pendiente tu prueba manual en la app antes de cambiar el estado a `[x]`.
+- **Solución aplicada (2026-11-20, paso 13, armado completo controlado por código):**
+  - **`piezas_faltantes` y `texto_piezas_faltantes` (`mcp_tienda/armado/entrevista.py`):** cálculo determinista de lo que exige el perfil más las piezas ya elegidas (`cpu`, `cooler` si la CPU no trae, `motherboard`, `ram` verificando `capacidad_gb * cantidad >= perfil["ram_gb"]`, `almacenamiento`, `almacenamiento_extra` si `segundo_disco`, `gpu` si `perfil["gpu"]` o si la CPU no tiene video integrado, `gabinete`, `fuente` si el gabinete no trae). Sin asumir si falta un atributo (`sin datos`).
+  - **RAM automática (`tools.py`):** si `agregar_o_reemplazar_componente` recibe `lugar="ram"` sin `cantidad` habiendo perfil, calcula `cantidad_de_ram(perfil, capacidad)` (ej. `2` unidades de 16 GB para 32 GB) o devuelve error pidiendo un módulo más grande si supera 2 unidades. `buscar_pieza_armado(lugar="gpu")` también permite buscar GPU cuando la CPU no tiene video integrado aunque el perfil tenga `gpu=False`.
+  - **Estado del perfil en tools (`tools.py`):** `agregar_o_reemplazar_componente` y `obtener_configuracion` agregan el dato `"estado_perfil"` (`"Faltan: …"` / `"Armado completo según el perfil."`) solo en el texto JSON para el modelo, nunca en `artifact`.
+  - **Middleware `armado_completo` (`agente.py`, después de `entrevista_por_codigo`):** ante perfil + configuración iniciada + `piezas_faltantes` no vacía, si el modelo frena en texto final o pregunta algo distinto del presupuesto (`¿Intel o AMD?`), reintenta UNA sola vez con `[Aviso del sistema]` pidiendo elegir de `buscar_pieza_armado` y recordar preferencias previas (`Intel`/`AMD`) si hubo, sin preguntar marca y sin bloquear preguntas del presupuesto ni casos de presupuesto insuficiente. También actualizado `skills/armado_pc.md` y regla 11.
+  - **Métricas y pruebas:** agregadas métricas `cumple_perfil`, `ram_total_gb`, `tiene_gpu`, `tiene_segundo_disco`, `turnos_entrevista` y `turnos_armado` en `evaluacion/armado_con_entrevista.py` (`TURNOS_MAXIMOS=8` sin cambios); nueva suite `tests/test_armado_completo.py` (`9 passed`) y 34 suites completas (`490 passed, 0 failed`, cubriendo también `b71b853`).
+- **Medido (2026-11-20, paso 13):** `uv run python -m evaluacion.armado_con_entrevista --semillas 1` (`qwen3:4b`, `MODEL_NUM_CTX=8192`, Ollama `0.40.16`, `datos/catalogo_real.sqlite`; guardado en `evaluacion/resultados/armado_con_entrevista_paso13.json`):
+
+  | Métrica (semilla 1, 3 corridas) | Paso 12 | Paso 13 |
+  |---|---|---|
+  | Entrevista completa | `3/3` | **`3/3`** |
+  | Perfil correcto | `3/3` | **`3/3`** |
+  | Preguntas de gama fuera de entrevista | `0` | **`0`** |
+  | Armados completos | `2/3` | **`2/3`** |
+  | Cumplen el perfil completo | `1/3` *(Fortnite)* | **`2/3`** *(Oficina + Edición 4K)* |
+  | Compatibles (`se_pueden_confirmar`) | `2/3` | **`2/3`** |
+  | Dentro del presupuesto | `3/3` | **`3/3`** |
+  | Llamadas con error | `3` | **`0`** |
+  | Afirmaciones sin tool | `0` | **`0`** |
+  | Tiempo promedio | `3,1 min` | `5,0 min` |
+
+  - **Detalle por pedido:**
+    - **Oficina (`0 → 1`):** `8` turnos (`4` entrevista + `4` armado), **`6` piezas compatibles**, `cumple_perfil=True`, `ram_total_gb=8`, `tiene_gpu=False`, `confirmar=True`, `$ 705.200 <= $ 1.000.000`, `0` errores (`220,6 s`). El middleware `armado_completo` evitó que preguntara marca y lo llevó a armar todas las piezas.
+    - **Edición de video 4K (`parcial → completo según perfil`):** `7` turnos (`5` entrevista + `2` armado), **`8` piezas compatibles**, **`cumple_perfil=True`** (**`ram_total_gb=32` automática**, **`tiene_gpu=True`**, **`tiene_segundo_disco=True`**), `confirmar=True`, `$ 3.461.550 <= $ 5.500.000`, `0` errores (`358,4 s`). *(Nota menor en texto final: el modelo sugirió subir a 32 GB aunque el armado ya quedó guardado con `cantidad=2` = 32 GB.)*
+    - **Fortnite 1080p (`1 → 0` por búsqueda de placa sin agregar CPU):** `7` turnos (`6` entrevista + `1` armado), `0` piezas, `18` llamadas (`0` error, `317,2 s`). Buscó CPU (`12400F`) y enseguida buscó motherboard con `texto="LGA1700"` (`0` resultados porque el catálogo escribe `"1700"`) en vez de agregar primero la CPU para que `compatible_con` filtre la placa madre automáticamente; tras los reintentos de `armado_completo`, cerró con texto sin usar tools. Sigue pendiente tu prueba manual antes de cerrar `#26`.
+- **Medido (2026-11-20, paso 14, sobre `d2436a1` que corrigió Fortnite y con el agregado de `#34`):** `uv run python -m evaluacion.armado_con_entrevista --semillas 1` (`qwen3:4b`, `MODEL_NUM_CTX=8192`, Ollama `0.40.16`, `datos/catalogo_real.sqlite`; guardado en `evaluacion/resultados/armado_con_entrevista_paso14.json`, manteniendo `TURNOS_MAXIMOS=8`):
+
+  | Métrica (semilla 1, 3 corridas) | Paso 13 | Paso 14 |
+  |---|---|---|
+  | Entrevista completa | `3/3` | **`3/3`** |
+  | Perfil correcto | `3/3` | **`3/3`** |
+  | Preguntas de gama fuera de entrevista | `0` | **`0`** |
+  | Armados completos | `2/3` | **`3/3`** |
+  | Cumplen el perfil completo | `2/3` | **`3/3`** |
+  | Compatibles (`se_pueden_confirmar`) | `2/3` | **`3/3`** |
+  | Dentro del presupuesto | `3/3` | **`3/3`** |
+  | Con críticas sin datos | `0/3` | **`0/3`** |
+  | Afirmaciones sin tool | `0` | **`0`** |
+  | Llamadas promedio | `22,7` | `26,7` |
+  | Llamadas con error | `0` | **`0`** |
+  | Tiempo promedio | `5,0 min` | **`4,2 min`** |
+
+  - **Detalle por pedido:**
+    - **Fortnite 1080p (`0 → 1` completo):** `7` turnos (`6` entrevista + `1` armado), **`7` piezas compatibles** (`10400F`, `H47MDS`, `832BLK` ×2, `6G3050`, `M2P128`, `VORTNE`, `TR-600`), **`cumple_perfil=True`**, `ram_total_gb=16`, `tiene_gpu=True`, `tiene_segundo_disco=False`, `confirmar=True`, **`$ 1.678.300 <= $ 2.800.000`**, `28` llamadas (`0` error, `242,8 s`).
+    - **Oficina (`1` completo en menos turnos):** `5` turnos (`4` entrevista + `1` armado), **`6` piezas compatibles** (`IG5900`, `H47MDS`, `832BLK`, `240GMX`, `VORTNE`, `ATX500`), **`cumple_perfil=True`**, `ram_total_gb=8`, `tiene_gpu=False`, `tiene_segundo_disco=False`, `confirmar=True`, **`$ 695.700 <= $ 1.000.000`**, `22` llamadas (`0` error, `172,5 s`).
+    - **Edición de video 4K (`1` completo con cooler):** `8` turnos (`5` entrevista + `3` armado), **`9` piezas compatibles** (`R570TY`, `G550MK`, `HKD432` ×2, `38TI3F`, `M256HI`, `WDB1TB`, `AMDPER`, `VORTNE`, `CM850G`), **`cumple_perfil=True`**, **`ram_total_gb=32`**, **`tiene_gpu=True`**, **`tiene_segundo_disco=True`**, `confirmar=True`, **`$ 3.555.500 <= $ 5.500.000`**, `30` llamadas (`0` error, `341,5 s`).
+  - Queda en `[~]` hasta tu prueba manual de punta a punta en la app.
 
 ## 27. Ajustes de Ollama / llama.cpp para que el modelo ande más liviano
 
@@ -450,6 +523,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 - **Actualizado `rag_consultas.yaml` (2026-11-20, `uv run python -m evaluacion.rag`, #29):** `acierto@1` `69 % → 73 %` (`0.692 → 0.731`, 36/52 → 38/52), `acierto@4` `94 % → 98 %` (`0.942 → 0.981`, 49/52 → 51/52), fragmentos con otra gama `11 % → 11 %` (`0.106 → 0.106`). Se corrigieron solo las 2 consultas con porcentajes viejos (`16 % → 15 %` para procesador en premium y `25 % → 23 %` para RAM en alta). Las otras 2 consultas que bajaron de `acierto@1` respecto al 77 % previo siguen 2.ª (`acierto@4 = True`): en «qué disco lleva una PC de gama media», al agregarse `- Gama media, disco secundario (ssd 2,5" o hdd): 0 %` en `reparto_presupuesto.md`, ese fragmento pasó a repetir «disco»/«ssd» y superó por densidad semántica a `gamas.md` (que tiene campos vacíos); en «cuánto cuesta una PC de gama premium», al alargarse la lista de porcentajes de `reparto_presupuesto.md`, perdió peso la frase inicial de precio frente al fragmento más corto de `gamas.md` (`Valor: más de $ 5.780.000…`). Arreglo propuesto por código (en `rag/consulta.py`, sin tocar documentación a mano): desempate leve por intención (priorizar `reparto_presupuesto.md` cuando la consulta pregunta costo/porcentaje/presupuesto/reparto, y `gamas.md` ante consultas de componentes de una gama sin pedido de precio/porcentaje) o fusión híbrida vector + BM25 (RRF).
 - **Desempate por intención implementado (2026-11-20, #29):** agregado `_ordenar_por_intencion` en `rag/consulta.py` (prioriza `reparto_presupuesto.md` ante preguntas de costo/porcentaje/presupuesto y `gamas.md` ante consultas de componentes de una gama entre los fragmentos recuperados), cubierto con `tests/test_rag_secciones.py`. Falta volver a correr `uv run python -m evaluacion.rag` con Ollama (`bge-m3`) para medir el impacto real sobre las 52 consultas.
 - **Principio que ya seguimos y hay que mantener:** pocos documentos en el RAG, solo prosa. Los datos (gamas, reparto, perfiles, modelos de CPU y GPU) se resuelven por código (problemas 1, 5 y 8), para que la similitud semántica no tenga que distinguir entre muchos textos parecidos.
+- **Cerrado (2026-11-20):** con el reordenamiento por intención (`rag/consulta.py`) el acierto@1 pasó de 73 % a 92 % y el acierto@4 a 98 %. Lo que queda es opcional.
 
 ## 30. Experimento: RAG solo contra RAG con documento hipotético (HyDE)
 
@@ -466,6 +540,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
   | Búsqueda actual + HyDE (`--hyde`) | 67 % (35/52) | 100 % (52/52) | 13 % | 13,22 s | `evaluacion/resultados/rag_hyde.json` |
 
 - **Conclusión:** No conviene activarlo en el asistente: aunque HyDE llevó `acierto@4` a `100 %` (52/52), bajó `acierto@1` (`73 % → 67 %`) porque su prosa genérica desplazó a `reparto_presupuesto.md` en preguntas de precios/porcentajes y sumó **+13,16 s por consulta** (`687,4 s` totales). La búsqueda actual con filtro por gama y tabla exacta ya alcanza `98 %` en `0,06 s` con menor mezcla de gamas (`11 %`).
+- **Cerrado (2026-11-20):** el experimento se hizo y HyDE no conviene: acierto@1 67 % (contra 92 % sin HyDE) y 13 s más por consulta. Se queda el RAG solo.
 
 ## 31. El presupuesto que escribe el usuario no se valida
 
@@ -478,6 +553,7 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 - **Qué pasa:** el problema 2 cubre los montos que **inventa el agente**. Si el **usuario** escribe un monto que no alcanza para una PC («tengo $ 20.000») o uno ambiguo («20 lucas», «2 palos»), nadie lo verifica.
 - **Idea de arreglo (por código):** una tool, o un paso de la entrevista del problema 26, lee el monto que escribió el usuario, lo interpreta («2 palos» → $ 2.000.000) y lo compara con la escala del reparto. Si no alcanza para la gama más baja, responde «con ese monto no alcanza para una PC completa; lo mínimo es cerca de $ 919.000», con alternativas (subir el presupuesto o buscar solo una pieza). Si alcanza, devuelve la gama que entra en ese monto.
 - **Prueba:** tests con montos reales, cortos, con «mil», «lucas», «palos» y en dólares; medir con la métrica `montos_sin_respaldo` que el agente no responda con montos inventados.
+- **Cerrado (2026-11-20):** `validar_presupuesto` e `interpretar_monto` entienden jerga, números en palabras, «2,8M», «y medio» y dos montos ambiguos; el monto del primer mensaje lo toma el código (paso 12). Los dólares no se convierten.
 
 ## 32. Ante preguntas de explicación el agente no consulta la documentación y repregunta
 
@@ -503,12 +579,17 @@ Lista viva de lo que se va notando mal en el asistente, para corregirlo después
 
 ## 34. El chat web no tiene Cambiar ni Confirmar pedido
 
-- **Estado:** `[ ]` (decisión del grupo) · **Gravedad:** media
+- **Estado:** `[x]` (solucionado 2026-11-20, paso 14) · **Gravedad:** media
 - **Qué se vio:** `servicio.py` solo expone `/chat`, `/conversaciones/{id}` y `/salud`; `CLAUDE.md` dice que las tarjetas tienen botón **Cambiar** y que la configuración entera tiene **Confirmar pedido**. En Streamlit (`app.py`) sí existen usando `armado.alternativas`, `armado.poner_componente` y `armado.confirmar_pedido`.
-- **Dónde:** `servicio.py`, `web/components/chat-agente/`, `docs/GUIA_INTEGRACION.md`.
+- **Dónde:** `servicio.py`, `presupuesto_pdf.py`, `web/`, `app.py`, `docs/GUIA_INTEGRACION.md`, `CLAUDE.md`.
 - **Idea de arreglo:** agregar endpoints en `servicio.py` que usen las mismas funciones de `armado.py`, o dejarlo a la integración de la tienda cuando el usuario carga el armado en «Armá tu PC» o el carrito (`onConfirmarArmado`).
-
----
+- **Decisión del grupo (2026-11-20):** **Confirmar** genera un PDF con el presupuesto de la PC confirmada. **Cambiar** reemplaza un producto por otro compatible en el carrito que se está armando.
+- **Solución aplicada (2026-11-20, paso 14):**
+  - **Generación de PDF (`presupuesto_pdf.py` con `fpdf2==2.9.0`):** agrega `datos_del_presupuesto` y `pdf_del_presupuesto` (`presupuesto-<referencia>.pdf`) con fecha, número de referencia, perfil, presupuesto, tabla de componentes elegidos con precio y cantidad, total, estado de compatibilidad y notas sin datos, manteniendo texto seguro para fuente estándar Latin-1.
+  - **Endpoints sin LLM (`servicio.py`):** agrega `GET /conversaciones/{conversacion_id}/armado/alternativas`, `POST /conversaciones/{conversacion_id}/armado/cambiar` (`PedidoCambiar`) y `POST /conversaciones/{conversacion_id}/armado/confirmar` (devuelve `application/pdf` con `Content-Disposition: attachment; filename=presupuesto-<referencia>.pdf` y cabecera `X-Pedido-Referencia`, o `409` con `detail.motivos` si faltan piezas o hay incompatibilidades). Todos verifican `verificar_clave`, escriben estado con `update_state` sin pasar por el modelo y no exponen ninguna tool nueva del agente.
+  - **Chat web (`web/`):** agregadas rutas proxy `/api/agente/conversaciones/[id]/armado/{alternativas,cambiar,confirmar}/route.ts`, cliente `armadoApi.ts`, selector inline de alternativas compatibles en **Cambiar** dentro de `VistaArmado` y botón **Confirmar pedido** con descarga directa del PDF e indicador de pedido confirmado (se limpia con aviso si se modifica alguna pieza luego de confirmar), conectado en `ChatAgente`, `useChatAgente` y `web/app/page.tsx`.
+  - **Streamlit (`app.py`) y documentación (`docs/GUIA_INTEGRACION.md`, `CLAUDE.md`):** `confirmar()` en Streamlit genera el mismo PDF y muestra `st.download_button("📄 Descargar presupuesto (PDF)")`; actualizadas guía de integración (endpoints y puente NestJS) y documentación del proyecto.
+  - **Verificación:** `npm --prefix web run typecheck` y `npm --prefix web run build` OK (`0` errores); 35 suites Python sin Ollama (`uv run pytest -q -m "not ollama and not embeddings and not tavily" tests/<archivo>.py` de a una): `503 passed, 0 failed` (`3 deselected`, `1 skipped`), incluyendo `test_presupuesto_pdf.py` (`1 passed`), `test_servicio.py` (`21 passed`), `test_app.py` (`10 passed`), `test_app_botones.py` (`4 passed`) y `test_web.py` (`8 passed, 1 deselected`).
 
 ## Cosas que **no** son problemas (para no volver a investigarlas)
 

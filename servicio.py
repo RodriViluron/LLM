@@ -27,16 +27,20 @@ Variables:  AGENTE_CLAVE               si está definida, cada pedido tiene que 
 import json
 import logging
 import os
+import re
 import threading
 from collections.abc import Iterable, Iterator
 from uuid import uuid4
 
-from fastapi import Depends, FastAPI, Header, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi import Depends, FastAPI, Header, HTTPException, Query
+from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, Field
 
 import armado
 from agente import OPCION_LOCAL, get_agent, opciones_de_modelo, saved_state, saved_turns, stream_turn
+from mcp_tienda.cliente import get_cliente
+from mcp_tienda.modelos import SLOTS
+from presupuesto_pdf import datos_del_presupuesto, pdf_del_presupuesto
 
 registro = logging.getLogger("servicio")
 
@@ -165,6 +169,14 @@ class PedidoChat(BaseModel):
         description="Modelo a usar (por defecto «local»). Se valida contra AGENTE_MODELOS_PERMITIDOS.")
 
 
+class PedidoCambiar(BaseModel):
+    lugar: str = Field(min_length=1, max_length=32, description="Lugar del armado (cpu, motherboard, ram, gpu, ...)")
+    codigo: str = Field(min_length=1, max_length=64, description="Código del producto elegido")
+
+
+_PATRON_CONVERSACION = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
+
+
 def _lista_modelos_permitidos() -> list[str]:
     """Opciones habilitadas por AGENTE_MODELOS_PERMITIDOS (por defecto solo «local»)."""
     crudo = os.getenv("AGENTE_MODELOS_PERMITIDOS", OPCION_LOCAL)
@@ -196,8 +208,8 @@ def validar_modelo(modelo: str | None) -> str:
     return opcion
 
 
-def crear_app(agente=None) -> FastAPI:
-    """Arma la aplicación. `agente` permite pasar uno de prueba; por defecto usa el de la aplicación."""
+def crear_app(agente=None, cliente=None, pedidos=None) -> FastAPI:
+    """Arma la aplicación. `agente`, `cliente` y `pedidos` permiten inyectar dobles/rutas en tests."""
     app = FastAPI(title="Asistente de compra AMN", version="0.1.0",
                   description="Servicio del agente. Ver docs/GUIA_INTEGRACION.md.")
     ocupadas: set[str] = set()   # conversaciones con un turno en curso
@@ -205,6 +217,17 @@ def crear_app(agente=None) -> FastAPI:
 
     def el_agente(opcion: str = OPCION_LOCAL):
         return agente or get_agent(opcion)
+
+    def el_cliente():
+        return cliente or get_cliente()
+
+    def el_destino_pedidos():
+        return pedidos or armado.PedidosLocales()
+
+    def _validar_conversacion_id(conversacion_id: str) -> str:
+        if not _PATRON_CONVERSACION.fullmatch(conversacion_id):
+            raise HTTPException(status_code=400, detail="Identificador de conversación inválido.")
+        return conversacion_id
 
     def verificar_clave(x_agente_clave: str | None = Header(default=None)) -> None:
         clave = os.getenv("AGENTE_CLAVE")
@@ -259,6 +282,79 @@ def crear_app(agente=None) -> FastAPI:
         estado = saved_state(config, el_agente())
         return {"conversacion_id": conversacion_id, "turnos": turnos,
                 "armado": armado_publico(estado.get("configuracion"))}
+
+    @app.get("/conversaciones/{conversacion_id}/armado/alternativas", dependencies=[Depends(verificar_clave)])
+    def alternativas_armado(conversacion_id: str, lugar: str = Query(min_length=1, max_length=32)) -> dict:
+        _validar_conversacion_id(conversacion_id)
+        if lugar not in SLOTS:
+            raise HTTPException(status_code=400, detail=f"Lugar inválido: {lugar}")
+        ag = el_agente()
+        config = saved_state(config_de(conversacion_id), ag).get("configuracion")
+        if not config:
+            raise HTTPException(status_code=404, detail="No hay un armado en esta conversación.")
+        opciones = armado.alternativas(config, lugar, el_cliente())
+        return {"lugar": lugar, "alternativas": [producto_publico(p) for p in opciones]}
+
+    @app.post("/conversaciones/{conversacion_id}/armado/cambiar", dependencies=[Depends(verificar_clave)])
+    def cambiar_armado(conversacion_id: str, pedido: PedidoCambiar) -> dict:
+        _validar_conversacion_id(conversacion_id)
+        with candado:
+            if conversacion_id in ocupadas:
+                raise HTTPException(status_code=409, detail="Esa conversación ya tiene una respuesta en curso.")
+            ocupadas.add(conversacion_id)
+        try:
+            ag = el_agente()
+            cfg = config_de(conversacion_id)
+            config = saved_state(cfg, ag).get("configuracion")
+            if not config:
+                raise HTTPException(status_code=404, detail="No hay un armado en esta conversación.")
+            try:
+                nueva = armado.poner_componente(
+                    config, pedido.lugar, pedido.codigo, el_cliente(), armado.cantidad(config, pedido.lugar)
+                )
+            except armado.ErrorArmado as e:
+                raise HTTPException(status_code=400, detail=str(e)) from e
+            ag.update_state(cfg, {"configuracion": nueva})
+            return {"armado": armado_publico(nueva)}
+        finally:
+            with candado:
+                ocupadas.discard(conversacion_id)
+
+    @app.post("/conversaciones/{conversacion_id}/armado/confirmar", dependencies=[Depends(verificar_clave)])
+    def confirmar_armado(conversacion_id: str) -> Response:
+        _validar_conversacion_id(conversacion_id)
+        with candado:
+            if conversacion_id in ocupadas:
+                raise HTTPException(status_code=409, detail="Esa conversación ya tiene una respuesta en curso.")
+            ocupadas.add(conversacion_id)
+        try:
+            ag = el_agente()
+            cfg = config_de(conversacion_id)
+            config = saved_state(cfg, ag).get("configuracion")
+            if not config:
+                raise HTTPException(status_code=404, detail="No hay un armado en esta conversación.")
+            if motivos := armado.motivos_para_no_confirmar(config):
+                raise HTTPException(status_code=409, detail={"motivos": motivos})
+            resultado = armado.confirmar_pedido(config, el_cliente(), el_destino_pedidos(), referencia=conversacion_id)
+            ag.update_state(cfg, {"configuracion": resultado["configuracion"]})
+            if not resultado["confirmado"]:
+                raise HTTPException(
+                    status_code=409,
+                    detail={"motivos": resultado["motivos"], "armado": armado_publico(resultado["configuracion"])},
+                )
+            referencia = resultado["pedido"]
+            pdf = pdf_del_presupuesto(datos_del_presupuesto(resultado["configuracion"], referencia))
+            return Response(
+                content=pdf,
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f"attachment; filename=presupuesto-{referencia}.pdf",
+                    "X-Pedido-Referencia": referencia,
+                },
+            )
+        finally:
+            with candado:
+                ocupadas.discard(conversacion_id)
 
     return app
 

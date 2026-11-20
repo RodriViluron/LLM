@@ -90,6 +90,7 @@ const ERROR_DE_RED = "No pude conectarme con el asistente. Revisá tu conexión 
 export function useChatAgente(endpoint: string) {
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const [armadoGuardado, setArmadoGuardado] = useState<Armado | null>(null);
+  const [conversacionId, setConversacionId] = useState<string | null>(null);
   const [respondiendo, setRespondiendo] = useState(false);
   const [recuperando, setRecuperando] = useState(false);
   const conversacion = useRef<string | null>(null);
@@ -105,6 +106,22 @@ export function useChatAgente(endpoint: string) {
     });
   }, []);
 
+  /** Refleja en el estado local del chat un armado actualizado por clic en Cambiar/Confirmar. */
+  const actualizarArmado = useCallback((armado: Armado | null) => {
+    setTurnos((actuales) => {
+      const indice = [...actuales].reverse().findIndex((t) => t.items.some((i) => i.tipo === "armado"));
+      if (indice === -1) {
+        setArmadoGuardado(armado);
+        return actuales;
+      }
+      const posTurno = actuales.length - 1 - indice;
+      const copia = actuales.slice();
+      const turno = copia[posTurno];
+      copia[posTurno] = { ...turno, items: aplicarEvento(turno.items, { tipo: "armado", visibilidad: "mostrar", armado }) };
+      return copia;
+    });
+  }, []);
+
   /** Al abrir el chat por primera vez, trae lo que ya se había conversado. */
   const recuperar = useCallback(async () => {
     if (recuperada.current) return;
@@ -112,6 +129,7 @@ export function useChatAgente(endpoint: string) {
     const id = leerConversacionGuardada();
     if (!id) return;
     conversacion.current = id;
+    setConversacionId(id);
     setRecuperando(true);
     try {
       const respuesta = await fetch(`${endpoint}/conversaciones/${encodeURIComponent(id)}`, { cache: "no-store" });
@@ -177,6 +195,7 @@ export function useChatAgente(endpoint: string) {
         for await (const evento of leerEventos(respuesta.body)) {
           if (evento.tipo === "inicio") {
             conversacion.current = evento.conversacion_id;
+            setConversacionId(evento.conversacion_id);
             guardarConversacion(evento.conversacion_id);
           } else if (evento.tipo === "estado") {
             actualizarUltimo((turno) => ({ ...turno, estado: evento.texto }));
@@ -209,6 +228,7 @@ export function useChatAgente(endpoint: string) {
   const nuevaConversacion = useCallback(() => {
     corte.current?.abort();
     conversacion.current = null;
+    setConversacionId(null);
     guardarConversacion(null);
     setArmadoGuardado(null);
     setTurnos([]);
@@ -216,5 +236,16 @@ export function useChatAgente(endpoint: string) {
 
   useEffect(() => () => corte.current?.abort(), []);
 
-  return { turnos, armadoGuardado, respondiendo, recuperando, enviar, detener, recuperar, nuevaConversacion };
+  return {
+    turnos,
+    armadoGuardado,
+    conversacionId,
+    respondiendo,
+    recuperando,
+    enviar,
+    detener,
+    recuperar,
+    nuevaConversacion,
+    actualizarArmado,
+  };
 }

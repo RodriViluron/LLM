@@ -614,12 +614,18 @@ button.producto:hover {
 }
 
 .piezas li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 7px 0;
+  border-top: 1px solid var(--ca-borde);
+}
+
+.filaPieza {
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr) auto;
   gap: 8px;
   align-items: baseline;
-  padding: 7px 0;
-  border-top: 1px solid var(--ca-borde);
 }
 
 .lugar {
@@ -637,9 +643,70 @@ button.producto:hover {
   overflow-wrap: anywhere;
 }
 
+.precioYAccion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
 .precioPieza {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+}
+
+.cambiar {
+  padding: 2px 8px;
+  border: 1px solid var(--ca-borde);
+  border-radius: 6px;
+  background: transparent;
+  font-size: 11px;
+  color: var(--ca-primario-claro) !important;
+}
+
+.cambiar:hover:not(:disabled) {
+  border-color: var(--ca-primario-claro);
+  background: color-mix(in srgb, var(--ca-primario) 12%, transparent);
+}
+
+.cambiar:disabled {
+  opacity: 0.45;
+}
+
+.selector {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid var(--ca-borde);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ca-texto) 4%, transparent);
+}
+
+.opcionCambio {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  border: 1px solid var(--ca-borde);
+  border-radius: 7px;
+  background: var(--ca-fondo);
+  text-align: left;
+  font-size: 12px;
+}
+
+.opcionCambio:hover:not(:disabled) {
+  border-color: var(--ca-primario-claro);
+  background: color-mix(in srgb, var(--ca-primario) 12%, transparent);
+}
+
+.opcionNombre {
+  font-weight: 600;
+}
+
+.opcionMeta {
+  font-size: 11px;
+  color: var(--ca-texto-suave);
 }
 
 .total {

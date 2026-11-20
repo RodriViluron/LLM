@@ -16,9 +16,9 @@ from servicio import armado_publico, crear_app, eventos_publicos
 from tests.falsos import buscar, llamada, modelo_con, texto
 
 
-def _cliente_http(cliente, *mensajes: AIMessage) -> TestClient:
+def _cliente_http(cliente, *mensajes: AIMessage, pedidos=None) -> TestClient:
     agente = crear_agente(modelo=modelo_con(*mensajes), cliente=cliente, checkpointer=InMemorySaver())
-    return TestClient(crear_app(agente))
+    return TestClient(crear_app(agente, cliente=cliente, pedidos=pedidos))
 
 
 def _eventos(respuesta) -> list[dict]:
@@ -64,14 +64,29 @@ def test_busqueda_emite_estado_productos_y_texto(cliente):
 
 
 def test_armado_emite_el_pedido_para_cargar_en_la_pagina(cliente):
+    from mcp_tienda.armado.entrevista import siguiente
+
     cpu = _codigo(cliente, "cpu")
-    http = _cliente_http(
-        cliente,
-        llamada("iniciar_configuracion", {"presupuesto": 900000, "perfil_uso": "oficina"}, "c1"),
-        buscar("cpu"),
-        llamada("agregar_o_reemplazar_componente", {"lugar": "cpu", "codigo": cpu}, "c2"),
-        texto("Ya puse el procesador."),
+    perfil = siguiente({"uso": "Oficina o estudio", "multitarea": "Lo normal", "archivos": "No tanto", "mejora": "No"})[
+        "perfil"
+    ]
+    memoria = InMemorySaver()
+    agente = crear_agente(
+        modelo=modelo_con(
+            llamada("iniciar_configuracion", {"presupuesto": 900000, "perfil_uso": "oficina"}, "c1"),
+            buscar("cpu"),
+            llamada("agregar_o_reemplazar_componente", {"lugar": "cpu", "codigo": cpu}, "c2"),
+            texto("Ya puse el procesador."),
+            texto("Ya puse el procesador."),
+        ),
+        cliente=cliente,
+        checkpointer=memoria,
     )
+    agente.update_state(
+        {"configurable": {"thread_id": "conv-armado"}},
+        {"entrevista": {"respuestas": {}, "pendiente": None, "perfil": perfil, "presupuesto": 900000}},
+    )
+    http = TestClient(crear_app(agente))
     eventos = _chat(http, "Armame una PC de oficina", "conv-armado")
     armados = [e["armado"] for e in eventos if e["tipo"] == "armado"]
     assert len(armados) == 2 and armados[0]["componentes"] == []
@@ -94,7 +109,7 @@ def test_pregunta_con_opciones_termina_el_turno(cliente):
     # El modelo falso tiene una sola respuesta: si el agente lo volviera a consultar, el turno fallaría.
     http = _cliente_http(
         cliente, llamada("preguntar_al_usuario", {"pregunta": "¿Intel o AMD?", "opciones": ["Intel", "AMD", "AMD "]}))
-    eventos = _chat(http, "Quiero armar una PC")
+    eventos = _chat(http, "Busco un procesador")
     assert [e["tipo"] for e in eventos] == ["inicio", "pregunta", "fin"]
     assert eventos[1] == {"tipo": "pregunta", "visibilidad": "mostrar", "pregunta": "¿Intel o AMD?",
                           "opciones": ["Intel", "AMD"]}
@@ -247,23 +262,19 @@ def test_modelo_no_permitido_rechaza_sin_ejecutar_el_turno(cliente, monkeypatch)
 
 
 def test_siguiente_pregunta_armado_no_emite_estado_ni_pregunta(cliente):
-    """Versión 1 de la entrevista: solo preguntar_al_usuario emite el evento `pregunta` al cliente."""
+    """Solo preguntar_al_usuario emite `pregunta`; al pedir una PC el código inicia la entrevista sin LLM."""
     internos = [
         {"tipo": "llamada", "id": "e1", "nombre": "siguiente_pregunta_armado", "args": {}},
         {"tipo": "resultado", "id": "e1", "texto": "{}", "datos": {"pregunta": "ignorar", "opciones": ["A", "B"]}},
     ]
     assert list(eventos_publicos(internos)) == []
 
-    http = _cliente_http(
-        cliente,
-        llamada("siguiente_pregunta_armado", {}, "e1"),
-        llamada("preguntar_al_usuario", {"pregunta": "¿Para qué la vas a usar?",
-                                         "opciones": ["Oficina o estudio", "Jugar"]}, "p1"),
-    )
+    http = _cliente_http(cliente)   # modelo sin respuestas: demuestra que el inicio lo conduce el código
     eventos = _chat(http, "Quiero armar una PC")
     assert [e["tipo"] for e in eventos] == ["inicio", "pregunta", "fin"]
-    assert eventos[1] == {"tipo": "pregunta", "visibilidad": "mostrar", "pregunta": "¿Para qué la vas a usar?",
-                          "opciones": ["Oficina o estudio", "Jugar"]}
+    assert eventos[1] == {"tipo": "pregunta", "visibilidad": "mostrar",
+                          "pregunta": "¿Para qué la vas a usar principalmente?",
+                          "opciones": ["Oficina o estudio", "Jugar", "Diseño o edición de video", "Programar"]}
 
 
 def test_buscar_pieza_armado_emite_estado_y_productos(cliente):
@@ -290,3 +301,95 @@ def test_buscar_pieza_armado_emite_estado_y_productos(cliente):
     assert all(p["categoria"] == "cpu" for p in eventos[2]["productos"])
     assert set(eventos[2]["productos"][0]) == {"codigo", "nombre", "categoria", "marca", "precio", "stock",
                                                "imagen", "url", "atributos"}
+
+
+def _armado_prueba(cliente, con_stock: bool = False) -> dict:
+    import armado
+
+    piezas = {"cpu": "CPU002", "motherboard": "MOT003", "ram": "RAM003", "gpu": "GPU003",
+              "almacenamiento": "ALM003", "fuente": "FUE006", "gabinete": "GAB004"}
+    config = armado.nueva(presupuesto=2_000_000, perfil_uso="juegos 1080p")
+    for lugar, codigo in piezas.items():
+        config = armado.poner_componente(config, lugar, codigo, cliente)
+    if con_stock:
+        for lugar, prod in list(config["componentes"].items()):
+            if prod["stock"] <= 0:
+                alt = armado.alternativas(config, lugar, cliente)[0]["codigo"]
+                config = armado.poner_componente(config, lugar, alt, cliente)
+    return config
+
+
+def test_alternativas_y_cambiar_actualizan_estado_y_version(cliente, monkeypatch):
+    monkeypatch.setenv("AGENTE_CLAVE", "secreta")
+    memoria = InMemorySaver()
+    agente = crear_agente(modelo=modelo_con(texto("ok")), cliente=cliente, checkpointer=memoria)
+    config_inicial = _armado_prueba(cliente, con_stock=False)
+    agente.update_state({"configurable": {"thread_id": "conv-cambiar"}}, {"configuracion": config_inicial})
+    http = TestClient(crear_app(agente, cliente=cliente))
+
+    assert http.get("/conversaciones/conv-cambiar/armado/alternativas?lugar=gpu").status_code == 401
+    r_alt = http.get(
+        "/conversaciones/conv-cambiar/armado/alternativas?lugar=gpu",
+        headers={"X-Agente-Clave": "secreta"},
+    )
+    assert r_alt.status_code == 200
+    alternativas = r_alt.json()["alternativas"]
+    assert alternativas and all(a["codigo"] != "GPU003" and "descripcion" not in a for a in alternativas)
+    nuevo_codigo = alternativas[0]["codigo"]
+
+    r_err = http.post(
+        "/conversaciones/conv-cambiar/armado/cambiar",
+        json={"lugar": "gpu", "codigo": "NOEXISTE"},
+        headers={"X-Agente-Clave": "secreta"},
+    )
+    assert r_err.status_code == 400 and r_err.json()["detail"]
+
+    r_ok = http.post(
+        "/conversaciones/conv-cambiar/armado/cambiar",
+        json={"lugar": "gpu", "codigo": nuevo_codigo},
+        headers={"X-Agente-Clave": "secreta"},
+    )
+    assert r_ok.status_code == 200
+    armado_resp = r_ok.json()["armado"]
+    assert armado_resp["version"] == config_inicial["version"] + 1
+    assert any(c["lugar"] == "gpu" and c["producto"]["codigo"] == nuevo_codigo for c in armado_resp["componentes"])
+    guardado = agente.get_state({"configurable": {"thread_id": "conv-cambiar"}}).values["configuracion"]
+    assert guardado["version"] == armado_resp["version"]
+    assert guardado["componentes"]["gpu"]["codigo"] == nuevo_codigo
+
+
+def test_confirmar_con_motivos_da_409_y_confirmar_ok_devuelve_pdf(cliente, tmp_path):
+    import armado
+
+    pedidos = armado.PedidosLocales(tmp_path / "pedidos.sqlite")
+    memoria = InMemorySaver()
+    agente = crear_agente(modelo=modelo_con(texto("ok")), cliente=cliente, checkpointer=memoria)
+    http = TestClient(crear_app(agente, cliente=cliente, pedidos=pedidos))
+
+    # Con piezas sin stock no permite confirmar -> 409 con motivos.
+    agente.update_state({"configurable": {"thread_id": "conv-sin-stock"}},
+                        {"configuracion": _armado_prueba(cliente, con_stock=False)})
+    r_409 = http.post("/conversaciones/conv-sin-stock/armado/confirmar")
+    assert r_409.status_code == 409 and r_409.json()["detail"]["motivos"]
+
+    # Armado completo, compatible y con stock -> 200 con PDF y pedido guardado.
+    agente.update_state({"configurable": {"thread_id": "conv-ok"}},
+                        {"configuracion": _armado_prueba(cliente, con_stock=True)})
+    r_ok = http.post("/conversaciones/conv-ok/armado/confirmar")
+    assert r_ok.status_code == 200
+    assert r_ok.headers["content-type"].startswith("application/pdf")
+    assert "presupuesto-P-00001.pdf" in r_ok.headers["content-disposition"]
+    assert r_ok.content.startswith(b"%PDF")
+    assert len(pedidos.listar()) == 1
+
+    # Un segundo clic (o un reintento) sobre el mismo armado no duplica el pedido.
+    r_otra_vez = http.post("/conversaciones/conv-ok/armado/confirmar")
+    assert r_otra_vez.status_code == 200 and "presupuesto-P-00001.pdf" in r_otra_vez.headers["content-disposition"]
+    assert len(pedidos.listar()) == 1
+
+
+def test_no_hay_tools_para_confirmar_ni_generar_pdf(cliente):
+    from tools import crear_tools
+
+    nombres = [t.name.lower() for t in crear_tools(cliente)]
+    assert not [n for n in nombres if "confirm" in n or "pdf" in n]

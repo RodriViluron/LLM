@@ -33,6 +33,7 @@ export default function Pagina() {
   const [recibido, setRecibido] = useState<unknown>(null);
   const [piezas, setPiezas] = useState<Record<string, Pieza>>({});
   const [armado, setArmado] = useState<Armado | null>(null);
+  const [conversacionId, setConversacionId] = useState<string | null>(null);
   const armadoAnterior = useRef<Armado | null>(null);
 
   const alternarTema = () => document.documentElement.classList.toggle("dark");
@@ -112,7 +113,15 @@ export default function Pagina() {
         </p>
 
         <div id="armado">
-          <VistaArmado piezas={piezas} armado={armado} alQuitar={quitar} alConfirmar={alConfirmarArmado} />
+          <VistaArmado
+            piezas={piezas}
+            armado={armado}
+            endpoint="/api/agente"
+            conversacionId={conversacionId}
+            alQuitar={quitar}
+            alActualizarArmado={alCambiarArmado}
+            alConfirmar={alConfirmarArmado}
+          />
         </div>
 
         <section className="recibido">
@@ -122,8 +131,14 @@ export default function Pagina() {
         </section>
       </main>
 
-      <ChatAgente endpoint="/api/agente" onConfirmarArmado={alConfirmarArmado} onVerProducto={alVerProducto}
-        onArmado={alCambiarArmado} />
+      <ChatAgente
+        endpoint="/api/agente"
+        onConfirmarArmado={alConfirmarArmado}
+        onVerProducto={alVerProducto}
+        onArmado={alCambiarArmado}
+        onConversacionId={setConversacionId}
+        armadoExterno={armado}
+      />
     </>
   );
 }

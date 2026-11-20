@@ -26,11 +26,14 @@ from langchain.messages import ToolMessage
 from langchain.tools import ToolRuntime, tool
 from langchain_core.tools import BaseTool
 from langgraph.types import Command
+from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import TypedDict
 
 import armado
 from mcp_tienda.armado import montos
-from mcp_tienda.armado.entrevista import ErrorEntrevista, cantidad_de_ram, filtros_del_perfil
+from mcp_tienda.armado.entrevista import (ErrorEntrevista, UNIDADES_MAX_RAM, cantidad_de_ram, completar_con_pistas,
+                                          con_gama_de_requisitos, filtros_del_perfil, piezas_faltantes,
+                                          pistas_del_mensaje, texto_piezas_faltantes)
 from mcp_tienda.armado.entrevista import siguiente as siguiente_entrevista
 from mcp_tienda.armado.gamas import GAMAS
 from mcp_tienda.armado.requisitos import (buscar_en_catalogo, leer_requisitos, texto_de_catalogo, texto_de_gama,
@@ -63,13 +66,13 @@ def _merge_sources(actuales: list | None, nuevas: list) -> list:
 
 
 def _merge_entrevista(actual: dict | None, nueva: dict) -> dict:
-    """Reducer: si el modelo llama a la entrevista dos veces en un mismo paso, se juntan las respuestas.
+    """Reducer: junta respuestas y conserva metadatos previos (como presupuesto) en el mismo paso.
 
     Sin esto LangGraph rechaza las dos escrituras («Can receive only one value per step»).
     """
     if not actual:
         return nueva
-    return {**nueva, "respuestas": {**(actual.get("respuestas") or {}), **(nueva.get("respuestas") or {})}}
+    return {**actual, **nueva, "respuestas": {**(actual.get("respuestas") or {}), **(nueva.get("respuestas") or {})}}
 
 
 class EstadoTienda(AgentState):
@@ -421,10 +424,17 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
     total se le piden al servidor MCP (ver armado.py).
     """
 
-    def _guardar(runtime: ToolRuntime, config: dict, **extra) -> Command:
+    def _datos_armado(runtime: ToolRuntime, config: dict, incluir_perfil: bool = False, **extra) -> dict:
+        """Resumen del armado para el modelo (opcionalmente con faltantes del perfil, solo dato)."""
+        datos = {"configuracion": armado.resumen(config), **extra}
+        if incluir_perfil and (perfil := (runtime.state.get("entrevista") or {}).get("perfil")):
+            datos["estado_perfil"] = texto_piezas_faltantes(piezas_faltantes(perfil, config))
+        return datos
+
+    def _guardar(runtime: ToolRuntime, config: dict, incluir_perfil: bool = False, **extra) -> Command:
         """Responde con el resumen (para el modelo), manda la configuración completa a la interfaz
         (artifact) y la guarda en el estado."""
-        return _respond(runtime, _json({"configuracion": armado.resumen(config), **extra}),
+        return _respond(runtime, _json(_datos_armado(runtime, config, incluir_perfil=incluir_perfil, **extra)),
                         artifact={"configuracion": config}, configuracion=config)
 
     def _error(runtime: ToolRuntime, mensaje: str) -> Command:
@@ -451,24 +461,54 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
 
     @tool
     def agregar_o_reemplazar_componente(lugar: Slot, codigo: str, runtime: ToolRuntime[Context],
-                                        cantidad: int = 1) -> Command:
+                                        cantidad: int | None = None) -> Command:
         """Pone un producto del catálogo en un lugar del armado; si el lugar estaba ocupado, lo reemplaza.
 
         `lugar` es cpu, motherboard, ram, gpu, almacenamiento, almacenamiento_extra (segundo disco),
         fuente, gabinete o cooler.
         `codigo` es el código de un producto devuelto por buscar_productos.
         `cantidad` son las unidades: solo ram y discos llevan más de una (por ejemplo, 2 módulos de 8 GB).
+        Si en RAM se omite `cantidad` y hay perfil de entrevista, se calcula automáticamente.
         Devuelve la configuración con el total y la compatibilidad ya verificados por la tienda.
         """
         if not codigo_visto(codigo, runtime.state.get("messages", []), runtime.state.get("configuracion"),
                             (runtime.state.get("requisitos") or {}).get("codigos_en_tienda")):
             return _error(runtime, f"El código {codigo} no salió de ninguna búsqueda en esta conversación. "
                                    "Buscalo primero con buscar_productos y usá un código de los resultados.")
+        if cantidad is None:
+            perfil = (runtime.state.get("entrevista") or {}).get("perfil")
+            if lugar == "ram" and perfil is not None:
+                respuesta, datos = cliente.llamar_json("obtener_producto", codigo=codigo)
+                if "error" in respuesta:
+                    return _error(runtime, respuesta["error"])
+                producto = datos["producto"]
+                if producto["categoria"] == categoria_de_lugar(lugar):
+                    capacidad = producto.get("atributos", {}).get("capacidad_gb")
+                    sugerida = cantidad_de_ram(perfil, capacidad)
+                    if sugerida is None:
+                        if capacidad is None:
+                            return _error(
+                                runtime,
+                                f"La memoria {codigo} no informa su capacidad en GB para cubrir los "
+                                f"{perfil['ram_gb']} GB del perfil {perfil['nombre']}.",
+                            )
+                        min_modulo = -(-perfil["ram_gb"] // UNIDADES_MAX_RAM)
+                        return _error(
+                            runtime,
+                            f"Con módulos de {capacidad} GB hacen falta más de {UNIDADES_MAX_RAM} unidades "
+                            f"para llegar a los {perfil['ram_gb']} GB del perfil {perfil['nombre']}: "
+                            f"hace falta un módulo más grande (al menos {min_modulo} GB).",
+                        )
+                    cantidad = sugerida
+                else:
+                    cantidad = 1
+            else:
+                cantidad = 1
         try:
             config = armado.poner_componente(runtime.state.get("configuracion"), lugar, codigo, cliente, cantidad)
         except armado.ErrorArmado as e:
             return _error(runtime, str(e))
-        return _guardar(runtime, config)
+        return _guardar(runtime, config, incluir_perfil=True)
 
     @tool
     def ajustar_presupuesto(runtime: ToolRuntime[Context]) -> Command:
@@ -500,11 +540,19 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
         except armado.ErrorArmado as e:
             return _error(runtime, str(e))
         if verificada is config:
-            return _respond(runtime, _json({"configuracion": armado.resumen(config)}),
+            return _respond(runtime, _json(_datos_armado(runtime, config, incluir_perfil=True)),
                             artifact={"configuracion": config})
-        return _guardar(runtime, verificada)
+        return _guardar(runtime, verificada, incluir_perfil=True)
 
-    @tool
+    class _ArgsSiguientePregunta(BaseModel):
+        # qwen3:4b suele pasar campos inventados (perfil, completa, pregunta, opciones); se ignoran sin fallar.
+        model_config = ConfigDict(extra="ignore")
+        respuesta: str | None = Field(
+            default=None,
+            description="Opción exacta elegida por el usuario. Omitir en la primera llamada.",
+        )
+
+    @tool(args_schema=_ArgsSiguientePregunta)
     def siguiente_pregunta_armado(runtime: ToolRuntime[Context], respuesta: str | None = None) -> Command:
         """Entrevista para armar una PC: dice qué preguntarle al usuario, o da el perfil cuando ya tiene todo.
 
@@ -516,18 +564,51 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
         estado = runtime.state.get("entrevista") or {}
         respuestas = dict(estado.get("respuestas") or {})
         pendiente = estado.get("pendiente")
+        presupuesto = estado.get("presupuesto")
+        presupuesto_motivo = estado.get("presupuesto_motivo")
+        if presupuesto is None and "presupuesto" not in estado:
+            # Si el usuario ya dio el presupuesto en su mensaje inicial, se interpreta por código.
+            for mensaje in reversed(runtime.state.get("messages", [])):
+                if getattr(mensaje, "type", None) == "human":
+                    interpretado = montos.extraer_presupuesto_mensaje(mensaje.text)
+                    if interpretado is not None:
+                        if interpretado.get("monto") is not None:
+                            presupuesto = interpretado["monto"]
+                            presupuesto_motivo = None
+                        else:
+                            presupuesto_motivo = interpretado.get("motivo")
+                        break
+        pistas = estado.get("pistas")
+        if pistas is None:
+            # Lo que el usuario ya dijo en el pedido («para jugar Wukong en 1440p») no se vuelve a
+            # preguntar (paso 15): se lee por código del último mensaje real del usuario.
+            pedido = next((m.text for m in reversed(runtime.state.get("messages", []))
+                           if getattr(m, "type", None) == "human" and not m.text.startswith("[Aviso del sistema]")), "")
+            pistas = pistas_del_mensaje(pedido)
         if respuesta is not None:
             if pendiente is None:
                 return _error(runtime, "No hay ninguna pregunta pendiente: llamala sin respuesta para empezar.")
             respuestas[pendiente] = respuesta
         try:
+            siguiente_entrevista(respuestas)   # valida la respuesta antes de sumar las pistas
+            respuestas = completar_con_pistas(respuestas, pistas)
             resultado = siguiente_entrevista(respuestas)
         except ErrorEntrevista as e:
             return _error(runtime, str(e))   # la respuesta no sirve: el estado no cambia
         if resultado["completa"]:
-            nuevo = {"respuestas": respuestas, "pendiente": None, "perfil": resultado["perfil"]}
+            # Si los requisitos del juego piden más que el perfil, manda la gama de los requisitos.
+            gama_requisitos = (runtime.state.get("requisitos") or {}).get("gama_sugerida")
+            resultado = {**resultado, "perfil": con_gama_de_requisitos(resultado["perfil"], gama_requisitos)}
+            nuevo = {"respuestas": respuestas, "pendiente": None, "perfil": resultado["perfil"],
+                     "presupuesto": presupuesto}
+            if presupuesto is not None:
+                resultado = {**resultado, "presupuesto": presupuesto}
         else:
-            nuevo = {"respuestas": respuestas, "pendiente": resultado["pregunta"]["id"], "perfil": None}
+            nuevo = {"respuestas": respuestas, "pendiente": resultado["pregunta"]["id"], "perfil": None,
+                     "presupuesto": presupuesto}
+        if presupuesto_motivo:
+            nuevo["presupuesto_motivo"] = presupuesto_motivo
+        nuevo["pistas"] = pistas
         return _respond(runtime, _json(resultado), entrevista=nuevo)
 
     @tool
@@ -545,14 +626,18 @@ def crear_tools_armado(cliente: ClienteTienda) -> list[BaseTool]:
         perfil = (runtime.state.get("entrevista") or {}).get("perfil")
         if perfil is None:
             return _error(runtime, "Antes hay que terminar la entrevista: llamá siguiente_pregunta_armado.")
-        if lugar == "gpu" and not perfil["gpu"]:
-            return _error(runtime, "Este perfil no lleva placa de video dedicada: no la busques salvo que la "
-                                   "CPU no tenga video integrado.")
         config = runtime.state.get("configuracion") or {}
+        if lugar == "gpu" and not perfil["gpu"]:
+            video_cpu = (config.get("componentes") or {}).get("cpu", {}).get("atributos", {}).get("video_integrado")
+            if video_cpu != "no":
+                return _error(runtime, "Este perfil no lleva placa de video dedicada: no la busques salvo que la "
+                                       "CPU no tenga video integrado.")
+        texto = sin_socket(texto)
         filtros = filtros_del_perfil(lugar, perfil)
+        gama = None if (lugar == "gpu" and not perfil["gpu"]) else filtros.get("gama")
         respuesta, datos = cliente.llamar_json(
             "buscar_productos", categoria=categoria_de_lugar(lugar), texto=texto, precio_max=precio_max,
-            atributos=filtros["atributos"] or None, gama=filtros.get("gama"),
+            atributos=filtros["atributos"] or None, gama=gama,
             compatible_con=armado.codigos(config) or None, para_lugar=lugar,
             cantidades=armado.cantidades(config) or None, limite=min(max(limite, 1), 20))
         if "error" in respuesta:
@@ -605,23 +690,55 @@ def _gama_de(opcion: str) -> str | None:
     return nombradas[0] if len(nombradas) == 1 else None
 
 
+# Sockets escritos en el texto de búsqueda («LGA1700», «socket AM5», «1700»). El catálogo los escribe de
+# muchas formas y la búsqueda de texto no los encuentra: en el armado la compatibilidad ya la filtra
+# compatible_con (Fortnite, paso 13: «LGA1700» devolvía 0 placas porque el catálogo dice «1700»).
+_SOCKET_EN_TEXTO = re.compile(
+    r"\b(?:socket\s+)?(?:lga\s?-?\d{3,4}|am[45]\+?|fm2\+?|775|115[01560]|1200|1700|1851)\b", re.IGNORECASE)
+
+
+def sin_socket(texto: str | None) -> str | None:
+    """El texto de búsqueda sin sockets; None si no queda nada."""
+    if not texto:
+        return texto
+    limpio = " ".join(_SOCKET_EN_TEXTO.sub(" ", texto).split())
+    return limpio or None
+
+
 def es_pregunta_de_gamas(opciones: list[str]) -> bool:
     """True si las opciones nombran al menos dos gamas distintas."""
     return len({_gama_de(o) for o in opciones} - {None}) >= 2
 
 
-def aviso_sin_datos(pregunta: str, opciones: list[str], requisitos: dict | None) -> str:
-    """Si se pregunta la gama porque los requisitos no están en la tabla, el código lo explica (problema 8).
+def aviso_sin_datos(pregunta: str, opciones: list[str], requisitos: dict | None,
+                    entrevista: dict | None = None) -> tuple[str, list[str], dict | None]:
+    """Si los requisitos no están en la tabla, no pregunta la gama: sigue la entrevista o usa el perfil (paso 12).
 
-    El modelo no lo decía (0 de 5 corridas): preguntaba la gama sin contar por qué.
+    Antes avisaba por qué preguntaba la gama; con «sin datos» la gama ahora sale siempre de la entrevista.
     """
     requisitos = requisitos or {}
     if requisitos.get("gama_sugerida") or not requisitos.get("sin_datos") or not es_pregunta_de_gamas(opciones):
-        return pregunta
+        return pregunta, opciones, None
     modelos = requisitos["sin_datos"]
     lista = ", ".join(modelos[:4]) + (", …" if len(modelos) > 4 else "")
-    aviso = f"No pude ubicar estos requisitos en una gama: sus modelos ({lista}) no están en la tabla de referencia."
-    return pregunta if pregunta.startswith("No pude ubicar") else f"{aviso} {pregunta}"
+    entrevista = entrevista or {}
+    if entrevista.get("perfil"):
+        # Con el perfil ya definido, las opciones de gama son la pregunta del presupuesto
+        # («Gama media (cerca de $ …)», regla 15): se deja pasar tal cual.
+        return pregunta, opciones, None
+    respuestas = dict(entrevista.get("respuestas") or {})
+    siguiente = siguiente_entrevista(respuestas)
+    if siguiente["completa"]:
+        perfil = siguiente["perfil"]
+        nueva = {**entrevista, "respuestas": respuestas, "pendiente": None, "perfil": perfil}
+        texto = (f"Los modelos de los requisitos ({lista}) no están en la tabla de referencia; "
+                 f"usamos el perfil definido ({perfil['nombre']}).")
+        return texto, ["Armar la PC"], nueva
+    preg = siguiente["pregunta"]
+    nueva = {**entrevista, "respuestas": respuestas, "pendiente": preg["id"], "perfil": None}
+    texto = (f"No pude ubicar estos requisitos ({lista}) en la tabla de referencia; "
+             f"definimos el equipo según tu uso. {preg['pregunta']}")
+    return texto, list(preg["opciones"]), nueva
 
 
 def marcar_gama_sugerida(opciones: list[str], gama: str | None) -> list[str]:
@@ -648,11 +765,13 @@ def preguntar_al_usuario(pregunta: str, opciones: list[str], runtime: ToolRuntim
     """
     opciones = list(dict.fromkeys(o.strip() for o in opciones if o and o.strip()))[:MAX_OPCIONES]
     requisitos = runtime.state.get("requisitos")
+    entrevista = runtime.state.get("entrevista")
     opciones = marcar_gama_sugerida(opciones, (requisitos or {}).get("gama_sugerida"))
-    pregunta = aviso_sin_datos(pregunta, opciones, requisitos)
+    pregunta, opciones, nueva_entrevista = aviso_sin_datos(pregunta, opciones, requisitos, entrevista)
+    extra = {"entrevista": nueva_entrevista} if nueva_entrevista is not None else {}
     # El texto de la pregunta queda en el historial (así el modelo sabe qué preguntó);
     # la interfaz recibe la pregunta y las opciones en `artifact` y dibuja los botones.
-    return _respond(runtime, pregunta, artifact={"pregunta": pregunta, "opciones": opciones})
+    return _respond(runtime, pregunta, artifact={"pregunta": pregunta, "opciones": opciones}, **extra)
 
 
 # --- Todas las tools ---------------------------------------------------------------

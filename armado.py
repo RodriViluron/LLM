@@ -332,14 +332,27 @@ def confirmar_pedido(config: dict, cliente: ClienteTienda, destino: PedidosLocal
     la configuración actualizada para que la vea y decida de nuevo.
 
     Devuelve {"confirmado", "pedido", "configuracion", "motivos"}.
+
+    Es idempotente: si este mismo armado (mismas piezas, cantidades y total) ya se confirmó, devuelve
+    el pedido existente en vez de cargar otro (dos clics o un reintento no duplican el pedido).
     """
+    previo = config.get("pedido_confirmado") or {}
+    if previo.get("firma") == _firma(config):
+        return {"confirmado": True, "pedido": previo["pedido"], "configuracion": config, "motivos": []}
     fresca = _avanzar(config, verificar(config, cliente), [])
     motivos = motivos_para_no_confirmar(fresca)
     if fresca["total"] != config.get("total"):
         motivos.append(f"El total cambió de {config.get('total')} a {fresca['total']}: revisalo y confirmá de nuevo")
     if motivos:
         return {"confirmado": False, "pedido": None, "configuracion": fresca, "motivos": motivos}
-    return {"confirmado": True, "pedido": destino.enviar(fresca, referencia), "configuracion": fresca, "motivos": []}
+    pedido = destino.enviar(fresca, referencia)
+    fresca = {**fresca, "pedido_confirmado": {"pedido": pedido, "firma": _firma(fresca)}}
+    return {"confirmado": True, "pedido": pedido, "configuracion": fresca, "motivos": []}
+
+
+def _firma(config: dict) -> str:
+    """Identifica un armado por sus piezas, cantidades y total (no por la versión)."""
+    return json.dumps([sorted(codigos(config).items()), sorted(cantidades(config).items()), config.get("total")])
 
 
 # --- Lo que lee el modelo -----------------------------------------------------------

@@ -145,3 +145,205 @@ def filtros_del_perfil(lugar: str, perfil: dict) -> dict:
     elif lugar == "almacenamiento_extra" and perfil["segundo_disco"] and perfil["disco_gb"]:
         filtros["atributos"]["capacidad_gb__min"] = perfil["disco_gb"]
     return filtros
+
+
+def piezas_faltantes(perfil: dict | None, configuracion: dict | None) -> list[dict]:
+    """Qué lugares faltan o quedan cortos respecto al perfil y a lo elegido (sin asumir datos faltantes).
+
+    Devuelve [{"lugar": ..., "motivo": ...}] en orden lógico de armado.
+    """
+    componentes = (configuracion or {}).get("componentes") or {}
+    cantidades = (configuracion or {}).get("cantidades") or {}
+    nombre_perfil = (perfil or {}).get("nombre") or (perfil or {}).get("clave") or "elegido"
+    faltan: list[dict] = []
+
+    if "cpu" not in componentes:
+        faltan.append({"lugar": "cpu", "motivo": "falta el procesador (cpu)"})
+    elif componentes["cpu"].get("atributos", {}).get("incluye_cooler") == "no" and "cooler" not in componentes:
+        faltan.append({"lugar": "cooler", "motivo": "falta el cooler: el procesador elegido no trae cooler"})
+
+    if "motherboard" not in componentes:
+        faltan.append({"lugar": "motherboard", "motivo": "falta la placa madre (motherboard)"})
+
+    ram_min = (perfil or {}).get("ram_gb")
+    if "ram" not in componentes:
+        detalle = f" (el perfil {nombre_perfil} pide al menos {ram_min} GB)" if ram_min else ""
+        faltan.append({"lugar": "ram", "motivo": f"falta la memoria RAM (ram){detalle}"})
+    elif ram_min:
+        capacidad = componentes["ram"].get("atributos", {}).get("capacidad_gb")
+        unidades = cantidades.get("ram", 1)
+        if capacidad is None:
+            faltan.append({
+                "lugar": "ram",
+                "motivo": f"la memoria RAM elegida no informa su capacidad en GB (el perfil {nombre_perfil} pide al menos {ram_min} GB)",
+            })
+        elif capacidad * unidades < ram_min:
+            faltan.append({
+                "lugar": "ram",
+                "motivo": (f"RAM insuficiente: hay {capacidad * unidades} GB ({unidades} × {capacidad} GB) "
+                           f"y el perfil {nombre_perfil} pide al menos {ram_min} GB"),
+            })
+
+    if "almacenamiento" not in componentes:
+        faltan.append({"lugar": "almacenamiento", "motivo": "falta el disco principal (almacenamiento)"})
+
+    if perfil and perfil.get("segundo_disco") and "almacenamiento_extra" not in componentes:
+        min_disco = f" de al menos {perfil['disco_gb']} GB" if perfil.get("disco_gb") else ""
+        faltan.append({
+            "lugar": "almacenamiento_extra",
+            "motivo": f"falta el segundo disco (almacenamiento_extra{min_disco}): el perfil {nombre_perfil} lo pide",
+        })
+
+    if "gpu" not in componentes:
+        if perfil and perfil.get("gpu"):
+            faltan.append({
+                "lugar": "gpu",
+                "motivo": f"falta la GPU dedicada (gpu): el perfil {nombre_perfil} la pide",
+            })
+        elif "cpu" in componentes:
+            video = componentes["cpu"].get("atributos", {}).get("video_integrado")
+            if video == "no":
+                faltan.append({
+                    "lugar": "gpu",
+                    "motivo": "falta la GPU dedicada (gpu): el procesador elegido no tiene gráficos integrados",
+                })
+            elif video is None:
+                # Sin datos no hay afirmación: se avisa, pero no cuenta como pieza que falta (el reintento
+                # de armado_completo no puede resolverlo y buscar_pieza_armado no busca GPU sin motivo).
+                faltan.append({
+                    "lugar": "gpu", "sin_datos": True,
+                    "motivo": "sin datos de gráficos integrados en el procesador elegido: no se sabe si hace falta gpu",
+                })
+
+    if "gabinete" not in componentes:
+        faltan.append({"lugar": "gabinete", "motivo": "falta el gabinete (gabinete)"})
+
+    incluye_fuente = componentes.get("gabinete", {}).get("atributos", {}).get("incluye_fuente") == "si"
+    if not incluye_fuente and "fuente" not in componentes:
+        faltan.append({"lugar": "fuente", "motivo": "falta la fuente de alimentación (fuente)"})
+
+    return faltan
+
+
+def texto_piezas_faltantes(faltantes: list[dict]) -> str:
+    """Resumen en una oración calculado por código (solo dato, sin órdenes)."""
+    faltan = [f for f in faltantes if not f.get("sin_datos")]
+    avisos = [f for f in faltantes if f.get("sin_datos")]
+    texto = ("Faltan: " + "; ".join(f["motivo"] for f in faltan) + ".") if faltan else "Armado completo según el perfil."
+    if avisos:
+        texto += " Aviso: " + "; ".join(f["motivo"] for f in avisos) + "."
+    return texto
+
+
+def faltan_de_verdad(faltantes: list[dict]) -> list[dict]:
+    """Las piezas que faltan, sin los avisos de «sin datos» (esos se informan, no se fuerzan)."""
+    return [f for f in faltantes if not f.get("sin_datos")]
+
+
+# --- Lo que el usuario ya dijo en su pedido (paso 15) --------------------------------------------
+#
+# «Armame una PC para jugar Wukong en 1440p» ya contesta el uso y la pantalla: no se vuelve a
+# preguntar. Las respuestas se leen por código con expresiones regulares (como montos.py) y solo
+# se aceptan las que caen en el camino de la entrevista; lo que no se entiende, se pregunta.
+
+import re  # noqa: E402
+
+from mcp_tienda.armado.gamas import GAMAS  # noqa: E402
+
+_PISTAS = {
+    "uso": [
+        (r"\b(jug\w*|juego\w*|gam(er|ing|ear)|gamea\w*)\b", "Jugar"),
+        (r"\b(edit\w*\s+(de\s+)?videos?|edici[oó]n\s+de\s+videos?|premiere|davinci|after\s+effects)\b",
+         "Diseño o edición de video"),
+        (r"\b(dise[nñ]\w*|photoshop|autocad|illustrator|revit|solidworks|blender)\b", "Diseño o edición de video"),
+        (r"\b(program\w*|desarroll\w*|codear|codigo|código)\b", "Programar"),
+        (r"\b(oficina|estudi\w*|facultad|escuela|colegio|planillas?|excel|word|mails?|navegar)\b",
+         "Oficina o estudio"),
+    ],
+    "monitor": [
+        (r"\b(1080p?|full\s?hd|fhd)\b", "Un monitor común (1080p)"),
+        (r"\b(1440p?|2k|qhd)\b", "Un monitor 2K (1440p)"),
+        (r"\b(4k|2160p?|uhd|televisor|tele|tv)\b", "Un televisor o monitor 4K"),
+    ],
+    "tipo_de_trabajo": [
+        (r"\b(edit\w*\s+(de\s+)?videos?|edici[oó]n\s+de\s+videos?|premiere|davinci|after\s+effects)\b",
+         "Edición de video"),
+        (r"\b(dise[nñ]\w*|photoshop|autocad|illustrator|revit|solidworks)\b", "Diseño (Photoshop, AutoCAD)"),
+    ],
+    "transmitir": [(r"\b(stream\w*|transmit\w*|twitch|youtube)\b", "Sí")],
+    "multitarea": [(r"\b(muchos\s+programas|muchas\s+pesta[nñ]as|multitarea)\b", "Sí, muchos")],
+    "archivos": [(r"\b(muchos\s+(videos|fotos|juegos|archivos)|mucho\s+espacio|disco\s+grande|otro\s+grande|"
+                  r"segundo\s+disco|dos\s+discos)\b", "Sí, muchos")],
+    "mejora": [(r"\b(mejorarla|ampliarla|actualizarla|escalable)\b|\bmejorar\w*\s+m[aá]s\s+adelante\b", "Sí")],
+}
+
+
+def _respuesta_en_texto(id_pregunta: str, texto: str) -> str | None:
+    """La opción que el texto contesta para esa pregunta; None si no dice nada o dice dos cosas."""
+    encontradas = {opcion for patron, opcion in _PISTAS.get(id_pregunta, ())
+                   if re.search(patron, texto, re.IGNORECASE)}
+    return encontradas.pop() if len(encontradas) == 1 else None
+
+
+def pistas_del_mensaje(texto: str) -> dict[str, str]:
+    """{id de pregunta: opción} de todo lo que el texto contesta, esté o no en el camino todavía."""
+    return {id_pregunta: opcion for id_pregunta in _PISTAS
+            if (opcion := _respuesta_en_texto(id_pregunta, texto)) is not None}
+
+
+def completar_con_pistas(respuestas: dict[str, str], pistas: dict[str, str],
+                         entrevista: dict | None = None) -> dict[str, str]:
+    """Agrega las pistas a medida que la entrevista llega a cada pregunta; para en la primera sin pista.
+
+    Se avanza con `siguiente`, así nunca queda una respuesta fuera del camino. Se llama cada vez que
+    el usuario contesta, porque una pista de más adelante («otro disco grande») recién sirve cuando la
+    entrevista llega a esa pregunta.
+    """
+    entrevista = entrevista or cargar_entrevista()
+    respuestas = dict(respuestas)
+    while True:
+        resultado = siguiente(respuestas, entrevista)
+        if resultado["completa"]:
+            return respuestas
+        pregunta = resultado["pregunta"]
+        opcion = pistas.get(pregunta["id"])
+        if opcion is None or opcion not in pregunta["opciones"]:
+            return respuestas
+        respuestas[pregunta["id"]] = opcion
+
+
+def respuestas_del_mensaje(texto: str, entrevista: dict | None = None) -> dict[str, str]:
+    """Respuestas que el pedido ya contesta, en el orden del camino (hasta la primera que falta)."""
+    return completar_con_pistas({}, pistas_del_mensaje(texto), entrevista)
+
+
+# Palabras que pueden seguir a «jugar» sin ser el nombre de un juego («jugar online», «jugar en 4K»).
+_NO_SON_JUEGOS = {
+    "a", "al", "el", "la", "los", "las", "un", "una", "en", "con", "de", "y", "o", "que", "juegos", "jueguitos",
+    "online", "competitivo", "tranqui", "bien", "algo", "cosas", "todo", "varios", "mucho", "poco", "más", "mas",
+    "lo", "tipo", "como", "porque", "pero", "también", "tambien", "sin", "ni", "me", "nos", "y/o", "1080p",
+    "1440p", "4k", "2k", "hd", "full", "fullhd", "alto", "alta", "bajo", "baja", "medio", "media", "calidad",
+}
+_PROGRAMAS = re.compile(r"\b(photoshop|autocad|illustrator|premiere|davinci|after\s+effects|blender|revit|"
+                        r"solidworks|sketchup|unreal|unity|lightroom|3ds\s+max|maya|cinema\s+4d)\b", re.IGNORECASE)
+
+
+def nombra_juego_o_programa(texto: str) -> bool:
+    """True si el pedido nombra un juego o programa concreto («jugar al Wukong», «para AutoCAD»).
+
+    En ese caso conviene buscar primero sus requisitos (regla 13) y recién después entrevistar.
+    """
+    if _PROGRAMAS.search(texto):
+        return True
+    for m in re.finditer(r"\bjug(?:ar|ando)\s+((?:\w+\s+){0,2}\w+)", texto, re.IGNORECASE):
+        palabras = [p.lower() for p in m.group(1).split()]
+        if any(p not in _NO_SON_JUEGOS and not p.isdigit() for p in palabras):
+            return True
+    return False
+
+
+def con_gama_de_requisitos(perfil: dict, gama_sugerida: str | None) -> dict:
+    """Si los requisitos del juego piden una gama más alta que el perfil, manda la de los requisitos."""
+    if gama_sugerida not in GAMAS or GAMAS.index(gama_sugerida) <= GAMAS.index(perfil["gama"]):
+        return perfil
+    return {**perfil, "gama": gama_sugerida, "gama_por_requisitos": True}

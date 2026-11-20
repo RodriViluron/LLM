@@ -1,0 +1,252 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6472"/>
+    </marker>
+    <style>
+      .panel { fill: #eef0f3; stroke: none; }
+      .titulo-panel { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; fill: #5b6472; }
+      .tarjeta { fill: #ffffff; stroke: #d4d8de; stroke-width: 1.2; }
+      .codigo { fill: #f1f8f1; stroke: #3c8c3c; stroke-width: 1.6; }
+      .llm { fill: #fdf3e8; stroke: #c77a2a; stroke-width: 1.6; }
+      .dato { fill: #eef3fc; stroke: #4a6db5; stroke-width: 1.4; }
+      .discontinua { stroke-dasharray: 6 4; }
+      .nombre { font-size: 14px; font-weight: 700; fill: #1f2933; }
+      .tipo { font-size: 10px; font-weight: 700; fill: #5b6472; }
+      .texto { font-size: 11.5px; fill: #3e4752; }
+      .fila { fill: #ffffff; stroke: #d4d8de; stroke-width: 1; }
+      .fila-texto { font-size: 11.5px; fill: #1f2933; font-family: Consolas, "Cascadia Mono", monospace; }
+      .linea { fill: none; stroke: #5b6472; stroke-width: 1.5; marker-end: url(#flecha); }
+      .linea-demo { fill: none; stroke: #8a929e; stroke-width: 1.3; stroke-dasharray: 5 4; marker-end: url(#flecha); }
+      .paso { fill: #f2b705; stroke: #ffffff; stroke-width: 2; }
+      .paso-texto { font-size: 12px; font-weight: 700; fill: #1f2933; text-anchor: middle; }
+      .etiqueta { font-size: 10.5px; fill: #5b6472; font-style: italic; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="900" fill="#ffffff"/>
+
+  <!-- ===================== Paneles ===================== -->
+  <rect class="panel" x="20" y="40" width="250" height="640" rx="14"/>
+  <text class="titulo-panel" x="40" y="66">TU PANTALLA</text>
+  <rect class="panel" x="295" y="40" width="345" height="640" rx="14"/>
+  <text class="titulo-panel" x="315" y="66">EL AGENTE</text>
+  <rect class="panel" x="660" y="40" width="330" height="640" rx="14"/>
+  <text class="titulo-panel" x="680" y="66">HERRAMIENTAS</text>
+  <rect class="panel" x="1010" y="40" width="370" height="640" rx="14"/>
+  <text class="titulo-panel" x="1030" y="66">SISTEMA Y DOCUMENTOS</text>
+  <rect class="panel" x="295" y="715" width="1085" height="165" rx="14"/>
+  <text class="titulo-panel" x="315" y="741">MODELOS DE LENGUAJE · LOCALES O POR API</text>
+
+  <!-- ===================== Tu pantalla ===================== -->
+  <rect class="tarjeta" x="40" y="85" width="210" height="125" rx="10"/>
+  <text class="tipo" x="54" y="104">NEXT.JS · LO QUE USA LA TIENDA</text>
+  <text class="nombre" x="54" y="124">Chat web</text>
+  <text class="texto" x="54" y="143">web/components/chat-agente</text>
+  <text class="texto" x="54" y="160">respuesta, botones y tarjetas</text>
+  <text class="texto" x="54" y="177">estados cortos: «Buscando</text>
+  <text class="texto" x="54" y="194">productos…», sin razonamiento</text>
+
+  <rect class="tarjeta" x="40" y="235" width="210" height="110" rx="10"/>
+  <text class="tipo" x="54" y="254">STREAMLIT · LA DEMO</text>
+  <text class="nombre" x="54" y="274">app.py</text>
+  <text class="texto" x="54" y="293">razonamiento y tools a la vista</text>
+  <text class="texto" x="54" y="310">panel «Armá tu PC»</text>
+  <text class="texto" x="54" y="327">Cambiar · Confirmar pedido</text>
+
+  <rect class="tarjeta" x="40" y="370" width="210" height="290" rx="10"/>
+  <text class="nombre" x="54" y="394">Cómo leerlo</text>
+  <rect class="codigo" x="54" y="408" width="16" height="16" rx="3"/>
+  <text class="texto" x="78" y="421">decide el código</text>
+  <rect class="llm" x="54" y="434" width="16" height="16" rx="3"/>
+  <text class="texto" x="78" y="447">modelo de lenguaje</text>
+  <rect class="dato" x="54" y="460" width="16" height="16" rx="3"/>
+  <text class="texto" x="78" y="473">datos y documentos</text>
+  <text class="texto" x="54" y="502">Los números siguen el pedido</text>
+  <text class="texto" x="54" y="519">«Armame una PC para jugar</text>
+  <text class="texto" x="54" y="536">al Wukong en 1080p».</text>
+  <text class="texto" x="54" y="565">El modelo propone;</text>
+  <text class="texto" x="54" y="582">el código verifica precios,</text>
+  <text class="texto" x="54" y="599">stock, compatibilidad y total.</text>
+  <text class="texto" x="54" y="628">El pedido lo confirma siempre</text>
+  <text class="texto" x="54" y="645">el usuario con un clic.</text>
+
+  <!-- ===================== El agente ===================== -->
+  <rect class="tarjeta" x="315" y="85" width="180" height="100" rx="10"/>
+  <text class="tipo" x="329" y="104">FASTAPI · EVENTOS SSE</text>
+  <text class="nombre" x="329" y="124">servicio.py</text>
+  <text class="texto" x="329" y="143">POST /chat</text>
+  <text class="texto" x="329" y="160">/armado/alternativas</text>
+  <text class="texto" x="329" y="177">/cambiar · /confirmar</text>
+
+  <rect class="dato" x="510" y="85" width="110" height="100" rx="10"/>
+  <text class="tipo" x="522" y="104">SQLITESAVER</text>
+  <text class="nombre" x="522" y="124">memoria.db</text>
+  <text class="texto" x="522" y="143">el estado de</text>
+  <text class="texto" x="522" y="160">cada conversación</text>
+
+  <rect class="tarjeta" x="315" y="215" width="305" height="110" rx="10"/>
+  <text class="tipo" x="329" y="234">CREATE_AGENT + LANGGRAPH</text>
+  <text class="nombre" x="329" y="254">agente.py</text>
+  <text class="texto" x="329" y="273">prompt del sistema y stream_turn</text>
+  <text class="texto" x="329" y="290">estado: messages, entrevista,</text>
+  <text class="texto" x="329" y="307">configuracion, requisitos</text>
+
+  <rect class="codigo discontinua" x="315" y="360" width="305" height="160" rx="10"/>
+  <text class="tipo" x="329" y="379">MIDDLEWARES · CÓDIGO ANTES DEL MODELO</text>
+  <text class="fila-texto" x="329" y="401">entrevista_por_codigo</text>
+  <text class="texto" x="329" y="417">  pregunta y avanza sin llamar al LLM</text>
+  <text class="fila-texto" x="329" y="439">armado_completo</text>
+  <text class="texto" x="329" y="455">  exige las piezas que pide el perfil</text>
+  <text class="fila-texto" x="329" y="477">consultar_documentacion_antes</text>
+  <text class="fila-texto" x="329" y="495">sin_acciones_inventadas</text>
+  <text class="fila-texto" x="329" y="513">historial_en_contexto (8192)</text>
+
+  <rect class="llm" x="315" y="555" width="305" height="105" rx="10"/>
+  <text class="tipo" x="329" y="574">ADAPTADOR DE MODELOS</text>
+  <text class="nombre" x="329" y="594">model.py</text>
+  <text class="texto" x="329" y="613">get_model(opción): local o Gemini</text>
+  <text class="texto" x="329" y="630">se cambia de modelo sin perder</text>
+  <text class="texto" x="329" y="647">la conversación</text>
+
+  <!-- ===================== Herramientas ===================== -->
+  <rect class="tarjeta" x="680" y="85" width="290" height="395" rx="10"/>
+  <text class="tipo" x="694" y="104">TOOLS LOCALES</text>
+  <text class="nombre" x="694" y="124">tools.py</text>
+  <rect class="fila" x="694" y="136" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="152">buscar_especificaciones_web</text>
+  <rect class="fila" x="694" y="164" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="180">consultar_caracteristicas</text>
+  <rect class="codigo" x="694" y="192" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="208">siguiente_pregunta_armado</text>
+  <rect class="fila" x="694" y="220" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="236">preguntar_al_usuario</text>
+  <rect class="codigo" x="694" y="248" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="264">validar_presupuesto</text>
+  <rect class="fila" x="694" y="276" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="292">iniciar_configuracion</text>
+  <rect class="fila" x="694" y="304" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="320">buscar_pieza_armado</text>
+  <rect class="fila" x="694" y="332" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="348">agregar_o_reemplazar_componente</text>
+  <rect class="fila" x="694" y="360" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="376">ajustar_presupuesto</text>
+  <rect class="fila" x="694" y="388" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="404">obtener_configuracion</text>
+  <rect class="fila" x="694" y="416" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="432">write_todos · read_todos</text>
+  <rect class="fila" x="694" y="444" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="460">load_skill</text>
+
+  <rect class="codigo" x="680" y="510" width="290" height="150" rx="10"/>
+  <text class="tipo" x="694" y="529">SERVIDOR MCP · SIN LLM</text>
+  <text class="nombre" x="694" y="549">tienda-amn</text>
+  <rect class="fila" x="694" y="561" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="577">buscar_productos</text>
+  <rect class="fila" x="694" y="589" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="605">obtener_producto</text>
+  <rect class="fila" x="694" y="617" width="262" height="24" rx="6"/>
+  <text class="fila-texto" x="704" y="633">verificar_compatibilidad</text>
+
+  <!-- ===================== Sistema y documentos ===================== -->
+  <rect class="dato" x="1030" y="85" width="330" height="55" rx="10"/>
+  <text class="nombre" x="1044" y="107">Tavily</text>
+  <text class="texto" x="1044" y="126">búsqueda web con dominios permitidos y caché</text>
+
+  <rect class="dato" x="1030" y="152" width="330" height="72" rx="10"/>
+  <text class="nombre" x="1044" y="174">rag/docs/ + Chroma</text>
+  <text class="texto" x="1044" y="193">gamas, tabla de CPU y GPU por gama,</text>
+  <text class="texto" x="1044" y="210">compatibilidad y guías de compra</text>
+
+  <rect class="dato" x="1030" y="236" width="330" height="55" rx="10"/>
+  <text class="nombre" x="1044" y="258">datos/entrevista_armado.yaml</text>
+  <text class="texto" x="1044" y="277">preguntas de uso y perfiles</text>
+
+  <rect class="dato" x="1030" y="303" width="330" height="40" rx="10"/>
+  <text class="nombre" x="1044" y="328">skills/armado_pc.md</text>
+
+  <rect class="dato" x="1030" y="355" width="330" height="60" rx="10"/>
+  <text class="nombre" x="1044" y="377">catalogo_real.sqlite</text>
+  <text class="texto" x="1044" y="396">4266 productos · texto (FTS5) y embeddings</text>
+
+  <rect class="codigo" x="1030" y="440" width="330" height="80" rx="10"/>
+  <text class="tipo" x="1044" y="459">OPERACIONES SOBRE EL ARMADO</text>
+  <text class="nombre" x="1044" y="479">armado.py</text>
+  <text class="texto" x="1044" y="498">las mismas para el chat y para los clics</text>
+  <text class="texto" x="1044" y="514">poner, cambiar, ajustar, confirmar</text>
+
+  <rect class="codigo" x="1030" y="555" width="330" height="105" rx="10"/>
+  <text class="tipo" x="1044" y="574">FPDF2</text>
+  <text class="nombre" x="1044" y="594">presupuesto_pdf.py</text>
+  <text class="texto" x="1044" y="613">presupuesto-P-00001.pdf: piezas,</text>
+  <text class="texto" x="1044" y="630">cantidades, total y avisos de</text>
+  <text class="texto" x="1044" y="647">compatibilidad</text>
+
+  <!-- ===================== Modelos ===================== -->
+  <rect class="llm" x="315" y="760" width="300" height="95" rx="10"/>
+  <text class="tipo" x="329" y="779">OLLAMA · LOCAL</text>
+  <text class="nombre" x="329" y="799">qwen3:4b</text>
+  <text class="texto" x="329" y="818">el modelo del chat, en una</text>
+  <text class="texto" x="329" y="835">notebook con 4 GB de VRAM</text>
+
+  <rect class="llm" x="645" y="760" width="300" height="95" rx="10"/>
+  <text class="tipo" x="659" y="779">API · OPCIONAL</text>
+  <text class="nombre" x="659" y="799">Gemini</text>
+  <text class="texto" x="659" y="818">si están GOOGLE_API_KEY</text>
+  <text class="texto" x="659" y="835">y GEMINI_MODEL en el .env</text>
+
+  <rect class="llm" x="975" y="760" width="385" height="95" rx="10"/>
+  <text class="tipo" x="989" y="779">OLLAMA · CPU</text>
+  <text class="nombre" x="989" y="799">bge-m3</text>
+  <text class="texto" x="989" y="818">embeddings del RAG y de la búsqueda</text>
+  <text class="texto" x="989" y="835">semántica, locales aunque el chat use Gemini</text>
+
+  <!-- ===================== Flechas ===================== -->
+  <!-- 1: el cliente escribe -->
+  <path class="linea" d="M250,115 L315,115"/>
+  <!-- 6: tarjetas y estados de vuelta a la pantalla -->
+  <path class="linea" d="M315,165 L250,165"/>
+  <!-- demo: Streamlit habla directo con el agente -->
+  <path class="linea-demo" d="M250,290 L315,290"/>
+  <!-- servicio -> agente, memoria <-> agente -->
+  <path class="linea" d="M405,185 L405,215"/>
+  <path class="linea" d="M565,185 L565,215" marker-start="url(#flecha)"/>
+  <!-- agente -> middlewares -->
+  <path class="linea" d="M405,325 L405,360"/>
+  <!-- agente -> model.py (por la izquierda) -->
+  <path class="linea" d="M315,300 L305,300 L305,607 L315,607"/>
+  <!-- model.py -> modelos -->
+  <path class="linea" d="M465,660 L465,760"/>
+  <path class="linea-demo" d="M590,660 L590,700 L795,700 L795,760"/>
+  <!-- 4: el modelo propone (tool calls) -->
+  <path class="linea" d="M620,265 L680,265"/>
+  <!-- 3: la entrevista y la búsqueda de requisitos las lanza el código -->
+  <path class="linea" d="M620,410 L650,410 L650,204 L694,204"/>
+  <!-- tools -> sistema y documentos -->
+  <path class="linea" d="M956,148 L995,148 L995,112 L1030,112"/>
+  <path class="linea" d="M956,176 L1005,176 L1005,188 L1030,188"/>
+  <path class="linea" d="M956,204 L1012,204 L1012,263 L1030,263"/>
+  <path class="linea" d="M956,456 L985,456 L985,323 L1030,323"/>
+  <!-- armado tools -> MCP -->
+  <path class="linea" d="M825,480 L825,510"/>
+  <!-- 5: el código verifica en el catálogo -->
+  <path class="linea" d="M970,585 L1000,585 L1000,385 L1030,385"/>
+  <!-- armado tools -> armado.py -->
+  <path class="linea" d="M956,344 L978,344 L978,470 L1030,470"/>
+  <!-- 7: clic en Cambiar o Confirmar, sin LLM -->
+  <path class="linea" d="M455,85 L455,24 L1370,24 L1370,480 L1360,480"/>
+  <!-- armado.py -> PDF -->
+  <path class="linea" d="M1195,520 L1195,555"/>
+  <!-- RAG con bge-m3 -->
+  <path class="linea-demo" d="M1360,188 L1388,188 L1388,700 L1167,700 L1167,760"/>
+
+  <!-- ===================== Pasos numerados ===================== -->
+  <circle class="paso" cx="282" cy="115" r="11"/><text class="paso-texto" x="282" y="119">1</text>
+  <circle class="paso" cx="425" cy="342" r="11"/><text class="paso-texto" x="425" y="346">2</text>
+  <circle class="paso" cx="650" cy="300" r="11"/><text class="paso-texto" x="650" y="304">3</text>
+  <circle class="paso" cx="650" cy="250" r="11"/><text class="paso-texto" x="650" y="254">4</text>
+  <circle class="paso" cx="1000" cy="485" r="11"/><text class="paso-texto" x="1000" y="489">5</text>
+  <circle class="paso" cx="282" cy="165" r="11"/><text class="paso-texto" x="282" y="169">6</text>
+  <circle class="paso" cx="900" cy="24" r="11"/><text class="paso-texto" x="900" y="28">7</text>
+  <text class="etiqueta" x="915" y="18">clic en Cambiar o Confirmar: va directo a armado.py, sin el modelo</text>
+</svg>

@@ -88,6 +88,43 @@ def interpretar_monto(texto: str) -> dict | None:
     return {"monto": int(round((numero + medio) * multiplicador)), "moneda": "ARS", "motivo": None}
 
 
+# Tokens numéricos de hardware, resolución o modelos que NO representan dinero al leer una frase completa.
+_PATRONES_NO_MONTO = (
+    re.compile(r"\b(?:720|1080|1440|2160)p\b|\b(?:2|4|8)k\b", re.IGNORECASE),
+    re.compile(r"\b\d+(?:[.,]\d+)?\s*(?:gb|tb|mb|ghz|mhz|hz|fps|w|watts?|va|m|metros|cm|mm|pulgadas)\b",
+               re.IGNORECASE),
+    re.compile(r"\b(?:core\s+)?i[3579][-\s]?\d{4,5}[a-z]{0,2}\b", re.IGNORECASE),
+    re.compile(r"\bryzen\s+[3579]\s+\d{4}[a-z0-9]{0,3}\b", re.IGNORECASE),
+    re.compile(r"\bultra\s+[579]\s+\d{3}[a-z]{0,2}\b", re.IGNORECASE),
+    re.compile(r"\b(?:rtx|gtx|gt|rx)\s?\d{3,4}(?:\s?(?:ti|super|xt|xtx))?\b|\barc\s+a\d{3}\b", re.IGNORECASE),
+    re.compile(r"\b(?:ddr[45]|m\.2|pci-?e\s*\d(?:\.\d)?)\b", re.IGNORECASE),
+)
+_PISTA_PRESUPUESTO = re.compile(
+    r"\$|\b(presupuesto|tengo|gast\w*|plata|pesos|guita|dispon\w*|hasta|entre)\b",
+    re.IGNORECASE,
+)
+
+
+def extraer_presupuesto_mensaje(texto: str) -> dict | None:
+    """Interpreta un presupuesto dentro de una frase completa (p. ej. «Armame una PC en 1080p. Tengo 2.800.000»).
+
+    Limpia resoluciones (1080p, 4K) y modelos/unidades técnicos antes de llamar a `interpretar_monto`,
+    y evita tomar números chicos sueltos de títulos («GTA 5») como montos ambiguos si no hay contexto de dinero.
+    """
+    limpio = texto
+    for patron in _PATRONES_NO_MONTO:
+        limpio = patron.sub(" ", limpio)
+    resultado = interpretar_monto(limpio)
+    if resultado is None:
+        return None
+    if resultado.get("monto") is None and resultado.get("ambiguo") and resultado.get("moneda") == "ARS":
+        candidatos = resultado.get("candidatos") or []
+        # Números sueltos sin pista de dinero suelen ser versiones o títulos («GTA 5», «Office 365»).
+        if candidatos and max(candidatos) <= UMBRAL_AMBIGUO * 10 and not _PISTA_PRESUPUESTO.search(texto):
+            return None
+    return resultado
+
+
 def evaluar_presupuesto(monto: int, escala: list[dict]) -> dict:
     """Qué gama entra en el monto, según la escala del reparto (agente.escala_de_presupuesto)."""
     if not escala:

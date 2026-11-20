@@ -32,9 +32,16 @@ def _guion_de_armado():
 @pytest.fixture
 def app(cliente, tmp_path, monkeypatch):
     """La app con un agente de modelo falso, memoria temporal y el servidor MCP de los tests."""
+    from mcp_tienda.armado.entrevista import siguiente
+
+    monkeypatch.setattr(agente, "CONV_FILE", tmp_path / "conversaciones.txt")
     agente_falso = agente.crear_agente(modelo_con(*_guion_de_armado()), cliente,
                                        agente.crear_checkpointer(tmp_path / "memoria.db"))
-    monkeypatch.setattr(agente, "CONV_FILE", tmp_path / "conversaciones.txt")
+    perfil = siguiente({"uso": "Jugar", "monitor": "Un monitor común (1080p)", "transmitir": "No",
+                        "multitarea": "Lo normal", "archivos": "No tanto", "mejora": "No"})["perfil"]
+    agente_falso.update_state(agente.new_thread(), {"entrevista": {
+        "respuestas": {}, "pendiente": None, "perfil": perfil, "presupuesto": 1_200_000,
+    }})
     monkeypatch.setattr(agente, "get_agent", lambda opcion=agente.OPCION_LOCAL: agente_falso)
     monkeypatch.setattr(modulo_cliente, "get_cliente", lambda: cliente)
     monkeypatch.setattr(armado, "DIR_DATOS", tmp_path)   # los pedidos de prueba van a una base temporal
@@ -150,6 +157,9 @@ def test_confirmar_pedido_lo_hace_el_usuario_con_un_clic(app, tmp_path):
     _boton(at, "✅ Confirmar pedido").click().run()
 
     assert any("Pedido P-00001 confirmado" in s.value for s in at.success)
+    nombre_pdf, pdf_bytes = at.session_state.presupuesto_pdf
+    assert nombre_pdf == "presupuesto-P-00001.pdf" and pdf_bytes.startswith(b"%PDF")
+    assert at.get("download_button")
     pedidos = armado.PedidosLocales(tmp_path / "pedidos.sqlite").listar()
     assert len(pedidos) == 1 and pedidos[0]["total"] == config["total"]
     assert pedidos[0]["codigos"] == {s: p["codigo"] for s, p in config["componentes"].items()}

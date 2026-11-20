@@ -14,6 +14,7 @@ import json
 import streamlit as st
 
 import armado
+import presupuesto_pdf
 
 try:
     import agente
@@ -47,6 +48,7 @@ def init_session(config) -> None:
     st.session_state.historial = agente.saved_turns(config)   # lista de (pregunta, eventos)
     st.session_state.cambiando = None                          # lugar cuya pieza se está cambiando
     st.session_state.aviso = None                              # resultado del último clic
+    st.session_state.presupuesto_pdf = None                    # (nombre_archivo, bytes) tras confirmar
 
 
 # --- Chat: igual que el ejemplo de la cátedra, con nuestras tools --------------------
@@ -294,6 +296,7 @@ def selector_de_alternativas(config: dict, lugar: str) -> None:
                     nueva = armado.poner_componente(config, lugar, p["codigo"], modulo_cliente.get_cliente(),
                                                     armado.cantidad(config, lugar))
                     guardar_configuracion(nueva)
+                    st.session_state.presupuesto_pdf = None
                     st.session_state.aviso = ("ok", f"{NOMBRES_LUGAR[lugar]} cambiada por {p['codigo']}.")
                 except armado.ErrorArmado as e:
                     st.session_state.aviso = ("error", str(e))
@@ -314,8 +317,14 @@ def confirmar(config: dict) -> None:
         return
     guardar_configuracion(resultado["configuracion"])
     if resultado["confirmado"]:
-        st.session_state.aviso = ("ok", f"Pedido {resultado['pedido']} confirmado por {pesos(config['total'])}.")
+        referencia = resultado["pedido"]
+        pdf = presupuesto_pdf.pdf_del_presupuesto(
+            presupuesto_pdf.datos_del_presupuesto(resultado["configuracion"], referencia)
+        )
+        st.session_state.presupuesto_pdf = (f"presupuesto-{referencia}.pdf", pdf)
+        st.session_state.aviso = ("ok", f"Pedido {referencia} confirmado por {pesos(config['total'])}.")
     else:
+        st.session_state.presupuesto_pdf = None
         st.session_state.aviso = ("error", "No se confirmó el pedido. " + " · ".join(resultado["motivos"]))
 
 
@@ -376,6 +385,15 @@ def render_panel() -> None:
     if st.button("✅ Confirmar pedido", type="primary", disabled=bool(motivos), use_container_width=True):
         confirmar(config)
         st.rerun()
+    if pdf_guardado := st.session_state.get("presupuesto_pdf"):
+        nombre_pdf, bytes_pdf = pdf_guardado
+        st.download_button(
+            "📄 Descargar presupuesto (PDF)",
+            data=bytes_pdf,
+            file_name=nombre_pdf,
+            mime="application/pdf",
+            use_container_width=True,
+        )
     st.caption("El pedido lo confirmás vos con este botón: el asistente no puede confirmarlo.")
 
 
@@ -417,6 +435,7 @@ if prompt := (st.session_state.pop("enviado", None) or entrada):
 
     st.session_state.historial.append((prompt, eventos))
     st.session_state.aviso = None
+    st.session_state.presupuesto_pdf = None
     st.rerun()   # redibuja todo desde session_state (y el panel, con el estado nuevo)
 
 with columna_panel:

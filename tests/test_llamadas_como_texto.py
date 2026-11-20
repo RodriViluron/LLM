@@ -88,7 +88,7 @@ def test_middleware_reintenta_una_vez_y_ejecuta_la_tool(cliente, tmp_path):
     ]))
     agente = crear_agente(modelo, cliente, crear_checkpointer(tmp_path / "memoria.db"))
     config = new_thread()
-    list(stream_turn("Armame una PC", config, 1, agente))
+    list(stream_turn("Planificá una compra de periféricos", config, 1, agente))
 
     assert len(modelo.recibidos) == 3
     assert "tool calling" in modelo.recibidos[1][-1].text
@@ -102,7 +102,7 @@ def test_middleware_reintenta_una_sola_vez_si_insiste(cliente, tmp_path):
     modelo = ModeloQueAnota(messages=iter([texto(json_suelto), texto(json_suelto)]))
     agente = crear_agente(modelo, cliente, crear_checkpointer(tmp_path / "memoria.db"))
     config = new_thread()
-    list(stream_turn("Armame una PC", config, 1, agente))
+    list(stream_turn("Planificá una compra de periféricos", config, 1, agente))
     assert len(modelo.recibidos) == 2
     assert saved_state(config, agente)["messages"][-1].text == json_suelto
 

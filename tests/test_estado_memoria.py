@@ -33,7 +33,7 @@ def test_los_todos_y_los_mensajes_sobreviven_a_reabrir_la_memoria(cliente, tmp_p
     # Turno 1: el agente escribe el plan. Lo ejecuta una «sesión» del programa.
     agente_1 = crear_agente(modelo_con(llamada("write_todos", {"todos": TODOS}), texto("Plan armado.")),
                             cliente, crear_checkpointer(ruta))
-    evs = list(stream_turn("Armame una PC", config, 1, agente_1))
+    evs = list(stream_turn("Organizá mi compra de periféricos", config, 1, agente_1))
     assert [e["tipo"] for e in evs] == ["llamada", "resultado", "texto"]
     assert evs[1]["texto"] == "TODOs actualizados (2 items)."
 
@@ -50,7 +50,7 @@ def test_los_todos_y_los_mensajes_sobreviven_a_reabrir_la_memoria(cliente, tmp_p
     assert resultado["texto"] == "[in_progress] Elegir CPU y placa\n[pending] Elegir fuente"
 
     turnos = saved_turns(config, agente_2)
-    assert [pregunta for pregunta, _ in turnos] == ["Armame una PC", "¿Qué falta?"]
+    assert [pregunta for pregunta, _ in turnos] == ["Organizá mi compra de periféricos", "¿Qué falta?"]
     assert [e["tipo"] for e in turnos[1][1]] == ["llamada", "resultado", "texto"]
 
 
@@ -63,7 +63,7 @@ def test_cambiar_de_modelo_en_medio_de_la_conversacion_conserva_el_estado(client
 
     respuesta_a = AIMessage(content="Plan armado.", response_metadata={"model_name": "modelo-a"})
     agente_a = crear_agente(modelo_con(llamada("write_todos", {"todos": TODOS}), respuesta_a), cliente, memoria)
-    evs = list(stream_turn("Armame una PC", config, 1, agente_a))
+    evs = list(stream_turn("Organizá mi compra de periféricos", config, 1, agente_a))
     assert evs[-1] == {"tipo": "texto", "texto": "Plan armado.", "modelo": "modelo-a"}
 
     # Turno 2 con el otro modelo: ve los TODOs y los mensajes que dejó el primero.
@@ -106,14 +106,14 @@ def test_conversaciones_separadas_no_comparten_estado(cliente, tmp_path):
     agente = crear_agente(modelo_con(llamada("write_todos", {"todos": TODOS}), texto("ok"), texto("hola")),
                           cliente, saver)
     conversacion_a = new_thread()
-    list(stream_turn("Armame una PC", conversacion_a, 1, agente))
+    list(stream_turn("Organizá mi compra de periféricos", conversacion_a, 1, agente))
     conversacion_b = new_thread()
     list(stream_turn("Hola", conversacion_b, 1, agente))
 
     assert saved_state(conversacion_a, agente)["todos"] == TODOS
     assert "todos" not in saved_state(conversacion_b, agente)
     # La más reciente primero; el título es el primer mensaje.
-    assert [titulo for _, titulo in list_threads(agente=agente)] == ["Hola", "Armame una PC"]
+    assert [titulo for _, titulo in list_threads(agente=agente)] == ["Hola", "Organizá mi compra de periféricos"]
     # Volver a una conversación anterior la deja como activa.
     select_thread(conversacion_a["configurable"]["thread_id"])
     assert resume_thread() == conversacion_a
@@ -122,7 +122,7 @@ def test_conversaciones_separadas_no_comparten_estado(cliente, tmp_path):
 def test_sin_memoria_cada_invocacion_arranca_de_cero(cliente):
     """Así lo usa la evaluación: un pedido, una conversación."""
     agente = crear_agente(modelo_con(llamada("write_todos", {"todos": TODOS}), texto("ok")), cliente)
-    resultado = agente.invoke({"messages": [("user", "Armame una PC")]}, context=tools.Context(turn=1))
+    resultado = agente.invoke({"messages": [("user", "Organizá mi compra de periféricos")]}, context=tools.Context(turn=1))
     assert resultado["todos"] == TODOS
 
 

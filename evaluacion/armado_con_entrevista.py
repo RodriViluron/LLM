@@ -22,6 +22,7 @@ from pathlib import Path
 import armado
 from agente import (afirmaciones_sin_respaldo, crear_agente, crear_checkpointer, llamadas_a_tools, new_thread,
                     saved_state, stream_turn)
+from mcp_tienda.armado.entrevista import faltan_de_verdad, piezas_faltantes
 from mcp_tienda.cliente import ClienteTienda
 from mcp_tienda.config import RAIZ, ruta_catalogo_db
 from model import get_model
@@ -106,6 +107,7 @@ def correr(pedido: dict, semilla: int, cliente: ClienteTienda, carpeta: Path) ->
     inicio = time.perf_counter()
     mensaje, turnos, error = pedido["pedido"], 0, None
     preguntas_de_gama = 0
+    turno_fin_entrevista = None
     while turnos < TURNOS_MAXIMOS:
         turnos += 1
         try:
@@ -115,6 +117,8 @@ def correr(pedido: dict, semilla: int, cliente: ClienteTienda, carpeta: Path) ->
             error = f"{type(e).__name__}: {e}"[:300]
             break
         estado = saved_state(config, agente)
+        if turno_fin_entrevista is None and (estado.get("entrevista") or {}).get("perfil"):
+            turno_fin_entrevista = turnos
         mensajes = estado.get("messages", [])
         ultima = _ultima_pregunta(mensajes)
         # Pregunta de gama o de uso por fuera de la entrevista. Las del presupuesto traen «(cerca de» en
@@ -134,19 +138,31 @@ def correr(pedido: dict, semilla: int, cliente: ClienteTienda, carpeta: Path) ->
     llamadas = llamadas_a_tools(mensajes)
     perfil = (estado.get("entrevista") or {}).get("perfil") or {}
     presupuesto = configuracion.get("presupuesto")
+    componentes = configuracion.get("componentes") or {}
+    faltan_perfil = [f["motivo"] for f in faltan_de_verdad(piezas_faltantes(perfil, configuracion))] if perfil else ["sin perfil"]
+    cumple_perfil = bool(perfil) and bool(componentes) and not faltan_perfil
+    ram_comp = componentes.get("ram")
+    ram_cap = (ram_comp.get("atributos") or {}).get("capacidad_gb") if ram_comp else None
+    ram_total_gb = ram_cap * armado.cantidad(configuracion, "ram") if ram_cap is not None else None
+    turnos_entrevista = (turno_fin_entrevista - 1) if turno_fin_entrevista else turnos
+    turnos_armado = turnos - turnos_entrevista
     return {
         "pedido": pedido["pedido"], "semilla": semilla, "turnos": turnos, "error": error,
+        "turnos_entrevista": turnos_entrevista, "turnos_armado": turnos_armado,
         "entrevista_completa": bool(perfil),
         "perfil": perfil.get("clave"), "perfil_esperado": pedido["perfil"],
         "perfil_correcto": perfil.get("clave") == pedido["perfil"],
+        "cumple_perfil": cumple_perfil, "faltan_perfil": faltan_perfil,
+        "ram_total_gb": ram_total_gb, "tiene_gpu": "gpu" in componentes,
+        "tiene_segundo_disco": "almacenamiento_extra" in componentes,
         "preguntas_de_gama": preguntas_de_gama,
-        "piezas": sorted(configuracion.get("componentes", {})),
+        "piezas": sorted(componentes),
         "faltan": armado.faltantes(configuracion) if configuracion else ["sin armado"],
         "estado": reporte.get("estado_general", "sin_verificar"),
         "criticas_sin_datos": [r["regla"] for r in reporte.get("resultados", [])
                                if r["estado"] == "sin_datos" and r.get("critica", True)
                                and not r["detalle"].startswith("Falta elegir")],
-        "se_puede_confirmar": bool(configuracion.get("componentes")) and not armado.motivos_para_no_confirmar(configuracion),
+        "se_puede_confirmar": bool(componentes) and not armado.motivos_para_no_confirmar(configuracion),
         "dentro_del_presupuesto": None if presupuesto is None else configuracion.get("total", 0) <= presupuesto,
         "total": configuracion.get("total"), "presupuesto": presupuesto,
         "llamadas": len(llamadas), "llamadas_con_error": sum(ll["error"] for ll in llamadas),
@@ -165,6 +181,7 @@ def resumir(corridas: list[dict]) -> dict:
         "perfil_correcto": sum(c["perfil_correcto"] for c in corridas),
         "preguntas_de_gama": sum(c["preguntas_de_gama"] for c in corridas),
         "completas": sum(not c["faltan"] for c in corridas),
+        "cumplen_perfil": sum(bool(c.get("cumple_perfil")) for c in corridas),
         "se_pueden_confirmar": sum(c["se_puede_confirmar"] for c in corridas),
         "dentro_del_presupuesto": sum(bool(c["dentro_del_presupuesto"]) for c in corridas),
         "con_criticas_sin_datos": sum(bool(c["criticas_sin_datos"]) for c in corridas),

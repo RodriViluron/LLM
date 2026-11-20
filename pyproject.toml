@@ -21,6 +21,7 @@ dependencies = [
     "langchain-mcp-adapters>=0.3",
     "fastapi>=0.115",
     "langchain-google-genai>=4.5.1",
+    "fpdf2>=2.9.0",
 ]
 
 [dependency-groups]

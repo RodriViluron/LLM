@@ -194,5 +194,5 @@ def texto_de_gama(ubicados: dict) -> str:
     else:
         faltan = ", ".join(dict.fromkeys(m for m, g in modelos if g is None))
         lineas.append(f"Gama sugerida: sin datos. Estos modelos no están en la tabla de gamas: {faltan}. "
-                      "Decíselo al usuario; no la adivines. Preguntale qué gama quiere.")
+                      "Decíselo al usuario; no la adivines y no preguntes la gama: seguí la entrevista y usá la gama del perfil.")
     return "\n".join(lineas)

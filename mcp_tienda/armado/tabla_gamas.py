@@ -23,7 +23,7 @@ import sqlite3
 from datetime import date
 from pathlib import Path
 
-from mcp_tienda.armado.gamas import GAMAS, clasificar_gama, ruta_tabla
+from mcp_tienda.armado.gamas import GAMAS, _normalizar, clasificar_gama, ruta_tabla
 from mcp_tienda.config import RAIZ
 
 # Qué CPU y GPU entran en cada gama, según rag/docs/gamas.md. Las expresiones se aplican al nombre del
@@ -167,6 +167,10 @@ def _tabla_md(filas: list[dict]) -> list[str]:
 def escribir_documento(ruta: Path, filas: list[dict], pendientes: list[dict], fecha: str | None = None) -> None:
     """Escribe el documento. Conserva la sección manual y la pone al final, para que mande."""
     manual = _seccion_manual(ruta)
+    # Un pendiente que el grupo ya decidió en la sección manual deja de figurar como pendiente.
+    decididos = {(c[0].lower(), _normalizar(c[1])) for linea in manual.splitlines() if linea.startswith("|")
+                 for c in [[x.strip() for x in linea.strip("|").split("|")]] if len(c) >= 3}
+    pendientes = [p for p in pendientes if (p["componente"], _normalizar(p["modelo"])) not in decididos]
     fecha = fecha or date.today().isoformat()
     titulos = {"cpu": "Procesadores (CPU)", "gpu": "Placas de video (GPU)"}
     lineas = [

@@ -11,6 +11,13 @@
 import { type FormEvent, type KeyboardEvent, type ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 
 import estilos from "./ChatAgente.module.css";
+import {
+  ErrorConfirmacion,
+  cambiarPiezaArmado,
+  confirmarArmadoPdf,
+  descargarBlobPdf,
+  pedirAlternativasArmado,
+} from "./armadoApi";
 import type { Armado, Fuente, Item, ItemPedido, OpcionModelo, Producto, Turno } from "./tipos";
 import { useChatAgente } from "./useChatAgente";
 
@@ -32,9 +39,9 @@ export type PropsChatAgente = {
   sugerencias?: string[];
   /** Muestra el aviso de lo que el agente está haciendo («Pensando…», «Buscando productos…», «Buscando en internet…»). */
   mostrarEstados?: boolean;
-  /** Texto del botón del armado. El botón solo aparece si se pasa `onConfirmarArmado`. */
+  /** Texto del botón confirmar del armado (por defecto «Confirmar pedido»). */
   textoConfirmar?: string;
-  /** El usuario pidió cargar el armado: la página lo lleva a «Armá tu PC» o al carrito. */
+  /** Callback opcional cuando se confirma un pedido (recibe pedido y armado además de descargar el PDF). */
   onConfirmarArmado?: (pedido: ItemPedido[], armado: Armado) => void;
   /** El usuario tocó un producto: la página decide adónde lo lleva. */
   onVerProducto?: (producto: Producto) => void;
@@ -44,6 +51,10 @@ export type PropsChatAgente = {
    * muestre el armado en vivo, por ejemplo en «Armá tu PC». No confirma nada.
    */
   onArmado?: (armado: Armado | null) => void;
+  /** Avisa a la página qué `conversacion_id` está activo (para sincronizar Cambiar/Confirmar externos). */
+  onConversacionId?: (conversacionId: string | null) => void;
+  /** Armado actualizado desde fuera del componente (p. ej. al cambiar una pieza desde «Armá tu PC»). */
+  armadoExterno?: Armado | null;
   abiertoInicial?: boolean;
   /** Solo desarrollo: muestra el selector de modelo (por defecto según NEXT_PUBLIC_MODO_DESARROLLO). En producción no aparece. */
   modoDesarrollo?: boolean;
@@ -269,13 +280,112 @@ function ListaProductos({ productos, alTocar }: {
   );
 }
 
-function TarjetaArmado({ armado, vigente, textoConfirmar, alConfirmar }: {
-  armado: Armado; vigente: boolean; textoConfirmar: string;
+function TarjetaArmado({
+  armado,
+  vigente,
+  textoConfirmar,
+  endpoint,
+  conversacionId,
+  bloqueado,
+  alConfirmar,
+  alActualizarArmado,
+}: {
+  armado: Armado;
+  vigente: boolean;
+  textoConfirmar: string;
+  endpoint: string;
+  conversacionId: string | null;
+  bloqueado: boolean;
   alConfirmar?: (pedido: ItemPedido[], armado: Armado) => void;
+  alActualizarArmado: (armado: Armado) => void;
 }) {
+  const [editandoLugar, setEditandoLugar] = useState<string | null>(null);
+  const [cargandoAlt, setCargandoAlt] = useState(false);
+  const [alternativas, setAlternativas] = useState<Producto[]>([]);
+  const [estadoAccion, setEstadoAccion] = useState<string | null>(null);
+  const [errorAccion, setErrorAccion] = useState<string | null>(null);
+  const [motivosConfirmar, setMotivosConfirmar] = useState<string[]>([]);
+  const [avisoOk, setAvisoOk] = useState<string | null>(null);
+
+  useEffect(() => {
+    setEditandoLugar(null);
+    setAlternativas([]);
+    setErrorAccion(null);
+    setMotivosConfirmar([]);
+  }, [armado.version]);
+
+  const abrirCambiar = async (lugar: string) => {
+    if (!conversacionId) return;
+    if (editandoLugar === lugar) {
+      setEditandoLugar(null);
+      setAlternativas([]);
+      return;
+    }
+    setEditandoLugar(lugar);
+    setCargandoAlt(true);
+    setErrorAccion(null);
+    setAvisoOk(null);
+    try {
+      setAlternativas(await pedirAlternativasArmado(endpoint, conversacionId, lugar));
+    } catch (e) {
+      setErrorAccion(e instanceof Error ? e.message : "No se pudieron buscar alternativas.");
+      setEditandoLugar(null);
+    } finally {
+      setCargandoAlt(false);
+    }
+  };
+
+  const elegirAlternativa = async (lugar: string, codigo: string) => {
+    if (!conversacionId) return;
+    setEstadoAccion("Cambiando pieza…");
+    setErrorAccion(null);
+    setAvisoOk(null);
+    setMotivosConfirmar([]);
+    try {
+      const actualizado = await cambiarPiezaArmado(endpoint, conversacionId, lugar, codigo);
+      alActualizarArmado(actualizado);
+      setEditandoLugar(null);
+      setAlternativas([]);
+    } catch (e) {
+      setErrorAccion(e instanceof Error ? e.message : "No se pudo cambiar la pieza.");
+    } finally {
+      setEstadoAccion(null);
+    }
+  };
+
+  const confirmarPedido = async () => {
+    if (!conversacionId) {
+      alConfirmar?.(armado.pedido, armado);
+      return;
+    }
+    setEstadoAccion("Generando presupuesto…");
+    setErrorAccion(null);
+    setAvisoOk(null);
+    setMotivosConfirmar([]);
+    try {
+      const { blob, nombreArchivo, referencia } = await confirmarArmadoPdf(endpoint, conversacionId);
+      descargarBlobPdf(blob, nombreArchivo);
+      setAvisoOk(referencia ? `Presupuesto ${referencia} descargado.` : "Presupuesto descargado.");
+      alConfirmar?.(armado.pedido, armado);
+    } catch (e) {
+      if (e instanceof ErrorConfirmacion) {
+        if (e.armado) alActualizarArmado(e.armado);
+        setMotivosConfirmar(e.motivos.length ? e.motivos : [e.message]);
+      } else {
+        setErrorAccion(e instanceof Error ? e.message : "No se pudo confirmar el pedido.");
+      }
+    } finally {
+      setEstadoAccion(null);
+    }
+  };
+
   const compatibilidad = COMPATIBILIDAD[armado.compatibilidad.estado] ?? COMPATIBILIDAD.sin_verificar;
   const pendientes = armado.compatibilidad.reglas.filter((regla) => regla.estado !== "cumple");
   const excedido = armado.dentro_del_presupuesto === false;
+  const ocupado = bloqueado || Boolean(estadoAccion);
+  const puedeAccionar = vigente && Boolean(conversacionId);
+  const mostrarConfirmar = vigente && (Boolean(conversacionId) || Boolean(alConfirmar));
+
   return (
     <div className={estilos.armado}>
       <div className={estilos.armadoCabecera}>
@@ -286,17 +396,46 @@ function TarjetaArmado({ armado, vigente, textoConfirmar, alConfirmar }: {
       <ul className={estilos.piezas}>
         {armado.componentes.map(({ lugar, cantidad, producto }) => (
           <li key={lugar}>
-            <span className={estilos.lugar}>{LUGARES[lugar] ?? lugar}</span>
-            <span className={estilos.nombrePieza}>
-              {cantidad > 1 ? `${cantidad} × ` : ""}{producto.nombre}
-              <span className={estilos.codigo}>
-                {producto.codigo}
-                {cantidad > 1 && producto.precio != null ? ` · ${cantidad} × ${precio(producto.precio)}` : ""}
+            <div className={estilos.filaPieza}>
+              <span className={estilos.lugar}>{LUGARES[lugar] ?? lugar}</span>
+              <span className={estilos.nombrePieza}>
+                {cantidad > 1 ? `${cantidad} × ` : ""}{producto.nombre}
+                <span className={estilos.codigo}>
+                  {producto.codigo}
+                  {cantidad > 1 && producto.precio != null ? ` · ${cantidad} × ${precio(producto.precio)}` : ""}
+                </span>
               </span>
-            </span>
-            <span className={estilos.precioPieza}>
-              {precio(producto.precio != null ? producto.precio * cantidad : null)}
-            </span>
+              <span className={estilos.precioYAccion}>
+                <span className={estilos.precioPieza}>
+                  {precio(producto.precio != null ? producto.precio * cantidad : null)}
+                </span>
+                {puedeAccionar && (
+                  <button type="button" className={estilos.cambiar} disabled={ocupado}
+                    onClick={() => void abrirCambiar(lugar)}>
+                    {editandoLugar === lugar ? "Cerrar" : "Cambiar"}
+                  </button>
+                )}
+              </span>
+            </div>
+            {puedeAccionar && editandoLugar === lugar && (
+              <div className={estilos.selector}>
+                {cargandoAlt ? (
+                  <p className={estilos.nota}>Buscando opciones…</p>
+                ) : alternativas.length === 0 ? (
+                  <p className={estilos.nota}>No hay otras opciones compatibles con stock.</p>
+                ) : (
+                  alternativas.map((alt) => (
+                    <button key={alt.codigo} type="button" className={estilos.opcionCambio} disabled={ocupado}
+                      onClick={() => void elegirAlternativa(lugar, alt.codigo)}>
+                      <span className={estilos.opcionNombre}>{alt.nombre}</span>
+                      <span className={estilos.opcionMeta}>
+                        {precio(alt.precio)} · {alt.stock != null && alt.stock > 0 ? `stock ${alt.stock}` : "sin stock"}
+                      </span>
+                    </button>
+                  ))
+                )}
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -323,14 +462,28 @@ function TarjetaArmado({ armado, vigente, textoConfirmar, alConfirmar }: {
           ))}
         </ul>
       )}
-      {vigente && alConfirmar && (
+      {estadoAccion && (
+        <p className={estilos.estado}>
+          <span className={estilos.puntos} aria-hidden="true"><i /><i /><i /></span>
+          {estadoAccion}
+        </p>
+      )}
+      {errorAccion && <p className={`${estilos.nota} ${estilos.mal}`} role="alert">{errorAccion}</p>}
+      {avisoOk && <p className={`${estilos.nota} ${estilos.bien}`}>{avisoOk}</p>}
+      {motivosConfirmar.length > 0 && (
+        <p className={`${estilos.nota} ${estilos.mal}`} role="alert">
+          No se pudo confirmar: {motivosConfirmar.join(" · ")}
+        </p>
+      )}
+      {mostrarConfirmar && (
         <>
-          <button type="button" className={estilos.confirmar} disabled={!armado.se_puede_confirmar}
-            onClick={() => alConfirmar(armado.pedido, armado)}>
+          <button type="button" className={estilos.confirmar}
+            disabled={!armado.se_puede_confirmar || ocupado}
+            onClick={() => void confirmarPedido()}>
             {textoConfirmar}
           </button>
           {!armado.se_puede_confirmar && armado.motivos_para_no_confirmar.length > 0 && (
-            <p className={estilos.nota}>Todavía no se puede cargar: {armado.motivos_para_no_confirmar.join(" · ")}</p>
+            <p className={estilos.nota}>Todavía no se puede confirmar: {armado.motivos_para_no_confirmar.join(" · ")}</p>
           )}
         </>
       )}
@@ -363,10 +516,12 @@ export function ChatAgente({
   subtitulo = "Todo Computación",
   sugerencias = SUGERENCIAS,
   mostrarEstados = true,
-  textoConfirmar = "Cargar en Armá tu PC",
+  textoConfirmar = "Confirmar pedido",
   onConfirmarArmado,
   onVerProducto,
   onArmado,
+  onConversacionId,
+  armadoExterno,
   abiertoInicial = false,
   modoDesarrollo = MODO_DESARROLLO_ENV,
   modelos = MODELOS_POR_DEFECTO,
@@ -374,8 +529,18 @@ export function ChatAgente({
   const [abierto, setAbierto] = useState(abiertoInicial);
   const [borrador, setBorrador] = useState("");
   const [modelo, setModelo] = useState(modelos[0]?.valor ?? "local");
-  const { turnos, armadoGuardado, respondiendo, recuperando, enviar, detener, recuperar, nuevaConversacion } =
-    useChatAgente(endpoint);
+  const {
+    turnos,
+    armadoGuardado,
+    conversacionId,
+    respondiendo,
+    recuperando,
+    enviar,
+    detener,
+    recuperar,
+    nuevaConversacion,
+    actualizarArmado,
+  } = useChatAgente(endpoint);
   const idPanel = useId();
   const idModelo = useId();
   const lista = useRef<HTMLDivElement>(null);
@@ -396,6 +561,19 @@ export function ChatAgente({
   useEffect(() => {
     avisarArmado.current?.(armadoActual);
   }, [armadoActual]);
+
+  const avisarConversacion = useRef(onConversacionId);
+  avisarConversacion.current = onConversacionId;
+  useEffect(() => {
+    avisarConversacion.current?.(conversacionId);
+  }, [conversacionId]);
+
+  useEffect(() => {
+    if (!armadoExterno) return;
+    if ((armadoExterno.version ?? 0) > (armadoActual?.version ?? 0)) {
+      actualizarArmado(armadoExterno);
+    }
+  }, [armadoExterno, armadoActual?.version, actualizarArmado]);
 
   useEffect(() => {
     if (!abierto) return;
@@ -445,8 +623,17 @@ export function ChatAgente({
         return <ListaProductos key={i} productos={item.productos} alTocar={onVerProducto} />;
       case "armado":
         return (
-          <TarjetaArmado key={i} armado={item.armado} vigente={turno.id === turnoDelArmado}
-            textoConfirmar={textoConfirmar} alConfirmar={onConfirmarArmado} />
+          <TarjetaArmado
+            key={i}
+            armado={item.armado}
+            vigente={turno.id === turnoDelArmado}
+            textoConfirmar={textoConfirmar}
+            endpoint={endpoint}
+            conversacionId={conversacionId}
+            bloqueado={respondiendo}
+            alConfirmar={onConfirmarArmado}
+            alActualizarArmado={actualizarArmado}
+          />
         );
       case "pregunta": {
         const sePuedeResponder = turno === ultimo && !respondiendo;

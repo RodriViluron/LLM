@@ -42,15 +42,21 @@ def _agregar(lugar: str, codigo: str, n: int):
 # --- El caso de CLAUDE.md: dos turnos ---------------------------------------------
 
 def test_segundo_turno_cambia_solo_la_placa_de_video(cliente, catalogo, tmp_path):
+    from mcp_tienda.armado.entrevista import siguiente
+
     ruta = tmp_path / "memoria.db"
     config = new_thread()
 
-    # Turno 1: el modelo inicia el armado y agrega las 7 piezas, de a una.
+    # Turno 1: el modelo inicia el armado y agrega las 7 piezas, de a una (entrevista ya completa).
+    perfil = siguiente({"uso": "Jugar", "monitor": "Un monitor común (1080p)", "transmitir": "No",
+                        "multitarea": "Lo normal", "archivos": "No tanto", "mejora": "No"})["perfil"]
     pasos = [llamada("iniciar_configuracion", {"presupuesto": 1_200_000, "perfil_uso": "juegos 1080p"}, "i")]
     # Por cada pieza, busca y después agrega (solo se aceptan códigos que salieron de una búsqueda).
     for n, (lugar, codigo) in enumerate(ARMADO.items()):
         pasos += [buscar(lugar), _agregar(lugar, codigo, n)]
     agente_1 = crear_agente(modelo_con(*pasos, texto("Listo, te armé la PC.")), cliente, crear_checkpointer(ruta))
+    agente_1.update_state(config, {"entrevista": {"respuestas": {}, "pendiente": None, "perfil": perfil,
+                                                  "presupuesto": 1_200_000}})
     eventos_1 = list(stream_turn("Armame una PC para jugar con $1.200.000", config, 1, agente_1))
 
     antes = saved_state(config, agente_1)["configuracion"]

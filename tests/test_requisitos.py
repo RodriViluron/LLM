@@ -144,7 +144,7 @@ def test_la_gama_sugerida_queda_en_el_estado_y_se_marca_al_preguntar(tmp_path, m
 
 
 def test_sin_datos_la_pregunta_explica_por_que(tmp_path, monkeypatch, cliente):
-    """Si los requisitos no están en la tabla, el código le avisa al usuario antes de preguntar la gama."""
+    """Si los requisitos no están en la tabla, NO pregunta la gama: explica por qué y abre la entrevista."""
     from tests.falsos import llamada
     from tools import Context
 
@@ -154,10 +154,11 @@ def test_sin_datos_la_pregunta_explica_por_que(tmp_path, monkeypatch, cliente):
     assert estado["requisitos"]["gama_sugerida"] is None
     assert estado["requisitos"]["sin_datos"][:2] == ["RTX 2060 Super", "RX 5700"]   # primero los recomendados
     botones = next(m for m in estado["messages"] if m.type == "tool" and m.name == "preguntar_al_usuario").artifact
-    assert botones["pregunta"].startswith("No pude ubicar estos requisitos en una gama: sus modelos (RTX 2060 Super")
-    assert "no están en la tabla de referencia" in botones["pregunta"]
-    assert botones["pregunta"].endswith("¿Qué gama querés?")
-    assert botones["opciones"] == OPCIONES_DE_GAMA
+    assert botones["pregunta"].startswith("No pude ubicar estos requisitos (RTX 2060 Super")
+    assert "en la tabla de referencia" in botones["pregunta"]
+    assert "gama" not in botones["pregunta"].lower()
+    assert botones["opciones"] == ["Oficina o estudio", "Jugar", "Diseño o edición de video", "Programar"]
+    assert estado["entrevista"]["pendiente"] == "uso"
 
 
 def test_otras_preguntas_no_se_tocan(tmp_path, monkeypatch, cliente):
