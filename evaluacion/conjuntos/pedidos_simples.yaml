@@ -1,0 +1,18 @@
+# Pedidos simples de la Fase 0 sobre el catálogo de prueba.
+# `codigos_validos`: productos que resuelven el pedido. Éxito = la respuesta menciona al menos uno
+# y no menciona ningún código inexistente. Si cambia el catálogo de prueba, revisar los códigos.
+
+- pedido: Necesito un cable HDMI de 2 metros
+  codigos_validos: [CAB002]
+
+- pedido: Necesito un cable para conectar la notebook por USB-C a un monitor HDMI
+  codigos_validos: [CAB007]
+
+- pedido: Busco una UPS de por lo menos 1000 VA
+  codigos_validos: [UPS003, UPS004, UPS005, UPS006, UPS007, UPS008]
+
+- pedido: Quiero una fuente de 750 W o más
+  codigos_validos: [FUE007, FUE008, FUE009, FUE010]
+
+- pedido: ¿Tienen algún procesador AM5 de 6 núcleos?
+  codigos_validos: [CPU006, CPU007]

@@ -1,0 +1,56 @@
+[project]
+name = "amn-asistente"
+version = "0.1.0"
+description = "Asistente de compra para tienda.amn.com.ar — Proyecto integrador de Modelos de Lenguaje (UTN FRM, Grupo 10)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "langchain>=1.0",
+    "langchain-ollama>=1.0",
+    "langgraph>=1.0",
+    "langgraph-checkpoint-sqlite>=3.0",
+    "streamlit>=1.40",
+    "langchain-chroma>=1.0",
+    "langchain-text-splitters>=1.0",
+    "langchain-tavily>=0.2",
+    "langchain-openai>=1.0",
+    "mcp>=1.24",
+    "langchain-mcp-adapters>=0.3",
+    "fastapi>=0.115",
+    "langchain-google-genai>=4.5.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[tool.uv]
+# No es un paquete instalable: se corre desde la raíz del repo con `python -m ...`.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "ollama: necesita un servidor Ollama corriendo con el modelo configurado",
+    "embeddings: necesita el modelo de embeddings local",
+    "tavily: necesita TAVILY_API_KEY y conexión",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# El prompt es texto para el modelo: no se corta en líneas.
+"agente.py" = ["E501"]
+# Copiado tal cual del ejemplo de la cátedra.
+"chat_lmstudio.py" = ["B905"]

@@ -1,0 +1,18 @@
+# Esquema de atributos: Cooler de CPU (agregado al esquema de CLAUDE.md porque es un lugar del armado)
+categoria: cooler
+nombre: Cooler
+sinonimos: [cooler, coolers, cooler cpu, refrigeracion, refrigeracion liquida, disipador, disipadores, water cooling]
+atributos:
+  sockets:
+    tipo: lista
+    valores: [AM4, AM5, LGA1200, LGA1700, LGA1851]
+  altura_mm:
+    tipo: entero
+    unidad: mm
+    opcional: true
+  # --- Dato que hoy solo trae el catálogo real de la tienda (lo lee ingesta/formato_amn.py) ---
+  potencia_enfriamiento_w:
+    tipo: entero
+    unidad: W
+    opcional: true
+    descripcion: Calor que puede disipar. Tiene que cubrir el consumo máximo de la CPU.

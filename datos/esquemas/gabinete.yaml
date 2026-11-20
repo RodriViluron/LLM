@@ -1,0 +1,26 @@
+# Esquema de atributos: Gabinete
+categoria: gabinete
+nombre: Gabinete
+sinonimos: [gabinete, gabinetes, case, chasis]
+atributos:
+  formatos_admitidos:
+    tipo: lista
+    valores: [E-ATX, ATX, Micro-ATX, Mini-ITX]
+    descripcion: >
+      Formatos de placa que entran. Un gabinete que admite un formato admite también los más
+      chicos (E-ATX > ATX > Micro-ATX > Mini-ITX), así que se guarda la lista completa.
+  largo_max_gpu_mm:
+    tipo: entero
+    unidad: mm
+    opcional: true
+    descripcion: Largo máximo de placa de video. Agregado al esquema de CLAUDE.md para la regla de largo.
+  # --- Datos que hoy solo trae el catálogo real de la tienda (los lee ingesta/formato_amn.py) ---
+  incluye_fuente:
+    tipo: texto
+    valores: [si, "no"]
+    opcional: true
+  potencia_fuente_w:
+    tipo: entero
+    unidad: W
+    opcional: true
+    descripcion: Potencia de la fuente incluida, si trae.

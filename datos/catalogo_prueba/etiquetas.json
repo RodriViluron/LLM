@@ -1,0 +1,1162 @@
+{
+ "CPU001": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM4",
+   "nucleos": 4,
+   "tdp_w": 65
+  },
+  "omitidos": [
+   "socket",
+   "tdp_w"
+  ]
+ },
+ "CPU002": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM4",
+   "nucleos": 6,
+   "tdp_w": 65
+  },
+  "omitidos": []
+ },
+ "CPU003": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM4",
+   "nucleos": 6,
+   "tdp_w": 65
+  },
+  "omitidos": [
+   "nucleos"
+  ]
+ },
+ "CPU004": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM4",
+   "nucleos": 8,
+   "tdp_w": 65
+  },
+  "omitidos": [
+   "nucleos"
+  ]
+ },
+ "CPU005": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM4",
+   "nucleos": 8,
+   "tdp_w": 105
+  },
+  "omitidos": []
+ },
+ "CPU006": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM5",
+   "nucleos": 6,
+   "tdp_w": 65
+  },
+  "omitidos": []
+ },
+ "CPU007": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM5",
+   "nucleos": 6,
+   "tdp_w": 65
+  },
+  "omitidos": []
+ },
+ "CPU008": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM5",
+   "nucleos": 8,
+   "tdp_w": 105
+  },
+  "omitidos": [
+   "tdp_w"
+  ]
+ },
+ "CPU009": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM5",
+   "nucleos": 8,
+   "tdp_w": 120
+  },
+  "omitidos": []
+ },
+ "CPU010": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "AM5",
+   "nucleos": 12,
+   "tdp_w": 170
+  },
+  "omitidos": []
+ },
+ "CPU011": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "LGA1200",
+   "nucleos": 6,
+   "tdp_w": 65
+  },
+  "omitidos": [
+   "nucleos"
+  ]
+ },
+ "CPU012": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "LGA1700",
+   "nucleos": 4,
+   "tdp_w": 58
+  },
+  "omitidos": []
+ },
+ "CPU013": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "LGA1700",
+   "nucleos": 6,
+   "tdp_w": 65
+  },
+  "omitidos": [
+   "tdp_w"
+  ]
+ },
+ "CPU014": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "LGA1700",
+   "nucleos": 10,
+   "tdp_w": 65
+  },
+  "omitidos": []
+ },
+ "CPU015": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "LGA1700",
+   "nucleos": 14,
+   "tdp_w": 125
+  },
+  "omitidos": [
+   "tdp_w"
+  ]
+ },
+ "CPU016": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "LGA1700",
+   "nucleos": 20,
+   "tdp_w": 125
+  },
+  "omitidos": [
+   "tdp_w"
+  ]
+ },
+ "CPU017": {
+  "categoria": "cpu",
+  "atributos": {
+   "socket": "LGA1851",
+   "nucleos": 14,
+   "tdp_w": 125
+  },
+  "omitidos": []
+ },
+ "MOT001": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM4",
+   "tipo_ram": "DDR4",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": [
+   "socket",
+   "tipo_ram",
+   "formato"
+  ]
+ },
+ "MOT002": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM4",
+   "tipo_ram": "DDR4",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": []
+ },
+ "MOT003": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM4",
+   "tipo_ram": "DDR4",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": [
+   "formato"
+  ]
+ },
+ "MOT004": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM4",
+   "tipo_ram": "DDR4",
+   "formato": "ATX"
+  },
+  "omitidos": []
+ },
+ "MOT005": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM4",
+   "tipo_ram": "DDR4",
+   "formato": "Mini-ITX"
+  },
+  "omitidos": []
+ },
+ "MOT006": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM5",
+   "tipo_ram": "DDR5",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": []
+ },
+ "MOT007": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM5",
+   "tipo_ram": "DDR5",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": []
+ },
+ "MOT008": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "AM5",
+   "tipo_ram": "DDR5",
+   "formato": "ATX"
+  },
+  "omitidos": []
+ },
+ "MOT009": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "LGA1200",
+   "tipo_ram": "DDR4",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": []
+ },
+ "MOT010": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "LGA1700",
+   "tipo_ram": "DDR4",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": [
+   "tipo_ram"
+  ]
+ },
+ "MOT011": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "LGA1700",
+   "tipo_ram": "DDR4",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": []
+ },
+ "MOT012": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "LGA1700",
+   "tipo_ram": "DDR5",
+   "formato": "ATX"
+  },
+  "omitidos": []
+ },
+ "MOT013": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "LGA1700",
+   "tipo_ram": "DDR5",
+   "formato": "ATX"
+  },
+  "omitidos": [
+   "tipo_ram"
+  ]
+ },
+ "MOT014": {
+  "categoria": "motherboard",
+  "atributos": {
+   "socket": "LGA1851",
+   "tipo_ram": "DDR5",
+   "formato": "Micro-ATX"
+  },
+  "omitidos": []
+ },
+ "RAM001": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR4",
+   "capacidad_gb": 8,
+   "frecuencia_mhz": 2666
+  },
+  "omitidos": []
+ },
+ "RAM002": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR4",
+   "capacidad_gb": 8,
+   "frecuencia_mhz": 3200
+  },
+  "omitidos": [
+   "tipo"
+  ]
+ },
+ "RAM003": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR4",
+   "capacidad_gb": 16,
+   "frecuencia_mhz": 3200
+  },
+  "omitidos": []
+ },
+ "RAM004": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR4",
+   "capacidad_gb": 16,
+   "frecuencia_mhz": 3200
+  },
+  "omitidos": [
+   "capacidad_gb"
+  ]
+ },
+ "RAM005": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR4",
+   "capacidad_gb": 16,
+   "frecuencia_mhz": 3600
+  },
+  "omitidos": []
+ },
+ "RAM006": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR4",
+   "capacidad_gb": 32,
+   "frecuencia_mhz": 3600
+  },
+  "omitidos": []
+ },
+ "RAM007": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR5",
+   "capacidad_gb": 8,
+   "frecuencia_mhz": 4800
+  },
+  "omitidos": []
+ },
+ "RAM008": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR5",
+   "capacidad_gb": 16,
+   "frecuencia_mhz": 4800
+  },
+  "omitidos": [
+   "capacidad_gb"
+  ]
+ },
+ "RAM009": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR5",
+   "capacidad_gb": 16,
+   "frecuencia_mhz": 5600
+  },
+  "omitidos": []
+ },
+ "RAM010": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR5",
+   "capacidad_gb": 32,
+   "frecuencia_mhz": 6000
+  },
+  "omitidos": [
+   "tipo"
+  ]
+ },
+ "RAM011": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR5",
+   "capacidad_gb": 32,
+   "frecuencia_mhz": 6000
+  },
+  "omitidos": []
+ },
+ "RAM012": {
+  "categoria": "ram",
+  "atributos": {
+   "tipo": "DDR5",
+   "capacidad_gb": 32,
+   "frecuencia_mhz": 6400
+  },
+  "omitidos": []
+ },
+ "GPU001": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 4,
+   "consumo_w": 75,
+   "largo_mm": 177
+  },
+  "omitidos": [
+   "largo_mm"
+  ]
+ },
+ "GPU002": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 8,
+   "consumo_w": 130,
+   "largo_mm": 191
+  },
+  "omitidos": []
+ },
+ "GPU003": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 8,
+   "consumo_w": 115,
+   "largo_mm": 227
+  },
+  "omitidos": []
+ },
+ "GPU004": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 8,
+   "consumo_w": 145,
+   "largo_mm": 221
+  },
+  "omitidos": []
+ },
+ "GPU005": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 8,
+   "consumo_w": 160,
+   "largo_mm": 199
+  },
+  "omitidos": []
+ },
+ "GPU006": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 12,
+   "consumo_w": 250,
+   "largo_mm": 304
+  },
+  "omitidos": []
+ },
+ "GPU007": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 12,
+   "consumo_w": 220,
+   "largo_mm": 261
+  },
+  "omitidos": [
+   "vram_gb"
+  ]
+ },
+ "GPU008": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 16,
+   "consumo_w": 285,
+   "largo_mm": 305
+  },
+  "omitidos": [
+   "vram_gb"
+  ]
+ },
+ "GPU009": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 16,
+   "consumo_w": 320,
+   "largo_mm": 322
+  },
+  "omitidos": []
+ },
+ "GPU010": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 8,
+   "consumo_w": 132,
+   "largo_mm": 193
+  },
+  "omitidos": []
+ },
+ "GPU011": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 8,
+   "consumo_w": 165,
+   "largo_mm": 240
+  },
+  "omitidos": []
+ },
+ "GPU012": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 16,
+   "consumo_w": 263,
+   "largo_mm": 322
+  },
+  "omitidos": []
+ },
+ "GPU013": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 16,
+   "consumo_w": 304,
+   "largo_mm": 320
+  },
+  "omitidos": []
+ },
+ "GPU014": {
+  "categoria": "gpu",
+  "atributos": {
+   "vram_gb": 12,
+   "consumo_w": 190,
+   "largo_mm": 272
+  },
+  "omitidos": [
+   "largo_mm"
+  ]
+ },
+ "ALM001": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "NVMe",
+   "capacidad_gb": 500
+  },
+  "omitidos": []
+ },
+ "ALM002": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "NVMe",
+   "capacidad_gb": 500
+  },
+  "omitidos": []
+ },
+ "ALM003": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "NVMe",
+   "capacidad_gb": 1000
+  },
+  "omitidos": []
+ },
+ "ALM004": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "NVMe",
+   "capacidad_gb": 1000
+  },
+  "omitidos": []
+ },
+ "ALM005": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "NVMe",
+   "capacidad_gb": 2000
+  },
+  "omitidos": []
+ },
+ "ALM006": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "SSD SATA",
+   "capacidad_gb": 240
+  },
+  "omitidos": [
+   "tipo"
+  ]
+ },
+ "ALM007": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "SSD SATA",
+   "capacidad_gb": 480
+  },
+  "omitidos": []
+ },
+ "ALM008": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "SSD SATA",
+   "capacidad_gb": 1000
+  },
+  "omitidos": []
+ },
+ "ALM009": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "HDD",
+   "capacidad_gb": 1000
+  },
+  "omitidos": []
+ },
+ "ALM010": {
+  "categoria": "almacenamiento",
+  "atributos": {
+   "tipo": "HDD",
+   "capacidad_gb": 2000
+  },
+  "omitidos": [
+   "capacidad_gb"
+  ]
+ },
+ "FUE001": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 500,
+   "certificacion": "Sin certificación"
+  },
+  "omitidos": []
+ },
+ "FUE002": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 500,
+   "certificacion": "80 Plus White"
+  },
+  "omitidos": []
+ },
+ "FUE003": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 550,
+   "certificacion": "80 Plus Bronze"
+  },
+  "omitidos": [
+   "certificacion"
+  ]
+ },
+ "FUE004": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 600,
+   "certificacion": "80 Plus White"
+  },
+  "omitidos": []
+ },
+ "FUE005": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 650,
+   "certificacion": "80 Plus Bronze"
+  },
+  "omitidos": []
+ },
+ "FUE006": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 650,
+   "certificacion": "80 Plus Bronze"
+  },
+  "omitidos": []
+ },
+ "FUE007": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 750,
+   "certificacion": "80 Plus Gold"
+  },
+  "omitidos": []
+ },
+ "FUE008": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 750,
+   "certificacion": "80 Plus Gold"
+  },
+  "omitidos": []
+ },
+ "FUE009": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 850,
+   "certificacion": "80 Plus Gold"
+  },
+  "omitidos": []
+ },
+ "FUE010": {
+  "categoria": "fuente",
+  "atributos": {
+   "potencia_w": 1000,
+   "certificacion": "80 Plus Gold"
+  },
+  "omitidos": [
+   "potencia_w",
+   "certificacion"
+  ]
+ },
+ "GAB001": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": null
+  },
+  "omitidos": []
+ },
+ "GAB002": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "ATX",
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": null
+  },
+  "omitidos": [
+   "formatos_admitidos"
+  ]
+ },
+ "GAB003": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 350
+  },
+  "omitidos": []
+ },
+ "GAB004": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 360
+  },
+  "omitidos": []
+ },
+ "GAB005": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 330
+  },
+  "omitidos": []
+ },
+ "GAB006": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "E-ATX",
+    "ATX",
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 380
+  },
+  "omitidos": [
+   "largo_max_gpu_mm"
+  ]
+ },
+ "GAB007": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "ATX",
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 360
+  },
+  "omitidos": []
+ },
+ "GAB008": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "ATX",
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 365
+  },
+  "omitidos": [
+   "formatos_admitidos"
+  ]
+ },
+ "GAB009": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "E-ATX",
+    "ATX",
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 392
+  },
+  "omitidos": [
+   "formatos_admitidos"
+  ]
+ },
+ "GAB010": {
+  "categoria": "gabinete",
+  "atributos": {
+   "formatos_admitidos": [
+    "E-ATX",
+    "ATX",
+    "Micro-ATX",
+    "Mini-ITX"
+   ],
+   "largo_max_gpu_mm": 400
+  },
+  "omitidos": []
+ },
+ "COO001": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "LGA1200",
+    "LGA1700"
+   ],
+   "altura_mm": 70
+  },
+  "omitidos": []
+ },
+ "COO002": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "AM4",
+    "AM5",
+    "LGA1200",
+    "LGA1700"
+   ],
+   "altura_mm": 154
+  },
+  "omitidos": [
+   "altura_mm"
+  ]
+ },
+ "COO003": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "AM4",
+    "AM5",
+    "LGA1200",
+    "LGA1700"
+   ],
+   "altura_mm": 159
+  },
+  "omitidos": []
+ },
+ "COO004": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "AM4",
+    "AM5",
+    "LGA1200",
+    "LGA1700",
+    "LGA1851"
+   ],
+   "altura_mm": 155
+  },
+  "omitidos": []
+ },
+ "COO005": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "AM4",
+    "AM5",
+    "LGA1200",
+    "LGA1700",
+    "LGA1851"
+   ],
+   "altura_mm": 155
+  },
+  "omitidos": []
+ },
+ "COO006": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "AM4",
+    "AM5",
+    "LGA1200",
+    "LGA1700"
+   ],
+   "altura_mm": 165
+  },
+  "omitidos": [
+   "altura_mm"
+  ]
+ },
+ "COO007": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "AM4",
+    "AM5",
+    "LGA1200",
+    "LGA1700"
+   ],
+   "altura_mm": null
+  },
+  "omitidos": []
+ },
+ "COO008": {
+  "categoria": "cooler",
+  "atributos": {
+   "sockets": [
+    "AM4",
+    "AM5",
+    "LGA1700",
+    "LGA1851"
+   ],
+   "altura_mm": null
+  },
+  "omitidos": []
+ },
+ "UPS001": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 600,
+   "w": 330,
+   "autonomia_minutos": 5
+  },
+  "omitidos": []
+ },
+ "UPS002": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 800,
+   "w": 480,
+   "autonomia_minutos": 10
+  },
+  "omitidos": []
+ },
+ "UPS003": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 1000,
+   "w": 500,
+   "autonomia_minutos": null
+  },
+  "omitidos": []
+ },
+ "UPS004": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 1200,
+   "w": 650,
+   "autonomia_minutos": 8
+  },
+  "omitidos": []
+ },
+ "UPS005": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 1200,
+   "w": 720,
+   "autonomia_minutos": 12
+  },
+  "omitidos": []
+ },
+ "UPS006": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 1500,
+   "w": 900,
+   "autonomia_minutos": null
+  },
+  "omitidos": []
+ },
+ "UPS007": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 1600,
+   "w": 900,
+   "autonomia_minutos": 10
+  },
+  "omitidos": []
+ },
+ "UPS008": {
+  "categoria": "ups",
+  "atributos": {
+   "va": 1500,
+   "w": 1000,
+   "autonomia_minutos": 15
+  },
+  "omitidos": [
+   "w"
+  ]
+ },
+ "CAB001": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "HDMI",
+   "conector_b": "HDMI",
+   "largo_m": 1.8
+  },
+  "omitidos": []
+ },
+ "CAB002": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "HDMI",
+   "conector_b": "HDMI",
+   "largo_m": 2.0
+  },
+  "omitidos": []
+ },
+ "CAB003": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "HDMI",
+   "conector_b": "HDMI",
+   "largo_m": 5.0
+  },
+  "omitidos": [
+   "largo_m"
+  ]
+ },
+ "CAB004": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "HDMI",
+   "conector_b": "HDMI",
+   "largo_m": 10.0
+  },
+  "omitidos": []
+ },
+ "CAB005": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "DisplayPort",
+   "conector_b": "DisplayPort",
+   "largo_m": 2.0
+  },
+  "omitidos": [
+   "largo_m"
+  ]
+ },
+ "CAB006": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "DisplayPort",
+   "conector_b": "HDMI",
+   "largo_m": 1.8
+  },
+  "omitidos": []
+ },
+ "CAB007": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "USB-C",
+   "conector_b": "HDMI",
+   "largo_m": 1.8
+  },
+  "omitidos": [
+   "conectores"
+  ]
+ },
+ "CAB008": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "USB-C",
+   "conector_b": "DisplayPort",
+   "largo_m": 2.0
+  },
+  "omitidos": []
+ },
+ "CAB009": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "VGA",
+   "conector_b": "VGA",
+   "largo_m": 1.5
+  },
+  "omitidos": []
+ },
+ "CAB010": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "USB-C",
+   "conector_b": "USB-C",
+   "largo_m": 1.0
+  },
+  "omitidos": []
+ },
+ "CAB011": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "USB-A",
+   "conector_b": "USB-C",
+   "largo_m": 1.0
+  },
+  "omitidos": [
+   "conectores"
+  ]
+ },
+ "CAB012": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "RJ45",
+   "conector_b": "RJ45",
+   "largo_m": 3.0
+  },
+  "omitidos": []
+ },
+ "CAB013": {
+  "categoria": "cables",
+  "atributos": {
+   "conector_a": "C14",
+   "conector_b": "C13",
+   "largo_m": 1.8
+  },
+  "omitidos": [
+   "largo_m"
+  ]
+ }
+}

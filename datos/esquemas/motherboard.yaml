@@ -1,0 +1,33 @@
+# Esquema de atributos: Motherboard (placa madre)
+categoria: motherboard
+nombre: Motherboard
+sinonimos: [motherboard, motherboards, mother, mothers, placa madre, placas madre, placa base, mainboard]
+atributos:
+  socket:
+    tipo: texto
+    valores: [AM4, AM5, LGA1200, LGA1700, LGA1851]
+    valores_fuera_del_armado: [LGA775, LGA1150, LGA1151, LGA1155, LGA1156, AM1, AM3, AM3+, FM2, FM2+]   # plataformas viejas que la tienda todavía vende
+  tipo_ram:
+    tipo: texto
+    valores: [DDR4, DDR5]
+    valores_fuera_del_armado: [DDR2, DDR3]   # plataformas viejas que la tienda todavía vende
+  formato:
+    tipo: texto
+    valores: [E-ATX, ATX, Micro-ATX, Mini-ITX]
+  # --- Datos que hoy solo trae el catálogo real de la tienda (los lee ingesta/formato_amn.py) ---
+  generaciones:
+    tipo: lista
+    opcional: true
+    descripcion: Generaciones de CPU que soporta, con la numeración de la tienda (ver cpu.generacion).
+  ranuras_ram:
+    tipo: entero
+    unidad: ranuras
+    opcional: true
+  puertos_sata:
+    tipo: entero
+    unidad: puertos
+    opcional: true
+  ranuras_m2:
+    tipo: entero
+    unidad: ranuras
+    opcional: true

@@ -1,0 +1,39 @@
+# Esquema de atributos: Procesador
+categoria: cpu
+nombre: Procesador
+# Nombres con los que puede venir la categoría desde la fuente (se comparan sin tildes ni mayúsculas)
+sinonimos: [procesador, procesadores, micro, micros, microprocesador, microprocesadores, cpu]
+atributos:
+  socket:
+    tipo: texto
+    valores: [AM4, AM5, LGA1200, LGA1700, LGA1851]
+    valores_fuera_del_armado: [LGA775, LGA1150, LGA1151, LGA1155, LGA1156, AM1, AM3, AM3+, FM2, FM2+]   # plataformas viejas que la tienda todavía vende
+    descripcion: Zócalo donde se monta el procesador.
+  nucleos:
+    tipo: entero
+    unidad: núcleos
+  tdp_w:
+    tipo: entero
+    unidad: W
+    descripcion: Potencia térmica de diseño. Se usa para estimar el consumo.
+  # --- Datos que hoy solo trae el catálogo real de la tienda (los lee ingesta/formato_amn.py) ---
+  generacion:
+    tipo: texto
+    opcional: true
+    descripcion: >
+      Generación según la numeración de la tienda («[12va]» → 12). La placa madre lista las que soporta:
+      mismo socket no alcanza (una placa puede necesitar otro BIOS para una generación más nueva).
+  consumo_max_w:
+    tipo: entero
+    unidad: W
+    opcional: true
+    descripcion: Consumo máximo (en Intel, el segundo número de «65/117w»). Si hay un solo dato, es igual a tdp_w.
+  incluye_cooler:
+    tipo: texto
+    valores: [si, "no"]
+    opcional: true
+  video_integrado:
+    tipo: texto
+    valores: [si, "no"]
+    opcional: true
+    descripcion: Si es «no», la PC necesita placa de video sí o sí.

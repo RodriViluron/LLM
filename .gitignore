@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Secretos (token de la API de la tienda, claves de búsqueda web)
+.env
+
+# Datos generados o reales: no se suben al repo
+datos/*.sqlite
+datos/*.sqlite-*
+datos/caches/*
+!datos/caches/.gitkeep
+datos/catalogo_real/
+
+# Fine-tuning
+finetuning/salidas/
+*.gguf
+
+# Resultados de las evaluaciones (se regeneran)
+evaluacion/resultados/
+
+# Memoria del agente y base vectorial del RAG (se generan al usar la app)
+memoria.db
+memoria.db-*
+conversaciones.txt
+rag/chroma_db/
+datos/pedidos.sqlite
+
+# Configuración local para levantar los servidores de prueba (rutas de esta máquina)
+.claude/launch.json

@@ -1,0 +1,18 @@
+# Esquema de atributos: Fuente de alimentación
+categoria: fuente
+nombre: Fuente
+sinonimos: [fuente, fuentes, fuente de alimentacion, fuentes de alimentacion, fuente de poder, psu]
+atributos:
+  potencia_w:
+    tipo: entero
+    unidad: W
+    descripcion: Potencia nominal (no la de pico).
+  certificacion:
+    tipo: texto
+    valores: [Sin certificación, 80 Plus White, 80 Plus Bronze, 80 Plus Silver, 80 Plus Gold, 80 Plus Platinum, 80 Plus Titanium]
+  # --- Dato que hoy solo trae el catálogo real de la tienda (lo lee ingesta/formato_amn.py) ---
+  conectores_pcie:
+    tipo: entero
+    unidad: conectores
+    opcional: true
+    descripcion: Conectores PCIe de 6 u 8 pines para la placa de video.

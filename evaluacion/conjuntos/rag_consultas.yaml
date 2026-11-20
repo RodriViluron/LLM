@@ -1,0 +1,77 @@
+# Consultas de evaluación del RAG (consultar_caracteristicas), problema 5.
+#
+# Cada consulta está escrita como la haría un usuario o el modelo. Campos:
+#   consulta: texto de la búsqueda.
+#   fuente:   archivo de rag/docs/ que tiene la respuesta.
+#   debe:     texto que solo aparece en el fragmento correcto (se busca tal cual); puede ser una lista
+#             si hay más de un fragmento correcto (la prosa y el perfil generado dicen lo mismo).
+#   gama:     gama de la que habla la consulta (para medir cuántos fragmentos traen otra gama).
+#
+# Si se reescribe un documento y cambia el texto de `debe`, hay que actualizarlo acá.
+# Uso: uv run python -m evaluacion.rag
+
+consultas:
+  # --- gamas.md: qué lleva cada gama
+  - {consulta: "qué procesador lleva una PC de gama baja", fuente: gamas.md, debe: "Procesador: Intel Celeron, Pentium o Core i3", gama: baja}
+  - {consulta: "cuánta RAM tiene una PC de gama media", fuente: gamas.md, debe: "RAM: 16 GB", gama: media}
+  - {consulta: "qué disco usa la gama alta", fuente: gamas.md, debe: "SSD M.2 NVMe de 1 a 2 TB", gama: alta}
+  - {consulta: "cuánta memoria lleva una PC premium", fuente: gamas.md, debe: "RAM: 64 GB DDR5", gama: premium}
+  - {consulta: "la gama baja lleva placa de video?", fuente: gamas.md, debe: "Placa de video: no lleva", gama: baja}
+  - {consulta: "qué procesador va en una gama alta", fuente: gamas.md, debe: "Procesador: Intel i7 i9", gama: alta}
+  - {consulta: "qué procesador lleva la gama media", fuente: gamas.md, debe: "Procesador: Intel i5 (slot 1200/1700)", gama: media}
+  - {consulta: "qué fuente necesita una PC de gama baja", fuente: gamas.md, debe: "Fuente: de 500 a 600 W", gama: baja}
+  - {consulta: "qué cooler lleva la gama baja", fuente: gamas.md, debe: "Cooler: el que trae el procesador", gama: baja}
+  - {consulta: "qué cooler usa una PC de gama media", fuente: gamas.md, debe: "Cooler CPU Raptor Cryo", gama: media}
+  - {consulta: "cuánta RAM lleva la gama alta", fuente: gamas.md, debe: "RAM: 32 GB", gama: alta}
+  - {consulta: "qué procesador usa una PC premium", fuente: gamas.md, debe: "Procesador: Intel Ultra 9", gama: premium}
+  - {consulta: "qué disco lleva una PC de gama media", fuente: gamas.md, debe: "Disco: de 512 GB a 1 TB", gama: media}
+
+  # --- reparto_presupuesto.md: cuánto cuesta y cómo se reparte
+  - {consulta: "qué porcentaje del presupuesto se lleva la placa de video en gama media", fuente: reparto_presupuesto.md, debe: "Gama media, placa de video: 26 %", gama: media}
+  - {consulta: "cuánto cuesta una PC de gama alta", fuente: reparto_presupuesto.md, debe: "Una PC de gama alta en la tienda cuesta", gama: alta}
+  - {consulta: "cuánto cuesta una PC de gama baja", fuente: reparto_presupuesto.md, debe: "Una PC de gama baja en la tienda cuesta", gama: baja}
+  - {consulta: "cuánto cuesta una PC de gama premium", fuente: reparto_presupuesto.md, debe: "Una PC de gama premium en la tienda cuesta", gama: premium}
+  - {consulta: "cuánto del presupuesto va al procesador en gama premium", fuente: reparto_presupuesto.md, debe: "Gama premium, procesador: 16 %", gama: premium}
+  - {consulta: "reparto del presupuesto de una PC de gama media", fuente: reparto_presupuesto.md, debe: "Porcentaje del presupuesto por componente en gama media", gama: media}
+  - {consulta: "cuánto gastar en memoria RAM en gama alta", fuente: reparto_presupuesto.md, debe: "Gama alta, memoria ram: 25 %", gama: alta}
+  - {consulta: "cuánto gastar en el disco en gama baja", fuente: reparto_presupuesto.md, debe: "Gama baja, disco", gama: baja}
+  - {consulta: "cuánto gastar en la fuente en gama media", fuente: reparto_presupuesto.md, debe: "Gama media, fuente: 4 %", gama: media}
+  - {consulta: "qué porcentaje es el gabinete en gama baja", fuente: reparto_presupuesto.md, debe: "Gama baja, gabinete: 8 %", gama: baja}
+
+  # --- tabla_cpu_gpu_por_gama.md: en qué gama está un modelo
+  - {consulta: "en qué gama está la RTX 5060", fuente: tabla_cpu_gpu_por_gama.md, debe: "| gpu | RTX 5060 | alta |", gama: alta}
+  - {consulta: "el Ryzen 5 5600 es de gama media?", fuente: tabla_cpu_gpu_por_gama.md, debe: "| cpu | Ryzen 5 5600 | media |", gama: media}
+  - {consulta: "qué gama es el Core i3-12100F", fuente: tabla_cpu_gpu_por_gama.md, debe: "| cpu | Core i3-12100F | baja |", gama: baja}
+  - {consulta: "el Ultra 9 285K de qué gama es", fuente: tabla_cpu_gpu_por_gama.md, debe: "| cpu | Ultra 9 285K | premium |", gama: premium}
+  - {consulta: "la RTX 5050 de qué gama es", fuente: tabla_cpu_gpu_por_gama.md, debe: "| gpu | RTX 5050 | media |", gama: media}
+  - {consulta: "en qué gama está el Ryzen 7 9800X3D", fuente: tabla_cpu_gpu_por_gama.md, debe: "| cpu | Ryzen 7 9800X3D | alta |", gama: alta}
+  - {consulta: "qué placas de video son de gama premium", fuente: tabla_cpu_gpu_por_gama.md, debe: "| gpu | RTX 5070 Ti | premium |", gama: premium}
+
+  # --- caracteristicas_por_actividad.md: qué PC para cada uso (paso 8)
+  - {consulta: "qué PC necesito para editar video", fuente: caracteristicas_por_actividad.md, debe: ["Corresponde a una PC de gama alta con 32 GB de RAM y un SSD NVMe", "Perfil Edición de video: una PC de gama alta"], gama: alta}
+  - {consulta: "qué importa en una computadora para la oficina", fuente: caracteristicas_por_actividad.md, debe: ["Corresponde a una PC de gama baja con 8 GB de RAM", "Perfil Oficina y estudio: una PC de gama baja"], gama: baja}
+  - {consulta: "qué PC necesito para jugar en 1440p", fuente: caracteristicas_por_actividad.md, debe: ["Corresponde a una PC de gama alta: placa de video como la RTX 5060", "Perfil Juegos en 1440p: una PC de gama alta"], gama: alta}
+  - {consulta: "qué PC necesito para jugar en un monitor común 1080p", fuente: caracteristicas_por_actividad.md, debe: ["La mayoría de los juegos actuales andan bien con una PC de gama media", "Perfil Juegos en 1080p: una PC de gama media"], gama: media}
+  - {consulta: "qué computadora sirve para Photoshop y AutoCAD", fuente: caracteristicas_por_actividad.md, debe: ["Corresponde a una PC de gama media con más memoria", "Perfil Diseño gráfico: una PC de gama media"], gama: media}
+  - {consulta: "qué PC necesito para programar", fuente: caracteristicas_por_actividad.md, debe: ["Corresponde a una PC de gama baja con 16 GB de RAM", "Perfil Programación: una PC de gama baja"], gama: baja}
+  - {consulta: "qué PC necesito para jugar y transmitir en Twitch", fuente: caracteristicas_por_actividad.md, debe: ["Corresponde a una PC de gama alta con 32 GB de RAM, para que el juego", "Perfil Jugar y transmitir (streaming): una PC de gama alta"], gama: alta}
+  - {consulta: "qué PC necesito para jugar en 4K", fuente: caracteristicas_por_actividad.md, debe: ["Corresponde a una PC de gama premium", "Perfil Juegos en 4K: una PC de gama premium"], gama: premium}
+  - {consulta: "qué placa madre conviene si quiero mejorar la PC más adelante", fuente: caracteristicas_por_actividad.md, debe: "cuatro ranuras de memoria y dos o más ranuras M.2", gama: null}
+
+
+  # --- guias_de_compra.md: UPS, cables, cámaras, almacenamiento, monitores (paso 8b)
+  - {consulta: "qué UPS necesito para mi PC", fuente: guias_de_compra.md, debe: "hay que mirar los watts (W), no solo los VA", gama: null}
+  - {consulta: "cuántos minutos aguanta una UPS cuando se corta la luz", fuente: guias_de_compra.md, debe: "La autonomía (cuántos minutos aguanta)", gama: null}
+  - {consulta: "qué cable uso para conectar la notebook al monitor", fuente: guias_de_compra.md, debe: ["Con un cable USB-C a HDMI o USB-C a DisplayPort", "HDMI: el más común para monitores"], gama: null}
+  - {consulta: "qué cámara de seguridad pongo afuera de la casa", fuente: guias_de_compra.md, debe: "IP66 o IP67", gama: null}
+  - {consulta: "conviene un disco rígido o un SSD", fuente: guias_de_compra.md, debe: "No conviene como disco principal", gama: null}
+  - {consulta: "qué monitor me compro para jugar", fuente: guias_de_compra.md, debe: "tasa de refresco (144 Hz o más", gama: null}
+
+  # --- guia_compatibilidad.md: lo que verifican las reglas (paso 9)
+  - {consulta: "cómo sé si un procesador es compatible con la placa madre", fuente: guia_compatibilidad.md, debe: "El mismo socket no alcanza", gama: null}
+  - {consulta: "sirve una memoria de notebook en una PC de escritorio", fuente: guia_compatibilidad.md, debe: "Los módulos SODIMM son de notebook", gama: null}
+  - {consulta: "cuántos discos le puedo poner a la PC", fuente: guia_compatibilidad.md, debe: "no puede superar las ranuras M.2 y los puertos SATA", gama: null}
+  - {consulta: "de cuántos watts tiene que ser la fuente", fuente: guia_compatibilidad.md, debe: "La potencia necesaria es la más alta de estas dos", gama: null}
+  - {consulta: "el procesador necesita un cooler aparte", fuente: guia_compatibilidad.md, debe: "Algunos procesadores vienen con su cooler y otros no", gama: null}
+  - {consulta: "necesito placa de video si el procesador no tiene gráficos", fuente: guia_compatibilidad.md, debe: "la PC necesita una placa de video sí o sí", gama: null}
+  - {consulta: "qué significa sin datos en la compatibilidad", fuente: guia_compatibilidad.md, debe: "quiere decir que el producto no informa el dato", gama: null}

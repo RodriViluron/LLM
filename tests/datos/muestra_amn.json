@@ -1,0 +1,956 @@
+[
+ {
+  "product": {
+   "sku": "RY3200",
+   "name": "CPU AMD RYZEN 3 3200G                AM4",
+   "desc": "FRECUENCIA: 3,60/4,00Ghz - [2da] GEN.             NUCLEOS: 12 (CPU 4 + GPU 8) - SUBPROCESOS: 4      CACHE: L1 4x64KB + 4x32KB - L2 4x512KB - L3 4MB   65w - 12nm - 64bit - WRAITH STEALTH COOLER        GPU ATI RADEON VEGA 8 - 1250Mhz - 512 SHADER",
+   "hdesc": "MEMORIAS HASTA DDR4-2933 - PCIe 3.0 x8            YD320GC5FHBOX",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "AMD"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "12400F",
+   "name": "CPU INTEL CORE I5 12400F  ALDERLAKE 1700",
+   "desc": "FRECUENCIA: 2,50/4,40Mhz                          DMI4: 8 GT/s (DIRECT MEDIA INTERFACE) **SIN VIDEO NUCLEOS: 6P+0E -SUBPROCESOS: 12 -[12va] GENERACIONCACHE: SMART CACHE 18MB+L2 7,5MB -CONSUM.:65/117w intel 7-64bit -MEM.HASTA 128GB D4-3200/D5-4800",
+   "hdesc": "CON TURBO: FRECUENCIA CPU: 4,40GHz",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "INTEL"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "CU9285",
+   "name": "CPU INTEL ULTRA 9 285   ARROWLAKE   1851",
+   "desc": "FRECUENCIA: 1,90/4,60 + 2,50/5,60GHz              DMI4: 8 GT/s (DIRECT MEDIA INTERFACE)             NUCLEOS: 8P+ 16E -SUBPROCESOS: 24 -[2da]SERIE     CACHE: SMART CACHE 36MB+L2 40MB -CONSUM.: 65/182w GPU: INTEL GRAPHICS, FRECUENCIA GPU:300/2000Mhz",
+   "hdesc": "NPU: 36 TOPS (Int8) -MEM.HASTA 256GB D5-6400MT/s",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "INTEL"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "RY5500",
+   "name": "CPU AMD RYZEN 5 5500           S/VID AM4",
+   "desc": "FRECUENCIA: 3,60/4,20Ghz - [3ra] GEN.             NUCLEOS: 6 - SUBPROCESOS: 12          **SIN VIDEO CACHE: L1 6x32KB + 6x32KB - L2 6x512KB - L3 16MB  65w -  7nm - 64bit - WRAITH STEALTH COOLER        FRECUENCIA CON TURBO: CPU 4,20GHz",
+   "hdesc": "MEMORIAS HASTA DDR4-3200 - PCIe 3.0 x16",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "AMD"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "3600XT",
+   "name": "CPU AMD RYZEN 5 3600XT         S/VID AM4",
+   "desc": "FRECUENCIA: 3,80/4,50Ghz - [3ra] GEN.             NUCLEOS: 6 - SUBPROCESOS: 12         ** SIN VIDEO CACHE: L1 6x32KB + 6x32KB - L2 6x512KB - L3 2x16MB95w -  7nm - 64bit - WRAITH SPIRE COOLER          FRECUENCIA CON TURBO: CPU 4,50GHz",
+   "hdesc": "MEMORIAS HASTA DDR4-3200 - PCIe 4.0 x16",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "AMD"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "U7265K",
+   "name": "CPU INTEL ULTRA 7 265K  ARROWLAKE   1851",
+   "desc": "FRECUENCIA: 3,30/4,60 + 3,90/5,40GHz  **SIN COOLERDMI4: 8 GT/s (DIRECT MEDIA INTERFACE)             NUCLEOS: 8P+ 12E -SUBPROCESOS: 20 -[2da]SERIE     CACHE: SMART CACHE 30MB+L2 36MB -CONSUM.: 125/250wGPU: INTEL GRAPHICS, FRECUENCIA GPU:300/2000Mhz",
+   "hdesc": "NPU: 33 TOPS (Int8) -MEM.HASTA 256GB D5-6400MT/s",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "INTEL"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "IG5900",
+   "name": "CPU INTEL CELERON G5900 COMETLAKE   1200",
+   "desc": "FRECUENCIA: 3,40GHz                               DMI3: 8 GT/s (DIRECT MEDIA INTERFACE)             NUCLEOS: 2 - SUBPROCESOS: 2 - [10ma] GENERACION   CACHE: L1 2x32KB + 2x32KB - L2 2x256KB - L3 2MB   GPU: HD GRAPHICS 610, FRECUENCIA GPU:350/1050Mhz",
+   "hdesc": "58w - 14nm - 64bit - MEMORIAS HASTA DDR4-2666",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "INTEL"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "CE6550",
+   "name": "CPU INTEL CORE 2 DUO E6550           775",
+   "desc": "FRECUENCIA: 2,33hz                                FSB: 1333Mhz                                      CACHE: 4Mb",
+   "hdesc": "",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "INTEL"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "R7700X",
+   "name": "CPU AMD RYZEN 7 7700X   S/COOL       AM5",
+   "desc": "FRECUENCIA: 4,50/5,40Ghz - [4ta] GEN. **SIN COOLERNUCLEOS: 8 - SUBPROCESOS: 16                      CACHE: L1 8x32KB + 8x32KB - L2 8x1MB - L3 32MB    105w -  5nm - 64bit                               GPU RADEON GRAPHIC - 2200Mhz -NUCLEOS: 2",
+   "hdesc": "MEMORIAS HASTA DDR5-5200 - PCIe 5.0 x16",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "AMD"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "H5416S",
+   "name": "CPU INTEL XEON 5416S 16 CORE",
+   "desc": "FRECUENCIA: 2,00/4,00GHz                          DMI: 16GT/s (DIRECT MEDIA INTERFACE)              NUCLEOS: 16 - SUBPROCESOS: 32                     CACHE: L1 16x32KB + 16x48KB - L2 16x2MB - L3 30MB CONSUM.:135/150w-intel 7-64bit",
+   "hdesc": "MEM.HASTA 4TB D5-4400 1DPC Y 2DPC                 NO INCLUYE COOLER, LA SOLUCION TERMICA ES SEPARADA",
+   "category": {
+    "code": "333",
+    "name": "Microprocesadores (CPU)"
+   },
+   "brand": {
+    "name": "H.PACKARD"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "Z590-P",
+   "name": "MB.ASUS PRIME Z590-P            ATX 1200",
+   "desc": "4 PCIe:2x1 + 2x16 (1x16,1x4)  *PCIe 4.0           4 DDR4 (MAX.128GB 5133/3333 OC,3200/2133Mhz,XMP)  15U:2.0(2+4),3.2G1(2+4|1C),3.2G2(1+0),3.2 G2x2(1C)CHIPSET INTEL Z590 (10ma,11va GEN)-3 M.2 SOCKET3 MAUDIO 7.1 (5P) -4 SATA3 -1 2,5GLAN",
+   "hdesc": "HDMI, DP -COM,TPM,THB,S/PDIF -RAID 0,1,5,10                                   *COMETLAKE *ROCKETLAKE",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "ASUS"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "890AYW",
+   "name": "MB.ASUS Z890 AYW GAMING WIFI D5 ATX 1851",
+   "desc": "4 PCIe: 4x16 (1x1,2x4,1x16)               PCIe 5.04 DDR5 (MAX.256GB 9066/6600 OC,6400/5600MT/s,XMP) 17 USB:2.0(4+4),3.1G1(0+4),3.2G2(3+0),G2x2(1C+1C) CH.INTEL Z890 (2da SERIE) -4 M.2 PCIe(1x5.0)      AUDIO 7.1 (3P) -1 2,5GLAN -4 SATA3 -PS2",
+   "hdesc": "Wi-Fi6e: 802.11ax D.BANDA -BLT 5.3 -RAID 0,1,5,10 DP 2.1, DP(USB C G2x2) -TPM,COM,S/PDIF",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "ASUS"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "61S2H2",
+   "name": "MB.GIGABYTE H610M S2H V2    D4 mATX 1700",
+   "desc": "2 PCIe: 1x1 + 1x16            *PCIe 4.0           2 DDR4 (MAX.64GB 3200/2133Mhz,XMP) -2 PS2         12 USB: 2.0(4+4),3.2 G1(2+2)                      CHIPSET INTEL H610 (12va,13va,14va GEN)           AUDIO 7.1 (3P) -4 SATA3 -1 GLAN -1 M.2 PCIe",
+   "hdesc": "HDMI 2.1,VGA,DVI,DP 1.2 -COM,TPM                                              *RAPTORLAKE *ALDERLAKE",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "GIGABYTE"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "H610D5",
+   "name": "MB.MSI PRO H610M-G          D5 mATX 1700",
+   "desc": "2 PCIe: 1x1 + 1x16            *PCIe 4.0           2 DDR5 (MAX.96GB 5600,XMP) -1 PS2                 10 USB: 2.0(4+2),3.2 G1(2+2)                      CHIPSET INTEL H610 (12va,13va,14va GEN)           AUDIO 7.1 (3P) -4 SATA3 -1 GLAN -1 M.2 SATA/PCIe",
+   "hdesc": "HDMI,VGA,DP -COM,TPM",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "MSI"
+   }
+  },
+  "inventory": {
+   "totalQty": 6
+  }
+ },
+ {
+  "product": {
+   "sku": "TUF550",
+   "name": "MB.ASUS TUF B550  PLUS WIFI II   ATX AM4",
+   "desc": "5 PCIe: 3x1 + 2x16 (1x4,1x16)  *PCIe 4.0 (3ra GEN)4 DDR4 (MAX.128GB 4866/3333 OC,3200/2133Mhz)      14 USB: 2.0(2+4), 3.2 G1(4+2), 3.2 G2(1C|1+0)     CHIPSET AMD B550 (RYZEN 2da 3ra GEN)-1 2,5GLAN    AUDIO 7.1 (5P) -6 SATA3 -2 M.2 SOCKET3 M SATA/PCIe",
+   "hdesc": "Wi-Fi6: 802.11ax D.BANDA -BLT 5.2 -S/PDIF,TPM,COM HDMI 2.1, DP -RAID 0,1,10",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "ASUS"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "A52DV2",
+   "name": "MB.GIGABYTE A520M DS3H V2       mATX AM4",
+   "desc": "2 PCIe: 1x1 + 1x16             *PCIe 3.0 (3ra GEN)4 DDR4 (MAX.128GB 4733/3400 OC,3200/2133Mhz)-1 PS212 USB: 2.0(4+2), 3.2 G1(4+2)                     CHIPSET AMD A520 (RYZEN 1ra 2da 3ra GEN)          AUDIO 7.1 (3P) -4 SATA3 -1 M.2 SATA/PCIe",
+   "hdesc": "1 GLAN -HDMI 2.1, DP -RAID 0,1,10                 S/PDIF,TPM,COM",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "GIGABYTE"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "B65MA2",
+   "name": "MB.ASUS PRIME B650M-A II    D5  mATX AM5",
+   "desc": "4 PCIe:  3x16 (1x16,1x4,1x1)        *PCIe 4.0     4 DDR5 (MAX.192GB 7600/5400 OC,5200/4800MT/s,EXPO)15 USB: 2.0(4+4), 3.2 G1(2+2|1C), 3.2 G2(2+0)-PS2 CHIPSET AMD B650 (RYZEN 4ta,5ta GEN) -1 2,5GLAN   AUDIO 7.1 (3P) -4 SATA3 -2 M.2 PCIe 1x5.0+1x4.0",
+   "hdesc": "HDMI 2.1, VGA, DP 1.4 -RAID 0,1,10 -S/PDIF,TPM",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "ASUS"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "GA41MT",
+   "name": "MB.GIGABYTE GA-G41MT-S2   V/DDR3     775",
+   "desc": "1 PCI- 2 PCIe x1 - 1 PCIe x16                     2 DDR3 (MAX.8GB DE RAM 1333 OC/1066/800)          4 SATA - 8 USB (4+4) - 2 PS2 - 1 COM              CHIPSET INTEL G41 - FSB 1333/1066/800Mhz          SONIDO 7.1 - GLAN - VIDEO",
+   "hdesc": "CHIPS DE VIDEO INTEGRADO: INTEL GMA X4500         1 LPT (0+1)",
+   "category": {
+    "code": "11",
+    "name": "Placas Madres"
+   },
+   "brand": {
+    "name": "GIGABYTE"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "CMMA62",
+   "name": "COOLER CPU COOL.MASTER AIR MA620M   ARGB",
+   "desc": "DIMENSION: 135x165x125mm    MULTIPLATAFORMA INTEL MATERIAL: ALUMINIO + BASE 6 HEATPIPES DE COBRE    VELOCIDAD: 650 a 2000rpm -1 FAN DE 120mm -LED ARGBRODAMIENTO: HIDRAULICO - CONECTOR: 4pin           PESO: 790gr - PODER DE ENFRIAMIENTO: 200w APROX.",
+   "hdesc": "SOCKET: INTEL 2066/2011/1156/1155/1151/1150/1200          AMD AM4/AM3+/AM3/AM2+/AM2/FM2/FM1   *GAMER",
+   "category": {
+    "code": "336",
+    "name": "Cooler Especiales y Modding"
+   },
+   "brand": {
+    "name": "COOL.MASTER"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "AS600W",
+   "name": "COOLER CPU TT ASTRIA 600 SNOW  265W ARGB",
+   "desc": "DIMENSION: 124x160x137mm       MULTIPLATAFORMA    MATERIAL: ALUMINIO + BASE 6 HEATPIPES DE COBRE    VELOCIDAD: 500 a 1800rpm -2 FAN DE 120mm -LED ARGBRODAMIENTO: HIDRAULICO - CONECTOR: 4pin+2pin      PESO:    gr - PODER DE ENFRIAMIENTO: 265w",
+   "hdesc": "SOCKET:INTEL 1156/1155/1151/1150/1200/1700/1851          AMD AM5/AM4                          *GAMER",
+   "category": {
+    "code": "336",
+    "name": "Cooler Especiales y Modding"
+   },
+   "brand": {
+    "name": "THERMALTAKE"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "212SP3",
+   "name": "COOLER CPU COOL.MASTER HYPER 212 SPEC.V3",
+   "desc": "DIMENSION: 124x73x152mm     MULTIPLATAFORMA       MATERIAL: ALUMINIO + BASE 4 HEATPIPES DE COBRE    VELOCIDAD: 650 a 1750rpm -1 FAN DE 120mm -LED ARGBRODAMIENTO: HIDRAULICO - CONECTOR: 4pin           PESO: 468gr - PODER DE ENFRIAMIENTO: 200w APROX.",
+   "hdesc": "SOCKET:INTEL 1156/1155/1151/1150/1200/1700               AMD AM4,AM5 * GAMER",
+   "category": {
+    "code": "336",
+    "name": "Cooler Especiales y Modding"
+   },
+   "brand": {
+    "name": "COOL.MASTER"
+   }
+  },
+  "inventory": {
+   "totalQty": 3
+  }
+ },
+ {
+  "product": {
+   "sku": "CP0587",
+   "name": "COOLER CPU TT FRIO EXTREM      250W",
+   "desc": "DIMENSION: 148,2x151x160mm       MULTIPLATAFORMA  MATERIAL: ALUMINIO + BASE COBRE + 6 HEATPIPES     VELOCIDAD: 1200 A 1800rpm - 2 FAN 140mm           PESO: 1230gr - PODER DE ENFRIAMIENTO: 250w        SOCKET: 1150/1151/1155/1156/1366/775/AM3/AM3+/AM2/",
+   "hdesc": "        AM2+/FM1/PHENOM II/ATHLON II/PHENOM II/           ATHLON/PHENOM /ATHLON/SEMPRON SERIE - 2011",
+   "category": {
+    "code": "336",
+    "name": "Cooler Especiales y Modding"
+   },
+   "brand": {
+    "name": "THERMALTAKE"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "TRL240",
+   "name": "COOLER CPU WATER TT PACIFIC RL240   ROJO",
+   "desc": "KIT DE REFRIGERACION : LIQUIDA     MULTIPLATAFORMARADIADOR:ALUMINIO 282x129x64mm, BOMBA AGUA        VENTILADOR: 2 FAN 120x120x25mm LED ROJO           INCLUYE LIQUIDO REFRIGERANTE 1000cc COLOR ROJO    SOCKET: 1150,1151,1155,1156,1366,2011,1200",
+   "hdesc": "        FM1,FM2,AM2,AM2+,AM3,AM3+                 RESERVOIR PUMP+BLOCK+6 COMPRESSION+2,0m TUBLER *WC",
+   "category": {
+    "code": "338",
+    "name": "Cooler Refrigeracion Liquida"
+   },
+   "brand": {
+    "name": "THERMALTAKE"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "VENTP4",
+   "name": "COOLER CPU  NOGA 478",
+   "desc": "",
+   "hdesc": "",
+   "category": {
+    "code": "335",
+    "name": "Cooler Genericos"
+   },
+   "brand": {
+    "name": "NOGA"
+   }
+  },
+  "inventory": {
+   "totalQty": 4
+  }
+ },
+ {
+  "product": {
+   "sku": "KV1632",
+   "name": "16GB  DDR4,3200  KVR32N22D8/16  KINGSTON",
+   "desc": "16GB RAM DDR4 3200Mhz PC4-25600                   16GB 2Rx8 2GB x64bit (16chips x1GB x8bit)         CL22 288Pin DIMM",
+   "hdesc": "",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "KINGSTON"
+   }
+  },
+  "inventory": {
+   "totalQty": 3
+  }
+ },
+ {
+  "product": {
+   "sku": "1656HI",
+   "name": "16GB  DDR5,5600   HIKER          HIKSEMI",
+   "desc": "16GB RAM DDR5 5600Mhz PC5-44800                   16GB 1Rx8 2GB x64bit (8chips x2GB x8bit)          CL40 288Pin DIMM",
+   "hdesc": "",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "HIKSEMI"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "4GSO17",
+   "name": "4GB SO-DDR3,1600",
+   "desc": "4GB RAM DDR3 1600Mhz PC3-12800                    4GB 2Rx8 512MB x64bit (8chips x256MB x8bit)       CL9 204Pin SODIMM - PC3= VOLTAGE 1,5V             SIRVE PARA ALGUNAS NTB COMPAQ/HP SE PROBO EN:     LENOVO G50,G480   - TOSHIBA 5304",
+   "hdesc": "DELL N5010,N4030  - SAMSUNG NP-RV511              *RAM**",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "HIKSEMI"
+   }
+  },
+  "inventory": {
+   "totalQty": 22
+  }
+ },
+ {
+  "product": {
+   "sku": "A42400",
+   "name": "4GB DDR4,2400 1Rx16                ADATA",
+   "desc": "4GB RAM DDR4 2400Mhz PC4-19200                    4GB 1Rx16 512MB x64bit (4chips x512MB x16bit)     CL17 288Pin DIMM - 1.2V",
+   "hdesc": "                                                  *RAM*",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "ADATA"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "T16440",
+   "name": "16GB  DDR4,4400 TT TOUGHRAM K2x8 RGB NEG",
+   "desc": "16GB RAM 4400Mhz PC4-35200 THERMALTAKE TOUGHRAM   ES UN KIT DE 2 MEMORIAS DE 8GB c/u - COLOR: NEGRO 2x8GB 1Rx8 1GB x64bit (8chips x1GB x8bit)         CL19 288Pin DIMM -1,45V -COMPATIBLE INTEL XMP 2.0 SOPORTA TT RGB PLUS, ALEXA, RAZEN CHROMA, GIGABYTE",
+   "hdesc": "RGB FUSION 2.0, MSI MYSTIC LIGHT SYNC, AURA SYNC  *DDR4 *RAM *LED",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "THERMALTAKE"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "162X8G",
+   "name": "16GB  DDR4,2666 TT H-ONE    K2x8",
+   "desc": "16GB RAM 2666Mhz PC4-21300 THERMALTAKE H-ONE      ES UN KIT DE 2 MEMORIAS DE 8GB c/u                2x8GB 1Rx8 1GB x64bit (8chips x1GB x8bit)         CL16 288Pin DIMM - 1.20V                          COMPATIBLE CON INTEL XMP 2.0",
+   "hdesc": "",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "THERMALTAKE"
+   }
+  },
+  "inventory": {
+   "totalQty": 5
+  }
+ },
+ {
+  "product": {
+   "sku": "16DEL4",
+   "name": "16GB DDR4,2666 RDIMM ECC 2Rx8       DELL",
+   "desc": "16GB RAM DDR4 2666Mhz ECC REGISTERED PC4-21300    16GB 2Rx8 1GB x72bit                              CL19 288Pin RDIMM - 1,2V                          PARA R740, R640, R540, R440, T440",
+   "hdesc": "",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "DELL"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "M2G800",
+   "name": "2GB DDR2,800   6400",
+   "desc": "2GB RAM DDR2 800Mhz PC3-6400                      CL6 240pin DIMM",
+   "hdesc": "                                                  **RAM**  *SERVICIO*",
+   "category": {
+    "code": "90",
+    "name": "Memorias Ram"
+   },
+   "brand": {
+    "name": "AVANT"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "2F5050",
+   "name": "PL.VIDEO GF RTX5050       8G/D6/2F",
+   "desc": "MEM.GDDR6:20Gbps -NUCLEO:2572Hz -MARCA: INNO3D    MEMORY INTERFACE: 128bits   - SLOT: PCIe x8 5.0   MAX.RESOLUCION: 7680x4320   - CUDA CORES: 2560    DIRECTX 12 ULT.- OPENGL 4.6 - PERFIL: 2 SLOT      PUERTOS: 1 HDMI 2.1b, 3 DP 2.1b",
+   "hdesc": "REQUIERE FUENTE 550W+POWER 1x8pin - 2 FAN         4 PANTALLAS",
+   "category": {
+    "code": "50",
+    "name": "Placas de Video AGP y PCI-e"
+   },
+   "brand": {
+    "name": "INNO3D"
+   }
+  },
+  "inventory": {
+   "totalQty": 3
+  }
+ },
+ {
+  "product": {
+   "sku": "6600XT",
+   "name": "PL.VIDEO RADEON  RX6600   8G/D6/2F",
+   "desc": "MEM.GDDR6:14000MHz -NUCLEO:2491MHz -MARCA: MSI    MEMORY INTERFACE: 128bits   - SLOT: PCIe x8 4.0   MAX.RESOLUCION: 7680x4320   - STREAM PROC: 1792   DIRECTX 12 - OPENGL 4.6     - PERFIL: 2,5 SLOT    PUERTOS: 1 HDMI 2.1, 3 DP 1.4a",
+   "hdesc": "AMD EYEFINITY: 4 PANTALLAS  - 2 FAN               FUENTE RECOMENDADA 500W+POWER 1x8pin",
+   "category": {
+    "code": "50",
+    "name": "Placas de Video AGP y PCI-e"
+   },
+   "brand": {
+    "name": "MSI"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "FG2101",
+   "name": "PL.VIDEO GF  GT210        1G/D3/1F/LP",
+   "desc": "MEM.GDDR3:1000MHz - NUCLEO:589MHz - MARCA: MSI    MEMORY INTERFACE: 64bits    - SLOT: PCIe x16 2.0  MAX.RESOLUCION: 2560x1600                         DIRECTX 10.1 - OPENGL 3.1 - SHADER MODEL 4.1      PUERTOS: VGA, DVI-I DUAL LINK, HDMI",
+   "hdesc": "SLI SUPORTED: NO - FUENTE MIN.300W                INCLUYE ADAPTADOR LOW PROFILE (P/GABINETES SLIM)",
+   "category": {
+    "code": "50",
+    "name": "Placas de Video AGP y PCI-e"
+   },
+   "brand": {
+    "name": "MSI"
+   }
+  },
+  "inventory": {
+   "totalQty": 13
+  }
+ },
+ {
+  "product": {
+   "sku": "RX5808",
+   "name": "PL.VIDEO RADEON  RX580    8G/D5/2F",
+   "desc": "MEM.GDDR5: 7000MHz -NUCLEO:1284MHz -MARCA: AFOX   MEMORY INTERFACE: 256bits   - SLOT: PCIe x16 3.0  MAX.RESOLUCION: 3840x2160   - STREAM PROC: 2304   DIRECTX 12 - OPENGL 4.5     - PERFIL: 2 SLOT      PUERTOS: 1 HDMI 2.0b, 1 DVI-D, 3 DP 1.4",
+   "hdesc": "AMD EYEFINITY: 4 PANTALLAS                        FUENTE MIN.450W RECOMENDADA 500W + 1 POWER 8pin",
+   "category": {
+    "code": "50",
+    "name": "Placas de Video AGP y PCI-e"
+   },
+   "brand": {
+    "name": "AFOX"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "ARX550",
+   "name": "PL.VIDEO RADEON  RX550    2G/D5/2F",
+   "desc": "M.GDDR5:7000MHz -NUCLEO:1203Hz -MARCA:MSI         MEMORY INTERFACE:  64bits   - SLOT: PCIe x16 3.0  MAX.RESOLUCION: 5120x2880   - STREAM PROC: 512    DIRECTX 12 - OPENGL 4.5     - PERFIL: 1 SLOT      PUERTOS: 1 HDMI 2.0b,1 DVI-D- 2 FAN",
+   "hdesc": "AMD EYEFINITY: 2 PANTALLAS  - LOW PROFILE",
+   "category": {
+    "code": "50",
+    "name": "Placas de Video AGP y PCI-e"
+   },
+   "brand": {
+    "name": "MSI"
+   }
+  },
+  "inventory": {
+   "totalQty": 4
+  }
+ },
+ {
+  "product": {
+   "sku": "GAFTTG",
+   "name": "GAB.GAMEMAX FORTRESS    3F          S/FT",
+   "desc": "BAHIAS: 2x3,5\"(0+2)+2x2,5\"(0+2)                   DIMENSION: 360x210x440mm - COLOR: NEGRO           MATERIAL: ACERO SECC 0,5mm CON VIDRIO TEMPLADO    FORMATO: mATX, ATX, E-ATX -FAN: 3x120mm           PUERTOS: 2 USB 2.0, 1 USB 3.0 -1 HD AUDIO",
+   "hdesc": "PESO: 5,5Kg                                       ** NO INCLUYE FUENTE * PREPARADO P/REFR.LIQUIDA **",
+   "category": {
+    "code": "185",
+    "name": "Gabinetes Especiales y Modding"
+   },
+   "brand": {
+    "name": "GAMEMAX"
+   }
+  },
+  "inventory": {
+   "totalQty": 4
+  }
+ },
+ {
+  "product": {
+   "sku": "MESHBX",
+   "name": "GAB.GAMEMAX MESHBOX                 S/FT",
+   "desc": "BAHIAS: 1x3,5\"(0+1)+3x2,5\"(0+3)/4x2,5\"(0+4)       DIMENSION: 398x204x413mm - COLOR: NEGRO           MATERIAL: ACERO SECC 0,6mm Y MALLA METALICA x2    FORMATO: mATX, MINI ITX, ATX, DTX                 PUERTOS: 1 USB 3.2, 1 USB-C 3.2 -1 HD AUDIO",
+   "hdesc": "                                                  ** NO INCLUYE FUENTE * PREPARADO P/REFR.LIQUIDA **",
+   "category": {
+    "code": "185",
+    "name": "Gabinetes Especiales y Modding"
+   },
+   "brand": {
+    "name": "GAMEMAX"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "XPGCRW",
+   "name": "GAB.XPG CRUISER TG      3F ARGB WH  S/FT",
+   "desc": "BAHIAS: 2x3,5\"/2,5\"(0+2)+2x2,5\"(0+2)      by ADATADIMENSIONES: 493x234x466mm                        MATERIAL: ACERO SPCC CON VIDRIO TEMPLADO          FORMATO: E-ATX,ATX,mATX,miniITX -FAN:3x120mm ARGB PUERTOS:1 USB3.1 TIPO C -1 HD AUDIO COMBO",
+   "hdesc": "        2 USB3.0        -COLOR: BLANCO            ** NO INCLUYE FUENTE * PREPARADO P/REFR.LIQUIDA **",
+   "category": {
+    "code": "185",
+    "name": "Gabinetes Especiales y Modding"
+   },
+   "brand": {
+    "name": "XPG"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "6810CK",
+   "name": "GAB.PERFORM 6810       C/KIT T+M    600W",
+   "desc": "BAHIAS: 4x 5,25\" (3+1), 7x 3,5\" (1+6)             7 SLOTS DE EXPANSION                              FUENTE MLOGIX DE 600W                             DIMENSION: 377x178x420mm (D*W*H)                  PESO: 5,50kg",
+   "hdesc": "                                                        * * *INCLUYE TECLADO Y MOUSE* * *",
+   "category": {
+    "code": "180",
+    "name": "Gabinetes (con y sin fuente)"
+   },
+   "brand": {
+    "name": "PERFORMANCE"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "S2U550",
+   "name": "GAB.RACKEABLE SFX     ATX 2U-550    S/FT",
+   "desc": "BAHIAS: 2x 5,25\" (2+0), 8x 3,5\" (0+8), 1x FDD     7 SLOTS DE EXPANSION                              GABINETE RACKEABLE DE 2 UNIDADES                  DIMENSION: 555x431x92mm (D*W*H)",
+   "hdesc": "        * * * * NO INCLUYE FUENTE * * * *",
+   "category": {
+    "code": "186",
+    "name": "Gabinetes Especiales y p/Rack"
+   },
+   "brand": {
+    "name": "SFX"
+   }
+  },
+  "inventory": {
+   "totalQty": 5
+  }
+ },
+ {
+  "product": {
+   "sku": "GF1000",
+   "name": "FTE PC TT 1000W 80+ GLD GF1          MOD",
+   "desc": "FUENTE THERMALTAKE GF1               -FULL MODULARMAX.SALIDA: 1 RAIL +12V 83,3A          -80+ GOLD  12 SATA        6 PCIe 6+2pin   1 FAN 140mm        4 MOLEX        1 FDD                              1 POWER 20+4   2 POWER 4+4pin",
+   "hdesc": "DIMENSION LxWxH: 150x160x86mm",
+   "category": {
+    "code": "145",
+    "name": "Fuentes para PC y Servidores"
+   },
+   "brand": {
+    "name": "THERMALTAKE"
+   }
+  },
+  "inventory": {
+   "totalQty": 2
+  }
+ },
+ {
+  "product": {
+   "sku": "G650NG",
+   "name": "FTE PC GIGABYTE  650W 80+ SLV      NEGRO",
+   "desc": "FUENTE GIGABYTE GP-P650SS    - COLOR: NEGRO       MAX.SALIDA: 1 RAIL +12V 54,1A          -80+ SILVER5 SATA         2 PCIe 6+2pin   1 FAN 120mm        3 MOLEX        2 POWER 4+4pin                     1 POWER 20+4",
+   "hdesc": "DIMENSION LxWxH: 150x140x86mm",
+   "category": {
+    "code": "145",
+    "name": "Fuentes para PC y Servidores"
+   },
+   "brand": {
+    "name": "GIGABYTE"
+   }
+  },
+  "inventory": {
+   "totalQty": 6
+  }
+ },
+ {
+  "product": {
+   "sku": "F55024",
+   "name": "FTE PC  NOGA  550W",
+   "desc": "FUENTE NOGA 550W                                  CONECTORES QUE INCLUYE:                           2 SATA                         1 FAN 80mm         2 MOLEX        1 POWER 4pin    ATX DUAL +12V v.2.01 POWER 20+4",
+   "hdesc": "                                                  *LOS CABLES NO LLEGAN CON GAB.CON FUENTE INFERIOR",
+   "category": {
+    "code": "145",
+    "name": "Fuentes para PC y Servidores"
+   },
+   "brand": {
+    "name": "NOGA"
+   }
+  },
+  "inventory": {
+   "totalQty": 99
+  }
+ },
+ {
+  "product": {
+   "sku": "CM850G",
+   "name": "FTE PC COOL.MASTER 850W 80+ GLD V3",
+   "desc": "FUENTE COOLER MASTER 850GM PG5 V3                 MAX.SALIDA: 1 RAIL +12V 70,8A            -80+ GOLD6 SATA         4 PCIe 6+2pin   1 FAN 120mm        3 MOLEX                        1 PCIe 12+4pin     1 POWER 20+4   2 CPU 4+4pin      (GEN 5.1,ATX 3.1)",
+   "hdesc": "DIMENSION LxWxH: 150x140x86mm                     D2D= CONVERTIDOR DE CORRIENTE CONTINUA + ESTABLE",
+   "category": {
+    "code": "145",
+    "name": "Fuentes para PC y Servidores"
+   },
+   "brand": {
+    "name": "COOL.MASTER"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "F495DE",
+   "name": "FTE REDUNDANTE 495W DELL R540 80+ PLT",
+   "desc": "PARA T440, R540, R740                             CERTIFICACION 80+ PLATINUM",
+   "hdesc": "",
+   "category": {
+    "code": "145",
+    "name": "Fuentes para PC y Servidores"
+   },
+   "brand": {
+    "name": "DELL"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "M2RE4T",
+   "name": "D.SSD  M.2 PCIe.   4TB RENEGADE    KINGS",
+   "desc": "M.2 SSD KINGSTON FURY RENEGADE                    INTERFAZ : PCIe 4.0 x4 NVMe (16GT/s - 1969,2MB/s) CAPACIDAD: 4TB          - FORMATO: M.2 2280       LECTURA  : 7300MB/s     - ESCRITURA: 7000MB/s     DIMENSION: 22x80x3,5mm  - KEY ID TIPO \"M\"",
+   "hdesc": "PESO: 7gr               - RESISTENCIA: 4,0PBW     DISCO ESTADO SOLIDO",
+   "category": {
+    "code": "93",
+    "name": "SSD Discos Estado Solido"
+   },
+   "brand": {
+    "name": "KINGSTON"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "DC6048",
+   "name": "D.SSD  2,5\" SATA3 480GB DC600   KINGSTON",
+   "desc": "SSD DC600 480GB 3D TLC P/SERVER                   INTERFAZ : SATA III (6,0Gb/s), SATA II (3,0Gb/s)  CAPACIDAD: 480GB        - FORMATO: 2,5\" 7mm       LECTURA  : 560MB/s      - ESCRITURA: 470MB/s      DIMENSION: 100x69,9x7mm",
+   "hdesc": "PESO: 92,34gr           - RESISTENCIA: 876TBW",
+   "category": {
+    "code": "93",
+    "name": "SSD Discos Estado Solido"
+   },
+   "brand": {
+    "name": "KINGSTON"
+   }
+  },
+  "inventory": {
+   "totalQty": 0
+  }
+ },
+ {
+  "product": {
+   "sku": "71005G",
+   "name": "D.SSD  M.2 PCIe  500GB BLACK SN7100  W.D",
+   "desc": "M.2 SSD WESTERN DIGITAL BLACK SN7100 TLC 3D NAND  INTERFAZ : PCIe NVMe 4.0 x4 (16GT/s - 985MB/s)x4  CAPACIDAD: 500GB        - FORMATO: M.2 2280       LECTURA  : 6800MB/s     - ESCRITURA: 5800MB/s     DIMENSION: 22x80x2,38mm - KEY ID TIPO \"M\"",
+   "hdesc": "PESO: 5,8gr             - RESISTENCIA: 300TBW     DISCO ESTADO SOLIDO",
+   "category": {
+    "code": "93",
+    "name": "SSD Discos Estado Solido"
+   },
+   "brand": {
+    "name": "W.DIGITAL"
+   }
+  },
+  "inventory": {
+   "totalQty": 4
+  }
+ },
+ {
+  "product": {
+   "sku": "WDRE2T",
+   "name": "D.DURO SATA3.  2TB  64MB RED         W.D",
+   "desc": "WD RED COMPATIBILIDAD PARA NAS Y RAID             INTERFAZ : SATA III (6,0Gb/s)                     CAPACIDAD: 2TB           CACHE      : 64MB        RPM      : 5400rpm       FORMATO    : 3,5\"        ALTURA   : 26,1mm        PROFUNDIDAD: 147mm",
+   "hdesc": "                                                  *IRONWOLF *NAS",
+   "category": {
+    "code": "20",
+    "name": "Discos Duros IDE y SATA"
+   },
+   "brand": {
+    "name": "W.DIGITAL"
+   }
+  },
+  "inventory": {
+   "totalQty": 1
+  }
+ },
+ {
+  "product": {
+   "sku": "240GG3",
+   "name": "D.SSD  M.2 SATA3 240GB GREEN G3      W.D",
+   "desc": "M.2 SSD WESTERN DIGITAL GREEN G3 by SANDISK       INTERFAZ : SATA III (6,0Gb/s)                     CAPACIDAD: 240GB        - FORMATO: M.2 2280       LECTURA  : 545MB/s                                DIMENSION: 22x80x1,35mm - KEY ID TIPO \"B+M\"",
+   "hdesc": "PESO: 5,5gr                                       DISCO ESTADO SOLIDO",
+   "category": {
+    "code": "93",
+    "name": "SSD Discos Estado Solido"
+   },
+   "brand": {
+    "name": "W.DIGITAL"
+   }
+  },
+  "inventory": {
+   "totalQty": 5
+  }
+ },
+ {
+  "product": {
+   "sku": "CAH212",
+   "name": "CABLE HDMI 2.1 NISUTA               2,0m",
+   "desc": "CABLE DE VIDEO HDMI 19 PIN DORADO MACHO/MACHO     PARA XBOX X/S, PLAY5, PC C/CONECTOR 2.1           SOPORTA RESOLUCION 7680x4320 8K 60Hz / 4K 120Hz   AUDIO DOLBY DTS HD, eARC/ARC/HDR, 48bit COLOR     TRANSFERENCIA 48Gbps - SOPORTA RELACION 21:9",
+   "hdesc": "CABLE 30AWG - OD 6.5mm",
+   "category": {
+    "code": "190",
+    "name": "Cables Externos Varios"
+   },
+   "brand": {
+    "name": "NISUTA"
+   }
+  },
+  "inventory": {
+   "totalQty": 7
+  }
+ }
+]

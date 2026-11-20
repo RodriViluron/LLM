@@ -1,0 +1,160 @@
+# Perfiles de uso y guía de preguntas para armar una PC (problemas 6 y 26).
+#
+# ESTADO: BORRADOR para revisar con el grupo y la tienda. Las gamas de cada perfil salen de lo que ya
+# dice rag/docs/gamas.md (baja sin placa de video, media para 1080p, alta para 1440p y edición, premium
+# para 4K), pero la decisión final es del grupo.
+#
+# Es la única fuente de verdad de «uso → gama»:
+# - La sección «Perfiles de uso» de rag/docs/caracteristicas_por_actividad.md se genera desde acá:
+#     uv run python -m mcp_tienda.armado.perfiles --escribir-doc
+# - La entrevista del armado (problema 26) va a usar estas mismas preguntas y perfiles.
+#
+# Campos de un perfil:
+#   nombre:      cómo se lo muestra al usuario.
+#   gama:        baja, media, alta o premium.
+#   ram_gb:      memoria recomendada.
+#   gpu:         si lleva placa de video dedicada.
+#   pesa_mas:    componentes en los que conviene poner más presupuesto, en orden.
+#   alcanza_para / no_alcanza_para: frases cortas para explicarle al usuario.
+#   ejemplos:    programas o juegos típicos (sirven para reconocer el perfil en un pedido).
+
+estado: borrador
+
+perfiles:
+  oficina:
+    nombre: Oficina y estudio
+    gama: baja
+    ram_gb: 8
+    gpu: false
+    pesa_mas: [disco, ram]
+    alcanza_para: navegar, ofimática, videollamadas, clases virtuales y ver videos
+    no_alcanza_para: juegos actuales ni edición de video
+    ejemplos: [Word, Excel, navegador, Zoom, Meet, Teams]
+
+  programacion:
+    nombre: Programación
+    gama: baja
+    ram_gb: 16
+    gpu: false
+    pesa_mas: [ram, cpu, disco]
+    alcanza_para: programar, compilar proyectos medianos y usar varias herramientas a la vez
+    no_alcanza_para: entrenar modelos de inteligencia artificial ni juegos actuales
+    ejemplos: [Visual Studio Code, Docker, IntelliJ, máquinas virtuales]
+
+  juegos_1080p:
+    nombre: Juegos en 1080p
+    gama: media
+    ram_gb: 16
+    gpu: true
+    pesa_mas: [gpu, ram, cpu]
+    alcanza_para: la mayoría de los juegos actuales en un monitor común (1080p) con calidad media o alta
+    no_alcanza_para: jugar en 1440p o 4K con calidad alta
+    ejemplos: [Fortnite, Valorant, League of Legends, Minecraft, EA FC]
+
+  juegos_1440p:
+    nombre: Juegos en 1440p
+    gama: alta
+    ram_gb: 32
+    gpu: true
+    pesa_mas: [gpu, cpu, ram]
+    alcanza_para: juegos actuales en un monitor 2K (1440p) o en 1080p con muchos cuadros por segundo
+    no_alcanza_para: jugar en 4K con calidad alta
+    ejemplos: [Cyberpunk 2077, God of War Ragnarök, Call of Duty]
+
+  juegos_4k:
+    nombre: Juegos en 4K
+    gama: premium
+    ram_gb: 64
+    gpu: true
+    pesa_mas: [gpu, cpu, ram]
+    alcanza_para: juegos actuales en 4K con calidad alta
+    no_alcanza_para: "nada habitual: es lo más potente que arma la tienda"
+    ejemplos: [juegos actuales en un televisor o monitor 4K]
+
+  diseno:
+    nombre: Diseño gráfico
+    gama: media
+    ram_gb: 32
+    gpu: true
+    pesa_mas: [ram, cpu, gpu]
+    alcanza_para: Photoshop, Illustrator, AutoCAD y modelado 3D liviano
+    no_alcanza_para: render 3D pesado o arquitectura con escenas muy grandes
+    ejemplos: [Photoshop, Illustrator, AutoCAD, SketchUp, Lumion]
+
+  edicion_video:
+    nombre: Edición de video
+    gama: alta
+    ram_gb: 32
+    gpu: true
+    pesa_mas: [cpu, ram, disco, gpu]
+    alcanza_para: editar video en 1080p y 4K, y exportar sin esperar demasiado
+    no_alcanza_para: producción profesional de 8K o efectos muy pesados
+    ejemplos: [Premiere Pro, DaVinci Resolve, After Effects, CapCut]
+
+  streaming:
+    nombre: Jugar y transmitir (streaming)
+    gama: alta
+    ram_gb: 32
+    gpu: true
+    pesa_mas: [cpu, gpu, ram]
+    alcanza_para: jugar y transmitir al mismo tiempo en Twitch o YouTube
+    no_alcanza_para: transmitir en 4K con calidad alta
+    ejemplos: [OBS, Twitch, YouTube, Discord]
+
+# Guía de preguntas de la entrevista (problema 26). Todas en términos de uso: el usuario no tiene que
+# saber qué es la RAM ni la placa de video. Efectos de cada respuesta: `perfil` (cambia el perfil),
+# `sigue` (salta a esa pregunta), `ram_gb_min`, `disco_gb_min`, `segundo_disco`, `placa: escalable`.
+# La pregunta del gabinete se sacó del flujo: no cambia ningún filtro del armado (paso 10).
+# Campos: `solo_si_llega` (solo se pregunta si otra respuesta la lleva) y `solo_si_perfil`.
+# El código de mcp_tienda/armado/entrevista.py recorre estas preguntas; no hay que cambiarlo para
+# editar el texto o las opciones.
+preguntas:
+  - id: uso
+    pregunta: ¿Para qué la vas a usar principalmente?
+    opciones:
+      Oficina o estudio: {perfil: oficina}
+      Jugar: {sigue: monitor}
+      Diseño o edición de video: {sigue: tipo_de_trabajo}
+      Programar: {perfil: programacion}
+
+  - id: monitor
+    solo_si_llega: true   # solo se pregunta si la respuesta «Jugar» lo manda (campo sigue)
+    pregunta: ¿En qué pantalla vas a jugar?
+    opciones:
+      Un monitor común (1080p): {perfil: juegos_1080p}
+      Un monitor 2K (1440p): {perfil: juegos_1440p}
+      Un televisor o monitor 4K: {perfil: juegos_4k}
+      No sé: {perfil: juegos_1080p}
+
+  - id: tipo_de_trabajo
+    solo_si_llega: true   # solo se pregunta si la respuesta «Diseño o edición de video» lo manda
+    pregunta: ¿Qué hacés más?
+    opciones:
+      Diseño (Photoshop, AutoCAD): {perfil: diseno}
+      Edición de video: {perfil: edicion_video}
+
+  - id: transmitir
+    pregunta: ¿Además vas a transmitir mientras jugás (Twitch, YouTube)?
+    solo_si_perfil: [juegos_1080p, juegos_1440p]
+    opciones:
+      Sí: {perfil: streaming}
+      "No": {}
+
+  - id: multitarea
+    pregunta: ¿Solés tener muchos programas abiertos a la vez (navegador con muchas pestañas, Discord y un juego)?
+    opciones:
+      Sí, muchos: {ram_gb_min: 32}
+      Lo normal: {}
+
+  - id: archivos
+    pregunta: ¿Guardás muchas fotos, videos o juegos pesados?
+    opciones:
+      Sí, muchos: {disco_gb_min: 1000, segundo_disco: true}
+      No tanto: {}
+
+  - id: mejora
+    pregunta: ¿Pensás mejorarla más adelante (sumar memoria u otro disco)?
+    opciones:
+      Sí: {placa: escalable}
+      "No": {}
+

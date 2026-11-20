@@ -1,0 +1,25 @@
+# Esquema de atributos: Placa de video
+categoria: gpu
+nombre: Placa de video
+sinonimos: [placa de video, placas de video, tarjeta grafica, tarjetas graficas, tarjeta de video, gpu, vga]
+atributos:
+  vram_gb:
+    tipo: entero
+    unidad: GB
+  consumo_w:
+    tipo: entero
+    unidad: W
+    descripcion: Consumo total de la placa (TBP), no la fuente recomendada.
+  largo_mm:
+    tipo: entero
+    unidad: mm
+  # --- Datos que hoy solo trae el catálogo real de la tienda (los lee ingesta/formato_amn.py) ---
+  fuente_recomendada_w:
+    tipo: entero
+    unidad: W
+    opcional: true
+    descripcion: Fuente que pide el fabricante para toda la PC («REQUIERE FUENTE 550W»).
+  conectores_energia:
+    tipo: texto
+    opcional: true
+    descripcion: Conectores de energía que necesita, por ejemplo «1x8pin».

@@ -1,0 +1,17 @@
+# Esquema de atributos: Almacenamiento (agregado al esquema de CLAUDE.md porque es un lugar del armado)
+categoria: almacenamiento
+nombre: Almacenamiento
+sinonimos: [almacenamiento, disco, discos, disco solido, discos solidos, disco rigido, discos rigidos, ssd, hdd]
+atributos:
+  tipo:
+    tipo: texto
+    valores: [NVMe, M.2 SATA, SSD SATA, HDD]
+  capacidad_gb:
+    tipo: entero
+    unidad: GB
+  # --- Dato que hoy solo trae el catálogo real de la tienda (lo lee ingesta/formato_amn.py) ---
+  conexion:
+    tipo: texto
+    valores: [M.2, SATA]
+    opcional: true
+    descripcion: Dónde se conecta en la placa madre. Sirve para contar ranuras M.2 y puertos SATA.

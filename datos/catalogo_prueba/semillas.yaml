@@ -1,0 +1,149 @@
+# Semillas del catálogo de prueba (escenario B).
+#
+# Son modelos que existen en el mercado, con specs tomadas de fichas de referencia del fabricante
+# (pueden variar según la versión exacta). Los PRECIOS Y EL STOCK SON INVENTADOS.
+#
+# `atributos` es la verdad: con esto se generan las descripciones desprolijas y las etiquetas
+# contra las que se mide la extracción. `null` = el dato no se conoce (y no se escribe).
+# `extra` son datos que van a la descripción como ruido o distractor, pero no son atributos.
+# `declarados` son atributos que la fuente entrega como dato estructurado (no se escriben en el
+# texto ni se miden en la extracción): los que usan las reglas de compatibilidad del catálogo real
+# (generación, consumo máximo, cooler y video incluidos, ranuras, potencia del cooler). El resto de
+# los declarados (módulos del kit, conexión del disco, fuente recomendada, fuente del gabinete) los
+# deduce el generador (`_declarados`). Ojo: en YAML el «no» suelto es falso; va entre comillas.
+
+cpu:
+  - {nombre: AMD Ryzen 3 4100, marca: AMD, precio: 78000, atributos: {socket: AM4, nucleos: 4, tdp_w: 65}, extra: {hilos: 8, ghz: 4.0}, declarados: {generacion: "3", consumo_max_w: 65, incluye_cooler: si, video_integrado: "no"}}
+  - {nombre: AMD Ryzen 5 5600, marca: AMD, precio: 145000, atributos: {socket: AM4, nucleos: 6, tdp_w: 65}, extra: {hilos: 12, ghz: 4.4}, declarados: {generacion: "3", consumo_max_w: 65, incluye_cooler: si, video_integrado: "no"}}
+  - {nombre: AMD Ryzen 5 5600G, marca: AMD, precio: 165000, atributos: {socket: AM4, nucleos: 6, tdp_w: 65}, extra: {hilos: 12, ghz: 4.4}, declarados: {generacion: "3", consumo_max_w: 65, incluye_cooler: si, video_integrado: si}}
+  - {nombre: AMD Ryzen 7 5700X, marca: AMD, precio: 198000, atributos: {socket: AM4, nucleos: 8, tdp_w: 65}, extra: {hilos: 16, ghz: 4.6}, declarados: {generacion: "3", consumo_max_w: 65, incluye_cooler: "no", video_integrado: "no"}}
+  - {nombre: AMD Ryzen 7 5800X3D, marca: AMD, precio: 389000, atributos: {socket: AM4, nucleos: 8, tdp_w: 105}, extra: {hilos: 16, ghz: 4.5}, declarados: {generacion: "3", consumo_max_w: 105, incluye_cooler: "no", video_integrado: "no"}}
+  - {nombre: AMD Ryzen 5 7600, marca: AMD, precio: 265000, atributos: {socket: AM5, nucleos: 6, tdp_w: 65}, extra: {hilos: 12, ghz: 5.1}, declarados: {generacion: "4", consumo_max_w: 65, incluye_cooler: si, video_integrado: si}}
+  - {nombre: AMD Ryzen 5 8600G, marca: AMD, precio: 285000, atributos: {socket: AM5, nucleos: 6, tdp_w: 65}, extra: {hilos: 12, ghz: 5.0}, declarados: {generacion: "4", consumo_max_w: 65, incluye_cooler: si, video_integrado: si}}
+  - {nombre: AMD Ryzen 7 7700X, marca: AMD, precio: 375000, atributos: {socket: AM5, nucleos: 8, tdp_w: 105}, extra: {hilos: 16, ghz: 5.4}, declarados: {generacion: "4", consumo_max_w: 105, incluye_cooler: "no", video_integrado: si}}
+  - {nombre: AMD Ryzen 7 7800X3D, marca: AMD, precio: 545000, atributos: {socket: AM5, nucleos: 8, tdp_w: 120}, extra: {hilos: 16, ghz: 5.0}, declarados: {generacion: "4", consumo_max_w: 120, incluye_cooler: "no", video_integrado: si}}
+  - {nombre: AMD Ryzen 9 7900X, marca: AMD, precio: 520000, atributos: {socket: AM5, nucleos: 12, tdp_w: 170}, extra: {hilos: 24, ghz: 5.6}, declarados: {generacion: "4", consumo_max_w: 170, incluye_cooler: "no", video_integrado: si}}
+  - {nombre: Intel Core i5-10400F, marca: Intel, precio: 98000, atributos: {socket: LGA1200, nucleos: 6, tdp_w: 65}, extra: {hilos: 12, ghz: 4.3}, declarados: {generacion: "10", consumo_max_w: 65, incluye_cooler: si, video_integrado: "no"}}
+  - {nombre: Intel Core i3-12100F, marca: Intel, precio: 89000, atributos: {socket: LGA1700, nucleos: 4, tdp_w: 58}, extra: {hilos: 8, ghz: 4.3}, declarados: {generacion: "12", consumo_max_w: 89, incluye_cooler: si, video_integrado: "no"}}
+  - {nombre: Intel Core i5-12400F, marca: Intel, precio: 139000, atributos: {socket: LGA1700, nucleos: 6, tdp_w: 65}, extra: {hilos: 12, ghz: 4.4}, declarados: {generacion: "12", consumo_max_w: 117, incluye_cooler: si, video_integrado: "no"}}
+  - {nombre: Intel Core i5-13400F, marca: Intel, precio: 215000, atributos: {socket: LGA1700, nucleos: 10, tdp_w: 65}, extra: {hilos: 16, ghz: 4.6}, declarados: {generacion: "13", consumo_max_w: 148, incluye_cooler: si, video_integrado: "no"}}
+  - {nombre: Intel Core i5-14600K, marca: Intel, precio: 368000, atributos: {socket: LGA1700, nucleos: 14, tdp_w: 125}, extra: {hilos: 20, ghz: 5.3}, declarados: {generacion: "14", consumo_max_w: 181, incluye_cooler: "no", video_integrado: si}}
+  - {nombre: Intel Core i7-14700K, marca: Intel, precio: 495000, atributos: {socket: LGA1700, nucleos: 20, tdp_w: 125}, extra: {hilos: 28, ghz: 5.6}, declarados: {generacion: "14", consumo_max_w: 253, incluye_cooler: "no", video_integrado: si}}
+  - {nombre: Intel Core Ultra 5 245K, marca: Intel, precio: 395000, atributos: {socket: LGA1851, nucleos: 14, tdp_w: 125}, extra: {hilos: 14, ghz: 5.2}, declarados: {generacion: "2", consumo_max_w: 159, incluye_cooler: "no", video_integrado: si}}
+
+motherboard:
+  - {nombre: ASUS PRIME A520M-K, marca: ASUS, precio: 92000, atributos: {socket: AM4, tipo_ram: DDR4, formato: Micro-ATX}, declarados: {generaciones: ["1", "2", "3"], ranuras_ram: 2, puertos_sata: 4, ranuras_m2: 1}}
+  - {nombre: MSI B450M-A PRO MAX II, marca: MSI, precio: 98000, atributos: {socket: AM4, tipo_ram: DDR4, formato: Micro-ATX}, declarados: {generaciones: ["1", "2", "3"], ranuras_ram: 2, puertos_sata: 4, ranuras_m2: 1}}
+  - {nombre: Gigabyte B550M DS3H, marca: Gigabyte, precio: 135000, atributos: {socket: AM4, tipo_ram: DDR4, formato: Micro-ATX}, declarados: {generaciones: ["2", "3"], ranuras_ram: 4, puertos_sata: 4, ranuras_m2: 2}}
+  - {nombre: MSI MAG B550 TOMAHAWK, marca: MSI, precio: 210000, atributos: {socket: AM4, tipo_ram: DDR4, formato: ATX}, declarados: {generaciones: ["2", "3"], ranuras_ram: 4, puertos_sata: 6, ranuras_m2: 2}}
+  - {nombre: ASRock B550M-ITX/ac, marca: ASRock, precio: 195000, atributos: {socket: AM4, tipo_ram: DDR4, formato: Mini-ITX}, declarados: {generaciones: ["2", "3"], ranuras_ram: 2, puertos_sata: 4, ranuras_m2: 1}}
+  - {nombre: MSI PRO A620M-E, marca: MSI, precio: 125000, atributos: {socket: AM5, tipo_ram: DDR5, formato: Micro-ATX}, declarados: {generaciones: ["4"], ranuras_ram: 2, puertos_sata: 4, ranuras_m2: 1}}
+  - {nombre: Gigabyte B650M GAMING X AX, marca: Gigabyte, precio: 235000, atributos: {socket: AM5, tipo_ram: DDR5, formato: Micro-ATX}, declarados: {generaciones: ["4", "5"], ranuras_ram: 4, puertos_sata: 4, ranuras_m2: 2}}
+  - {nombre: ASUS TUF GAMING B650-PLUS WIFI, marca: ASUS, precio: 310000, atributos: {socket: AM5, tipo_ram: DDR5, formato: ATX}, declarados: {generaciones: ["4", "5"], ranuras_ram: 4, puertos_sata: 4, ranuras_m2: 3}}
+  - {nombre: ASUS PRIME H510M-E, marca: ASUS, precio: 85000, atributos: {socket: LGA1200, tipo_ram: DDR4, formato: Micro-ATX}, declarados: {generaciones: ["10", "11"], ranuras_ram: 2, puertos_sata: 4, ranuras_m2: 1}}
+  - {nombre: ASUS PRIME H610M-E D4, marca: ASUS, precio: 105000, atributos: {socket: LGA1700, tipo_ram: DDR4, formato: Micro-ATX}, declarados: {generaciones: ["12", "13", "14"], ranuras_ram: 2, puertos_sata: 4, ranuras_m2: 1}}
+  - {nombre: MSI PRO B760M-A WIFI DDR4, marca: MSI, precio: 185000, atributos: {socket: LGA1700, tipo_ram: DDR4, formato: Micro-ATX}, declarados: {generaciones: ["12", "13", "14"], ranuras_ram: 4, puertos_sata: 4, ranuras_m2: 2}}
+  - {nombre: Gigabyte B760 GAMING X AX, marca: Gigabyte, precio: 225000, atributos: {socket: LGA1700, tipo_ram: DDR5, formato: ATX}, declarados: {generaciones: ["12", "13", "14"], ranuras_ram: 4, puertos_sata: 4, ranuras_m2: 3}}
+  - {nombre: ASUS ROG STRIX Z790-A GAMING WIFI II, marca: ASUS, precio: 520000, atributos: {socket: LGA1700, tipo_ram: DDR5, formato: ATX}, declarados: {generaciones: ["12", "13", "14"], ranuras_ram: 4, puertos_sata: 4, ranuras_m2: 4}}
+  - {nombre: MSI PRO B860M-A WIFI, marca: MSI, precio: 265000, atributos: {socket: LGA1851, tipo_ram: DDR5, formato: Micro-ATX}, declarados: {generaciones: ["2"], ranuras_ram: 4, puertos_sata: 4, ranuras_m2: 2}}
+
+ram:
+  - {nombre: Crucial Basics, marca: Crucial, precio: 21000, atributos: {tipo: DDR4, capacidad_gb: 8, frecuencia_mhz: 2666}}
+  - {nombre: Kingston Fury Beast, marca: Kingston, precio: 26000, atributos: {tipo: DDR4, capacidad_gb: 8, frecuencia_mhz: 3200}}
+  - {nombre: Kingston Fury Beast, marca: Kingston, precio: 45000, atributos: {tipo: DDR4, capacidad_gb: 16, frecuencia_mhz: 3200}}
+  - {nombre: Corsair Vengeance LPX, marca: Corsair, precio: 52000, atributos: {tipo: DDR4, capacidad_gb: 16, frecuencia_mhz: 3200}, extra: {kit: [2, 8]}}
+  - {nombre: ADATA XPG Spectrix D35G RGB, marca: ADATA, precio: 55000, atributos: {tipo: DDR4, capacidad_gb: 16, frecuencia_mhz: 3600}}
+  - {nombre: Patriot Viper Steel, marca: Patriot, precio: 98000, atributos: {tipo: DDR4, capacidad_gb: 32, frecuencia_mhz: 3600}, extra: {kit: [2, 16]}}
+  - {nombre: Kingston Fury Beast, marca: Kingston, precio: 38000, atributos: {tipo: DDR5, capacidad_gb: 8, frecuencia_mhz: 4800}}
+  - {nombre: ADATA Premier, marca: ADATA, precio: 58000, atributos: {tipo: DDR5, capacidad_gb: 16, frecuencia_mhz: 4800}}
+  - {nombre: Kingston Fury Beast, marca: Kingston, precio: 69000, atributos: {tipo: DDR5, capacidad_gb: 16, frecuencia_mhz: 5600}}
+  - {nombre: Corsair Vengeance, marca: Corsair, precio: 135000, atributos: {tipo: DDR5, capacidad_gb: 32, frecuencia_mhz: 6000}, extra: {kit: [2, 16]}}
+  - {nombre: TeamGroup T-Force Delta RGB, marca: TeamGroup, precio: 142000, atributos: {tipo: DDR5, capacidad_gb: 32, frecuencia_mhz: 6000}, extra: {kit: [2, 16]}}
+  - {nombre: G.Skill Trident Z5 RGB, marca: G.Skill, precio: 165000, atributos: {tipo: DDR5, capacidad_gb: 32, frecuencia_mhz: 6400}, extra: {kit: [2, 16]}}
+
+gpu:
+  - {nombre: MSI GeForce GTX 1650 D6 Ventus XS OC, marca: MSI, precio: 210000, atributos: {vram_gb: 4, consumo_w: 75, largo_mm: 177}, extra: {gddr: GDDR6, fuente_recomendada: 300}}
+  - {nombre: Gigabyte GeForce RTX 3050 WINDFORCE OC, marca: Gigabyte, precio: 315000, atributos: {vram_gb: 8, consumo_w: 130, largo_mm: 191}, extra: {gddr: GDDR6, fuente_recomendada: 450}}
+  - {nombre: ASUS Dual GeForce RTX 4060 OC, marca: ASUS, precio: 435000, atributos: {vram_gb: 8, consumo_w: 115, largo_mm: 227}, extra: {gddr: GDDR6, fuente_recomendada: 550}}
+  - {nombre: Zotac Gaming GeForce RTX 5060 Twin Edge, marca: Zotac, precio: 465000, atributos: {vram_gb: 8, consumo_w: 145, largo_mm: 221}, extra: {gddr: GDDR7, fuente_recomendada: 550}}
+  - {nombre: MSI GeForce RTX 4060 Ti Ventus 2X, marca: MSI, precio: 560000, atributos: {vram_gb: 8, consumo_w: 160, largo_mm: 199}, extra: {gddr: GDDR6, fuente_recomendada: 550}}
+  - {nombre: ASUS Prime GeForce RTX 5070, marca: ASUS, precio: 890000, atributos: {vram_gb: 12, consumo_w: 250, largo_mm: 304}, extra: {gddr: GDDR7, fuente_recomendada: 650}}
+  - {nombre: Gigabyte GeForce RTX 4070 SUPER WINDFORCE OC, marca: Gigabyte, precio: 920000, atributos: {vram_gb: 12, consumo_w: 220, largo_mm: 261}, extra: {gddr: GDDR6X, fuente_recomendada: 650}}
+  - {nombre: ASUS TUF Gaming GeForce RTX 4070 Ti SUPER, marca: ASUS, precio: 1250000, atributos: {vram_gb: 16, consumo_w: 285, largo_mm: 305}, extra: {gddr: GDDR6X, fuente_recomendada: 750}}
+  - {nombre: MSI GeForce RTX 4080 SUPER GAMING X SLIM, marca: MSI, precio: 1650000, atributos: {vram_gb: 16, consumo_w: 320, largo_mm: 322}, extra: {gddr: GDDR6X, fuente_recomendada: 850}}
+  - {nombre: Sapphire Pulse Radeon RX 6600, marca: Sapphire, precio: 330000, atributos: {vram_gb: 8, consumo_w: 132, largo_mm: 193}, extra: {gddr: GDDR6, fuente_recomendada: 500}}
+  - {nombre: XFX Speedster SWFT 210 Radeon RX 7600, marca: XFX, precio: 395000, atributos: {vram_gb: 8, consumo_w: 165, largo_mm: 240}, extra: {gddr: GDDR6, fuente_recomendada: 550}}
+  - {nombre: PowerColor Hellhound Radeon RX 7800 XT, marca: PowerColor, precio: 820000, atributos: {vram_gb: 16, consumo_w: 263, largo_mm: 322}, extra: {gddr: GDDR6, fuente_recomendada: 700}}
+  - {nombre: Sapphire Pulse Radeon RX 9070 XT, marca: Sapphire, precio: 1150000, atributos: {vram_gb: 16, consumo_w: 304, largo_mm: 320}, extra: {gddr: GDDR6, fuente_recomendada: 750}}
+  - {nombre: ASRock Intel Arc B580 Challenger OC, marca: ASRock, precio: 415000, atributos: {vram_gb: 12, consumo_w: 190, largo_mm: 272}, extra: {gddr: GDDR6, fuente_recomendada: 600}}
+
+almacenamiento:
+  - {nombre: Kingston NV3, marca: Kingston, precio: 52000, atributos: {tipo: NVMe, capacidad_gb: 500}, extra: {pcie: "4.0", lectura: 5000}}
+  - {nombre: Crucial P3 Plus, marca: Crucial, precio: 55000, atributos: {tipo: NVMe, capacidad_gb: 500}, extra: {pcie: "4.0", lectura: 4700}}
+  - {nombre: Kingston NV3, marca: Kingston, precio: 79000, atributos: {tipo: NVMe, capacidad_gb: 1000}, extra: {pcie: "4.0", lectura: 6000}}
+  - {nombre: WD Blue SN580, marca: Western Digital, precio: 85000, atributos: {tipo: NVMe, capacidad_gb: 1000}, extra: {pcie: "4.0", lectura: 4150}}
+  - {nombre: Samsung 990 EVO Plus, marca: Samsung, precio: 189000, atributos: {tipo: NVMe, capacidad_gb: 2000}, extra: {pcie: "4.0", lectura: 7250}}
+  - {nombre: Crucial BX500, marca: Crucial, precio: 29000, atributos: {tipo: SSD SATA, capacidad_gb: 240}, extra: {lectura: 540}}
+  - {nombre: Kingston A400, marca: Kingston, precio: 39000, atributos: {tipo: SSD SATA, capacidad_gb: 480}, extra: {lectura: 500}}
+  - {nombre: Samsung 870 EVO, marca: Samsung, precio: 115000, atributos: {tipo: SSD SATA, capacidad_gb: 1000}, extra: {lectura: 560}}
+  - {nombre: Seagate BarraCuda, marca: Seagate, precio: 62000, atributos: {tipo: HDD, capacidad_gb: 1000}, extra: {rpm: 7200}}
+  - {nombre: WD Blue, marca: Western Digital, precio: 89000, atributos: {tipo: HDD, capacidad_gb: 2000}, extra: {rpm: 5400}}
+
+fuente:
+  - {nombre: Fuente genérica, marca: null, precio: 32000, atributos: {potencia_w: 500, certificacion: Sin certificación}, extra: {pico: 600}}
+  - {nombre: Thermaltake Smart, marca: Thermaltake, precio: 62000, atributos: {potencia_w: 500, certificacion: 80 Plus White}}
+  - {nombre: Gamemax GP-550, marca: Gamemax, precio: 68000, atributos: {potencia_w: 550, certificacion: 80 Plus Bronze}}
+  - {nombre: EVGA 600 W1, marca: EVGA, precio: 72000, atributos: {potencia_w: 600, certificacion: 80 Plus White}}
+  - {nombre: Corsair CV650, marca: Corsair, precio: 89000, atributos: {potencia_w: 650, certificacion: 80 Plus Bronze}}
+  - {nombre: Cooler Master MWE 650 Bronze V2, marca: Cooler Master, precio: 92000, atributos: {potencia_w: 650, certificacion: 80 Plus Bronze}}
+  - {nombre: Corsair RM750e, marca: Corsair, precio: 145000, atributos: {potencia_w: 750, certificacion: 80 Plus Gold}}
+  - {nombre: MSI MAG A750GL PCIE5, marca: MSI, precio: 139000, atributos: {potencia_w: 750, certificacion: 80 Plus Gold}}
+  - {nombre: Seasonic Focus GX-850, marca: Seasonic, precio: 198000, atributos: {potencia_w: 850, certificacion: 80 Plus Gold}}
+  - {nombre: Corsair RM1000x, marca: Corsair, precio: 265000, atributos: {potencia_w: 1000, certificacion: 80 Plus Gold}}
+
+gabinete:
+  - {nombre: Gabinete genérico con fuente, marca: null, precio: 55000, atributos: {formatos_admitidos: [Micro-ATX, Mini-ITX], largo_max_gpu_mm: null}, extra: {fuente_incluida: 500}}
+  - {nombre: Gabinete Gamer RGB vidrio templado, marca: null, precio: 69000, atributos: {formatos_admitidos: [ATX, Micro-ATX, Mini-ITX], largo_max_gpu_mm: null}}
+  - {nombre: Thermaltake Versa H18, marca: Thermaltake, precio: 78000, atributos: {formatos_admitidos: [Micro-ATX, Mini-ITX], largo_max_gpu_mm: 350}}
+  - {nombre: Cooler Master MasterBox Q300L, marca: Cooler Master, precio: 85000, atributos: {formatos_admitidos: [Micro-ATX, Mini-ITX], largo_max_gpu_mm: 360}}
+  - {nombre: Cooler Master MasterBox NR200P, marca: Cooler Master, precio: 135000, atributos: {formatos_admitidos: [Mini-ITX], largo_max_gpu_mm: 330}}
+  - {nombre: DeepCool CH560, marca: DeepCool, precio: 125000, atributos: {formatos_admitidos: [E-ATX, ATX, Micro-ATX, Mini-ITX], largo_max_gpu_mm: 380}}
+  - {nombre: Corsair 4000D Airflow, marca: Corsair, precio: 145000, atributos: {formatos_admitidos: [ATX, Micro-ATX, Mini-ITX], largo_max_gpu_mm: 360}}
+  - {nombre: NZXT H5 Flow, marca: NZXT, precio: 139000, atributos: {formatos_admitidos: [ATX, Micro-ATX, Mini-ITX], largo_max_gpu_mm: 365}}
+  - {nombre: Lian Li Lancool 216, marca: Lian Li, precio: 155000, atributos: {formatos_admitidos: [E-ATX, ATX, Micro-ATX, Mini-ITX], largo_max_gpu_mm: 392}}
+  - {nombre: Montech AIR 903 MAX, marca: Montech, precio: 129000, atributos: {formatos_admitidos: [E-ATX, ATX, Micro-ATX, Mini-ITX], largo_max_gpu_mm: 400}}
+
+cooler:
+  - {nombre: Cooler genérico Intel 92mm, marca: null, precio: 12000, atributos: {sockets: [LGA1200, LGA1700], altura_mm: 70}, declarados: {potencia_enfriamiento_w: 95}}
+  - {nombre: ID-Cooling SE-224-XTS, marca: ID-Cooling, precio: 29000, atributos: {sockets: [AM4, AM5, LGA1200, LGA1700], altura_mm: 154}, declarados: {potencia_enfriamiento_w: 220}}
+  - {nombre: Cooler Master Hyper 212 Black Edition, marca: Cooler Master, precio: 42000, atributos: {sockets: [AM4, AM5, LGA1200, LGA1700], altura_mm: 159}, declarados: {potencia_enfriamiento_w: 150}}
+  - {nombre: DeepCool AK400, marca: DeepCool, precio: 38000, atributos: {sockets: [AM4, AM5, LGA1200, LGA1700, LGA1851], altura_mm: 155}, declarados: {potencia_enfriamiento_w: 220}}
+  - {nombre: Thermalright Peerless Assassin 120 SE, marca: Thermalright, precio: 45000, atributos: {sockets: [AM4, AM5, LGA1200, LGA1700, LGA1851], altura_mm: 155}, declarados: {potencia_enfriamiento_w: 245}}
+  - {nombre: Noctua NH-D15, marca: Noctua, precio: 165000, atributos: {sockets: [AM4, AM5, LGA1200, LGA1700], altura_mm: 165}, declarados: {potencia_enfriamiento_w: 250}}
+  - {nombre: DeepCool LE520 240mm, marca: DeepCool, precio: 89000, atributos: {sockets: [AM4, AM5, LGA1200, LGA1700], altura_mm: null}, extra: {radiador: 240}, declarados: {potencia_enfriamiento_w: 250}}
+  - {nombre: Arctic Liquid Freezer III 240, marca: Arctic, precio: 115000, atributos: {sockets: [AM4, AM5, LGA1700, LGA1851], altura_mm: null}, extra: {radiador: 240}, declarados: {potencia_enfriamiento_w: 300}}
+
+ups:
+  - {nombre: APC Back-UPS BX600MI, marca: APC, precio: 98000, atributos: {va: 600, w: 330, autonomia_minutos: 5}}
+  - {nombre: Lyonn CTB-800, marca: Lyonn, precio: 89000, atributos: {va: 800, w: 480, autonomia_minutos: 10}}
+  - {nombre: Forza NT-1011, marca: Forza, precio: 112000, atributos: {va: 1000, w: 500, autonomia_minutos: null}}
+  - {nombre: APC Back-UPS BX1200MI, marca: APC, precio: 175000, atributos: {va: 1200, w: 650, autonomia_minutos: 8}}
+  - {nombre: Lyonn CTB-1200, marca: Lyonn, precio: 139000, atributos: {va: 1200, w: 720, autonomia_minutos: 12}}
+  - {nombre: CyberPower UT1500E, marca: CyberPower, precio: 198000, atributos: {va: 1500, w: 900, autonomia_minutos: null}}
+  - {nombre: APC Back-UPS BX1600MI, marca: APC, precio: 235000, atributos: {va: 1600, w: 900, autonomia_minutos: 10}}
+  - {nombre: APC Smart-UPS SMT1500IC, marca: APC, precio: 690000, atributos: {va: 1500, w: 1000, autonomia_minutos: 15}}
+
+cables:
+  - {nombre: Netmak HDMI 2.0, marca: Netmak, precio: 6500, atributos: {conector_a: HDMI, conector_b: HDMI, largo_m: 1.8}}
+  - {nombre: Ugreen HDMI 2.1 8K, marca: Ugreen, precio: 18500, atributos: {conector_a: HDMI, conector_b: HDMI, largo_m: 2.0}}
+  - {nombre: Nisuta HDMI, marca: Nisuta, precio: 11000, atributos: {conector_a: HDMI, conector_b: HDMI, largo_m: 5.0}}
+  - {nombre: Netmak HDMI largo, marca: Netmak, precio: 19000, atributos: {conector_a: HDMI, conector_b: HDMI, largo_m: 10.0}}
+  - {nombre: Vention DisplayPort 1.4, marca: Vention, precio: 15500, atributos: {conector_a: DisplayPort, conector_b: DisplayPort, largo_m: 2.0}}
+  - {nombre: Ugreen DisplayPort a HDMI, marca: Ugreen, precio: 14000, atributos: {conector_a: DisplayPort, conector_b: HDMI, largo_m: 1.8}}
+  - {nombre: Ugreen USB-C a HDMI 4K, marca: Ugreen, precio: 24000, atributos: {conector_a: USB-C, conector_b: HDMI, largo_m: 1.8}}
+  - {nombre: Vention USB-C a DisplayPort, marca: Vention, precio: 26000, atributos: {conector_a: USB-C, conector_b: DisplayPort, largo_m: 2.0}}
+  - {nombre: Netmak VGA, marca: Netmak, precio: 5500, atributos: {conector_a: VGA, conector_b: VGA, largo_m: 1.5}}
+  - {nombre: Ugreen USB-C a USB-C 100W, marca: Ugreen, precio: 12500, atributos: {conector_a: USB-C, conector_b: USB-C, largo_m: 1.0}}
+  - {nombre: Nisuta USB-A a USB-C, marca: Nisuta, precio: 4800, atributos: {conector_a: USB-A, conector_b: USB-C, largo_m: 1.0}}
+  - {nombre: Patch cord UTP Cat6, marca: Nisuta, precio: 3900, atributos: {conector_a: RJ45, conector_b: RJ45, largo_m: 3.0}}
+  - {nombre: Cable interlock, marca: Netmak, precio: 4500, atributos: {conector_a: C14, conector_b: C13, largo_m: 1.8}}

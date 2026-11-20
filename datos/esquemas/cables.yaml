@@ -1,0 +1,14 @@
+# Esquema de atributos: Cables
+categoria: cables
+nombre: Cables
+sinonimos: [cable, cables, cables y adaptadores, conectividad, patch cord]
+atributos:
+  conector_a:
+    tipo: texto
+    valores: [HDMI, DisplayPort, USB-C, USB-A, VGA, RJ45, C13, C14]
+  conector_b:
+    tipo: texto
+    valores: [HDMI, DisplayPort, USB-C, USB-A, VGA, RJ45, C13, C14]
+  largo_m:
+    tipo: decimal
+    unidad: m

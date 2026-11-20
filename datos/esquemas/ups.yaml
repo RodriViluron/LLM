@@ -1,0 +1,15 @@
+# Esquema de atributos: UPS
+categoria: ups
+nombre: UPS
+sinonimos: [ups, upss, unidad de alimentacion ininterrumpida, nobreak, no break]
+atributos:
+  va:
+    tipo: entero
+    unidad: VA
+  w:
+    tipo: entero
+    unidad: W
+  autonomia_minutos:
+    tipo: entero
+    unidad: min
+    opcional: true

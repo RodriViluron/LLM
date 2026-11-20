@@ -1,0 +1,27 @@
+# Esquema de atributos: Memoria RAM
+categoria: ram
+nombre: Memoria RAM
+sinonimos: [memoria, memorias, memoria ram, memorias ram, ram]
+atributos:
+  tipo:
+    tipo: texto
+    valores: [DDR4, DDR5]
+    valores_fuera_del_armado: [DDR2, DDR3]   # plataformas viejas que la tienda todavía vende
+  capacidad_gb:
+    tipo: entero
+    unidad: GB
+    descripcion: Capacidad total (en un kit 2x8GB es 16).
+  frecuencia_mhz:
+    tipo: entero
+    unidad: MHz
+  # --- Datos que hoy solo trae el catálogo real de la tienda (los lee ingesta/formato_amn.py) ---
+  modulos:
+    tipo: entero
+    unidad: módulos
+    opcional: true
+    descripcion: Cuántos módulos trae el producto (un kit 2x8GB trae 2). Cada módulo ocupa una ranura.
+  formato_modulo:
+    tipo: texto
+    valores: [DIMM, SODIMM, ECC]
+    opcional: true
+    descripcion: DIMM es la de PC de escritorio. SODIMM es de notebook y ECC de servidor; no van en el armado.

@@ -1,0 +1,33 @@
+# Para instalar con pip (como el ejemplo de la cátedra). La fuente de verdad es pyproject.toml (uv).
+
+# Núcleo
+langchain>=1.0
+langgraph>=1.0
+python-dotenv>=1.0
+pydantic>=2.7
+pyyaml>=6.0
+
+# Proveedores de modelos (locales)
+langchain-ollama>=1.0         # Ollama
+langchain-openai>=1.0         # LM Studio (servidor local compatible con OpenAI)
+langchain-google-genai>=4.0   # Gemini por API (opcional, se elige en el selector de modelo)
+
+# Tools
+langchain-tavily>=0.2         # Búsqueda web (Tavily)
+mcp>=1.24                     # Servidor MCP de la tienda
+langchain-mcp-adapters>=0.3   # Usar el servidor MCP desde el agente
+
+# UI
+streamlit>=1.40
+fastapi>=0.115                # Servicio HTTP del agente (servicio.py)
+
+# Memoria de corto plazo
+langgraph-checkpoint-sqlite>=3.0
+
+# RAG
+langchain-chroma>=1.0           # Base vectorial (ChromaDB)
+langchain-text-splitters>=1.0   # Chunking
+
+# Desarrollo
+pytest>=8.0
+ruff>=0.6

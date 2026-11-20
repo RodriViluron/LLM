@@ -1,0 +1,1716 @@
+[
+ {
+  "codigo": "CPU001",
+  "nombre": "AMD Ryzen 3 4100",
+  "descripcion": "<ul><li>Memoria soportada: DDR4-3200&nbsp;</li><li>Frecuencia turbo hasta 4 GHz&nbsp;</li><li>Cantidad de núcleos: 4&nbsp;</li><li>Caché L3 de 32 MB&nbsp;</li></ul>",
+  "categoria": "PROCESADORES",
+  "marca": "AMD",
+  "precio": 78000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "3",
+   "consumo_max_w": 65,
+   "incluye_cooler": "si",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU002",
+  "nombre": "Micro AMD Ryzen 5 5600 am4",
+  "descripcion": "Compatible con mothers sAM4<br>Caché L3 de 32 MB<br>Memoria soportada: DDR4-3200<br>Frecuencia turbo hasta 4,4 GHz<br>TDP 65 Watts<br>Cantidad de núcleos: 6",
+  "categoria": "Micros AMD",
+  "marca": "AMD",
+  "precio": 145000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "3",
+   "consumo_max_w": 65,
+   "incluye_cooler": "si",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU003",
+  "nombre": "PROCESADOR AMD Ryzen 5 5600G",
+  "descripcion": "TDP: 65w<br>Frecuencia turbo hasta 4.4 GHz<br>Memoria soportada: DDR4-3200<br>Caché L3 16MB<br>Socket sAM4<br>Producto original, sellado.",
+  "categoria": "PROCESADORES",
+  "marca": "AMD",
+  "precio": 165000.0,
+  "stock": 23,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "3",
+   "consumo_max_w": 65,
+   "incluye_cooler": "si",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU004",
+  "nombre": "Micro AMD Ryzen 7 5700X",
+  "descripcion": "<ul><li>TDP: 65w&nbsp;</li><li>Caché L3 16MB&nbsp;</li><li>Zócalo: AM 4&nbsp;</li><li>Memoria soportada: DDR4-3200&nbsp;</li><li>Frecuencia turbo hasta 4.6 GHz&nbsp;</li><li>Producto original, sellado.&nbsp;</li></ul>",
+  "categoria": "Microprocesadores",
+  "marca": "AMD",
+  "precio": 198000.0,
+  "stock": 11,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "3",
+   "consumo_max_w": 65,
+   "incluye_cooler": "no",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU005",
+  "nombre": "PROCESADOR AMD Ryzen 7 5800X3D",
+  "descripcion": "105w de TDP<br>Memoria soportada: DDR4-3200<br>Socket am4<br>Frecuencia turbo hasta 4,5 GHz<br>Proceso de fabricación avanzado<br>Cantidad de núcleos: 8",
+  "categoria": "Procesadores",
+  "marca": "AMD",
+  "precio": 389000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "3",
+   "consumo_max_w": 105,
+   "incluye_cooler": "no",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU006",
+  "nombre": "PROCESADOR AMD RYZEN 5 7600",
+  "descripcion": "Memoria soportada: DDR5-5600. Compatible con mothers am5. Caché L3 16MB. Cantidad de núcleos: 6. 65 Watts de TDP. Frecuencia turbo hasta 5.1 GHz. Retiro en local sin cargo.",
+  "categoria": "Microprocesadores",
+  "marca": "AMD",
+  "precio": 265000.0,
+  "stock": 7,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "4",
+   "consumo_max_w": 65,
+   "incluye_cooler": "si",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU007",
+  "nombre": "Procesador AMD Ryzen 5 8600G",
+  "descripcion": "Caché L3 de 32 MB. Frecuencia turbo hasta 5 GHz. Memoria soportada: DDR5-5600. Socket AM5. 6 núcleos y 12 hilos. Consumo térmico (TDP) de 65 W. Garantía oficial 12 meses.",
+  "categoria": "PROCESADORES",
+  "marca": "AMD",
+  "precio": 285000.0,
+  "stock": 20,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "4",
+   "consumo_max_w": 65,
+   "incluye_cooler": "si",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU008",
+  "nombre": "Procesador AMD Ryzen 7 7700X Socket AM5",
+  "descripcion": "Frecuencia turbo hasta 5.4 GHz. 8 núcleos y 16 hilos. Memoria soportada: DDR5-5600. Socket AM 5. Caché L3 16MB. Consultá stock antes de comprar.",
+  "categoria": "PROCESADORES",
+  "marca": "AMD",
+  "precio": 375000.0,
+  "stock": 13,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "4",
+   "consumo_max_w": 105,
+   "incluye_cooler": "no",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU009",
+  "nombre": "Micro AMD Ryzen 7 7800X3D",
+  "descripcion": "<ul><li>Plataforma Socket AM5&nbsp;</li><li>Proceso de fabricación avanzado&nbsp;</li><li>120w de TDP&nbsp;</li><li>8C/16T&nbsp;</li><li>Frecuencia turbo hasta 5 GHz&nbsp;</li><li>Memoria soportada: DDR5-5600&nbsp;</li><li>Retiro en local sin cargo.&nbsp;</li><li>¡Envío gratis en Mendoza!&nbsp;</li></ul>",
+  "categoria": "PROCESADORES",
+  "marca": "AMD",
+  "precio": 545000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "4",
+   "consumo_max_w": 120,
+   "incluye_cooler": "no",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU010",
+  "nombre": "AMD Ryzen 9 7900X",
+  "descripcion": "<ul><li>TDP: 170 W&nbsp;</li><li>12 Cores / 24 Threads&nbsp;</li><li>Proceso de fabricación avanzado&nbsp;</li><li>Frecuencia turbo hasta 5,6 GHz&nbsp;</li><li>Plataforma Socket AM5&nbsp;</li><li>Memoria soportada: DDR5-5600&nbsp;</li><li>¡Envío gratis en Mendoza!&nbsp;</li><li>Producto original, sellado.&nbsp;</li></ul>",
+  "categoria": "Micros AMD",
+  "marca": "AMD",
+  "precio": 520000.0,
+  "stock": 22,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "4",
+   "consumo_max_w": 170,
+   "incluye_cooler": "no",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU011",
+  "nombre": "Intel Core i5-10400F",
+  "descripcion": "Caché L3 de 32 MB. Memoria soportada: DDR4-3200. Sin gráficos integrados: requiere placa de video. Socket LGA1200. 65 watts de TDP. Frecuencia turbo hasta 4.3 GHz.",
+  "categoria": "PROCESADORES",
+  "marca": "Intel",
+  "precio": 98000.0,
+  "stock": 8,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "10",
+   "consumo_max_w": 65,
+   "incluye_cooler": "si",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU012",
+  "nombre": "PROCESADOR Intel Core i3-12100F",
+  "descripcion": "<p>Caché L3 16MB</p><p>Consumo térmico (TDP) de 58w</p><p>Compatible con memorias DDR4 y DDR5 según la placa</p><p>Sin gráficos integrados: requiere placa de video</p><p>4 Cores / 8 Threads</p><p>Frecuencia turbo hasta 4.3 GHz</p><p>Compatible con mothers Socket 1700</p><p>Producto original, sellado.</p><p>Consultá stock antes de comprar.</p>",
+  "categoria": "Procesadores",
+  "marca": "Intel",
+  "precio": 89000.0,
+  "stock": 13,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "12",
+   "consumo_max_w": 89,
+   "incluye_cooler": "si",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU013",
+  "nombre": "Intel Core i5-12400F",
+  "descripcion": "Frecuencia turbo hasta 4.4 GHz. Compatible con memorias DDR4 y DDR5 según la placa. Socket socket LGA-1700. Sin gráficos integrados: requiere placa de video. Caché L3 de 32 MB. 6C/12T. Factura A y B.",
+  "categoria": "Micros INTEL",
+  "marca": "INTEL",
+  "precio": 139000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "12",
+   "consumo_max_w": 117,
+   "incluye_cooler": "si",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU014",
+  "nombre": "Intel Core i5-13400F",
+  "descripcion": "Socket LGA 1700. Compatible con memorias DDR4 y DDR5 según la placa. 65 watts de TDP. 10 núcleos y 16 hilos. Frecuencia turbo hasta 4.6 GHz. Sin gráficos integrados: requiere placa de video. Proceso de fabricación avanzado.",
+  "categoria": "Microprocesadores",
+  "marca": "Intel",
+  "precio": 215000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "13",
+   "consumo_max_w": 148,
+   "incluye_cooler": "si",
+   "video_integrado": "no"
+  }
+ },
+ {
+  "codigo": "CPU015",
+  "nombre": "Intel Core i5-14600K",
+  "descripcion": "<p>Frecuencia turbo hasta 5,3 GHz</p><p>14 Cores / 20 Threads</p><p>Compatible con memorias DDR4 y DDR5 según la placa</p><p>Compatible con mothers Socket 1700</p><p>Caché L3 de 32 MB</p><p>Factura A y B.</p>",
+  "categoria": "PROCESADORES",
+  "marca": "Intel",
+  "precio": 368000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "14",
+   "consumo_max_w": 181,
+   "incluye_cooler": "no",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU016",
+  "nombre": "INTEL CORE I7-14700K LGA1700",
+  "descripcion": "<p>20 Cores / 28 Threads</p><p>Frecuencia turbo hasta 5.6 GHz</p><p>Proceso de fabricación avanzado</p><p>Compatible con memorias DDR4 y DDR5 según la placa</p><p>Zócalo: LGA 1700</p><p>Factura A y B.</p><p>Garantía oficial 12 meses.</p>",
+  "categoria": "Procesadores",
+  "marca": "Intel",
+  "precio": 495000.0,
+  "stock": 17,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "14",
+   "consumo_max_w": 253,
+   "incluye_cooler": "no",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "CPU017",
+  "nombre": "PROCESADOR INTEL CORE ULTRA 5 245K",
+  "descripcion": "Caché L3 de 32 MB<br>Cantidad de núcleos: 14<br>Frecuencia turbo hasta 5,2 GHz<br>Zócalo: LGA1851<br>125w de TDP<br>Memoria soportada: DDR5-5600<br>Garantía oficial 12 meses.",
+  "categoria": "PROCESADORES",
+  "marca": "INTEL",
+  "precio": 395000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generacion": "2",
+   "consumo_max_w": 159,
+   "incluye_cooler": "no",
+   "video_integrado": "si"
+  }
+ },
+ {
+  "codigo": "MOT001",
+  "nombre": "ASUS PRIME A520M-K SAM4",
+  "descripcion": "1x M.2 NVMe<br>WiFi 6 + Bluetooth<br>Conector de alimentación ATX de 24 pines + 8 pines EPS<br>¡Envío gratis en Mendoza!<br>Garantía oficial 12 meses.",
+  "categoria": "MOTHERBOARDS",
+  "marca": "ASUS",
+  "precio": 92000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "1",
+    "2",
+    "3"
+   ],
+   "ranuras_ram": 2,
+   "puertos_sata": 4,
+   "ranuras_m2": 1
+  }
+ },
+ {
+  "codigo": "MOT002",
+  "nombre": "Placa Madre MSI B450M-A PRO MAX II socket AM-4",
+  "descripcion": "LAN Gigabit. Slot M.2 PCIe 4.0. Socket AM 4. Conector de alimentación ATX de 24 pines + 8 pines EPS. Factor de forma: uATX. Memoria DDR4. Retiro en local sin cargo.",
+  "categoria": "Placas Madre",
+  "marca": "MSI",
+  "precio": 98000.0,
+  "stock": 19,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "1",
+    "2",
+    "3"
+   ],
+   "ranuras_ram": 2,
+   "puertos_sata": 4,
+   "ranuras_m2": 1
+  }
+ },
+ {
+  "codigo": "MOT003",
+  "nombre": "PLACA MADRE GIGABYTE B550M DS3H AM 4",
+  "descripcion": "4 slots ddr4 hasta 128GB. Slot M.2 PCIe 4.0. Conector de alimentación ATX de 24 pines + 8 pines EPS. Zócalo AM 4. WiFi 6 + Bluetooth.",
+  "categoria": "Placas Madre",
+  "marca": "GIGABYTE",
+  "precio": 135000.0,
+  "stock": 11,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "2",
+    "3"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 4,
+   "ranuras_m2": 2
+  }
+ },
+ {
+  "codigo": "MOT004",
+  "nombre": "MSI MAG B550 TOMAHAWK Socket AM4",
+  "descripcion": "<p>Tamaño ATX</p><p>Zócalo socket AM-4</p><p>Conector de alimentación ATX de 24 pines + 8 pines EPS</p><p>2 slots M.2</p><p>4 slots ddr4 hasta 128GB</p><p>LAN Gigabit</p><p>Retiro en local sin cargo.</p><p>Producto original, sellado.</p>",
+  "categoria": "MOTHERBOARDS",
+  "marca": "MSI",
+  "precio": 210000.0,
+  "stock": 6,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "2",
+    "3"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 6,
+   "ranuras_m2": 2
+  }
+ },
+ {
+  "codigo": "MOT005",
+  "nombre": "Mother ASRock B550M-ITX/ac socket AM-4",
+  "descripcion": "<ul><li>Memoria DDR4&nbsp;</li><li>Conector de alimentación ATX de 24 pines + 8 pines EPS&nbsp;</li><li>Zócalo AM4&nbsp;</li><li>Audio HD 7.1&nbsp;</li><li>2 slots M.2&nbsp;</li><li>Factor de forma: Mini ITX&nbsp;</li><li>Producto original, sellado.&nbsp;</li></ul>",
+  "categoria": "Placas Madre",
+  "marca": "ASROCK",
+  "precio": 195000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "2",
+    "3"
+   ],
+   "ranuras_ram": 2,
+   "puertos_sata": 4,
+   "ranuras_m2": 1
+  }
+ },
+ {
+  "codigo": "MOT006",
+  "nombre": "Placa Madre MSI PRO A620M-E AM5",
+  "descripcion": "Zócalo socket AM-5<br>Memoria DDR5<br>Conector de alimentación ATX de 24 pines + 8 pines EPS<br>Factor de forma: Micro ATX<br>Slot M.2 PCIe 4.0<br>LAN Gigabit",
+  "categoria": "MOTHERBOARDS",
+  "marca": "MSI",
+  "precio": 125000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "4"
+   ],
+   "ranuras_ram": 2,
+   "puertos_sata": 4,
+   "ranuras_m2": 1
+  }
+ },
+ {
+  "codigo": "MOT007",
+  "nombre": "Placa Madre Gigabyte B650M GAMING X AX",
+  "descripcion": "<p>Soporta procesadores sAM5</p><p>Tamaño M-ATX</p><p>Soporta memorias DDR 5</p><p>WiFi 6 + Bluetooth</p><p>1x M.2 NVMe</p><p>Conector de alimentación ATX de 24 pines + 8 pines EPS</p><p>Retiro en local sin cargo.</p><p>Producto original, sellado.</p>",
+  "categoria": "Placas Madre",
+  "marca": "GIGABYTE",
+  "precio": 235000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "4",
+    "5"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 4,
+   "ranuras_m2": 2
+  }
+ },
+ {
+  "codigo": "MOT008",
+  "nombre": "Mother ASUS TUF GAMING B650-PLUS WIFI",
+  "descripcion": "<ul><li>Conector de alimentación ATX de 24 pines + 8 pines EPS&nbsp;</li><li>LAN Gigabit&nbsp;</li><li>1x M.2 NVMe&nbsp;</li><li>Memoria DDR5&nbsp;</li><li>Socket sAM5&nbsp;</li><li>Formato ATX&nbsp;</li></ul>",
+  "categoria": "Placas Madre",
+  "marca": "ASUS",
+  "precio": 310000.0,
+  "stock": 17,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "4",
+    "5"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 4,
+   "ranuras_m2": 3
+  }
+ },
+ {
+  "codigo": "MOT009",
+  "nombre": "Motherboard ASUS PRIME H510M-E lga1200",
+  "descripcion": "LAN Gigabit<br>Socket LGA 1200<br>Soporta memorias ddr4<br>2 slots M.2<br>Formato uATX<br>Conector de alimentación ATX de 24 pines + 8 pines EPS",
+  "categoria": "Placas Madre",
+  "marca": "ASUS",
+  "precio": 85000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "10",
+    "11"
+   ],
+   "ranuras_ram": 2,
+   "puertos_sata": 4,
+   "ranuras_m2": 1
+  }
+ },
+ {
+  "codigo": "MOT010",
+  "nombre": "Mother ASUS PRIME H610M-E D4",
+  "descripcion": "Soporta procesadores lga1700<br>Conector de alimentación ATX de 24 pines + 8 pines EPS<br>LAN Gigabit<br>2 slots M.2<br>Formato micro atx",
+  "categoria": "Mothers ASUS",
+  "marca": "ASUS",
+  "precio": 105000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "12",
+    "13",
+    "14"
+   ],
+   "ranuras_ram": 2,
+   "puertos_sata": 4,
+   "ranuras_m2": 1
+  }
+ },
+ {
+  "codigo": "MOT011",
+  "nombre": "Motherboard MSI PRO B760M-A WIFI DDR4",
+  "descripcion": "<p>Soporta procesadores socket LGA-1700</p><p>Formato micro atx</p><p>Slot M.2 PCIe 4.0</p><p>Soporta memorias DDR4</p><p>Conector de alimentación ATX de 24 pines + 8 pines EPS</p><p>Audio HD 7.1</p>",
+  "categoria": "Placas Madre",
+  "marca": "MSI",
+  "precio": 185000.0,
+  "stock": 8,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "12",
+    "13",
+    "14"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 4,
+   "ranuras_m2": 2
+  }
+ },
+ {
+  "codigo": "MOT012",
+  "nombre": "Gigabyte B760 GAMING X AX",
+  "descripcion": "Soporta procesadores socket LGA-1700. Conector de alimentación ATX de 24 pines + 8 pines EPS. Memoria ddr5. Formato atx. 2 slots M.2. WiFi 6 + Bluetooth. PRECIO CONTADO / TRANSFERENCIA. Garantía oficial 12 meses.",
+  "categoria": "MOTHERBOARDS",
+  "marca": "Gigabyte",
+  "precio": 225000.0,
+  "stock": 18,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "12",
+    "13",
+    "14"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 4,
+   "ranuras_m2": 3
+  }
+ },
+ {
+  "codigo": "MOT013",
+  "nombre": "ASUS ROG STRIX Z790-A GAMING WIFI II LGA1700",
+  "descripcion": "<p>1x M.2 NVMe</p><p>Soporta procesadores LGA1700</p><p>Conector de alimentación ATX de 24 pines + 8 pines EPS</p><p>Factor de forma: atx</p><p>WiFi 6 + Bluetooth</p>",
+  "categoria": "Motherboards",
+  "marca": "ASUS",
+  "precio": 520000.0,
+  "stock": 23,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "12",
+    "13",
+    "14"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 4,
+   "ranuras_m2": 4
+  }
+ },
+ {
+  "codigo": "MOT014",
+  "nombre": "Mother MSI PRO B860M-A WIFI",
+  "descripcion": "Memoria ddr5. 2 slots M.2. Formato mATX. WiFi 6 + Bluetooth. Conector de alimentación ATX de 24 pines + 8 pines EPS. Zócalo FCLGA1851.",
+  "categoria": "MOTHERBOARDS",
+  "marca": "MSI",
+  "precio": 265000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "generaciones": [
+    "2"
+   ],
+   "ranuras_ram": 4,
+   "puertos_sata": 4,
+   "ranuras_m2": 2
+  }
+ },
+ {
+  "codigo": "RAM001",
+  "nombre": "RAM Crucial Basics 8gb DDR-4 2666",
+  "descripcion": "Velocidad 2666mhz<br>Voltaje 1.1V<br>Compatible con Intel XMP 3.0 y AMD EXPO<br>Latencia CL18<br>8gb de capacidad<br>Memoria DDR-4<br>Producto original, sellado.",
+  "categoria": "Memorias",
+  "marca": "Crucial",
+  "precio": 21000.0,
+  "stock": 24,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 1,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM002",
+  "nombre": "Memoria RAM Kingston Fury Beast 8GB 3200",
+  "descripcion": "Frecuencia: 3200mhz. Latencia CL18. Voltaje 1,2V. Compatible con Intel XMP 3.0 y AMD EXPO. 8GB de capacidad. Factura A y B.",
+  "categoria": "MEMORIAS DDR4",
+  "marca": "Kingston",
+  "precio": 26000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 1,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM003",
+  "nombre": "RAM Kingston Fury Beast 16 Gb DDR-4 3200",
+  "descripcion": "<p>Memoria DDR-4</p><p>Velocidad 3200mhz</p><p>Compatible con Intel XMP 3.0 y AMD EXPO</p><p>CL36</p><p>Voltaje 1,2V</p><p>16 Gb de capacidad</p>",
+  "categoria": "MEMORIAS DDR4",
+  "marca": "KINGSTON",
+  "precio": 45000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 1,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM004",
+  "nombre": "RAM Corsair Vengeance LPX Kit 2x8GB ddr4",
+  "descripcion": "<p>Voltaje 1,2V</p><p>Latencia CL18</p><p>Tecnología DDR4</p><p>Frecuencia: 3200MHz</p><p>Compatible con Intel XMP 3.0 y AMD EXPO</p><p>Garantía oficial 12 meses.</p><p>Retiro en local sin cargo.</p>",
+  "categoria": "MEMORIAS DDR4",
+  "marca": "Corsair",
+  "precio": 52000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 2,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM005",
+  "nombre": "ADATA XPG Spectrix D35G RGB 16 GB 3600",
+  "descripcion": "Latencia CL16. Memoria DDR4. Voltaje 1,2V. Compatible con Intel XMP 3.0 y AMD EXPO. Velocidad 3600mhz. Capacidad: 16 GB. Factura A y B. ¡Envío gratis en Mendoza!.",
+  "categoria": "Memorias",
+  "marca": "ADATA",
+  "precio": 55000.0,
+  "stock": 11,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 1,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM006",
+  "nombre": "Memoria Patriot Viper Steel 32GB (2x16GB) DDR4",
+  "descripcion": "Velocidad 3600mhz<br>CL36<br>Compatible con Intel XMP 3.0 y AMD EXPO<br>Voltaje 1.35V<br>32GB (2x16GB) de capacidad<br>Tipo: ddr4<br>Garantía oficial 12 meses.<br>Producto original, sellado.",
+  "categoria": "Memorias RAM",
+  "marca": "Patriot",
+  "precio": 98000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 2,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM007",
+  "nombre": "RAM Kingston Fury Beast 8GB ddr5 4800",
+  "descripcion": "Tipo: DDR 5. Voltaje 1.35V. Capacidad: 8GB. Velocidad 4800mhz. Compatible con Intel XMP 3.0 y AMD EXPO. Latencia CL18. ¡Envío gratis en Mendoza!.",
+  "categoria": "Memorias",
+  "marca": "KINGSTON",
+  "precio": 38000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 1,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM008",
+  "nombre": "RAM ADATA Premier 16gb DDR-5 4800",
+  "descripcion": "Latencia CL18<br>Frecuencia: 4800 MHz<br>Compatible con Intel XMP 3.0 y AMD EXPO<br>Tecnología DDR 5<br>Voltaje 1.35V<br>¡Envío gratis en Mendoza!<br>Retiro en local sin cargo.",
+  "categoria": "MEMORIAS DDR5",
+  "marca": "ADATA",
+  "precio": 58000.0,
+  "stock": 8,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 1,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM009",
+  "nombre": "Memoria RAM Kingston Fury Beast 16gb DDR-5 5600",
+  "descripcion": "<ul><li>Tecnología DDR 5&nbsp;</li><li>Compatible con Intel XMP 3.0 y AMD EXPO&nbsp;</li><li>Voltaje 1.1V&nbsp;</li><li>Latencia CL16&nbsp;</li><li>Frecuencia: 5600mhz&nbsp;</li><li>16gb de capacidad&nbsp;</li><li>PRECIO CONTADO / TRANSFERENCIA.&nbsp;</li></ul>",
+  "categoria": "Memorias",
+  "marca": "Kingston",
+  "precio": 69000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 1,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM010",
+  "nombre": "Corsair Vengeance 6000",
+  "descripcion": "Velocidad 6000MHz<br>Latencia CL18<br>Voltaje 1,2V<br>Capacidad: Kit 2x16GB<br>Compatible con Intel XMP 3.0 y AMD EXPO",
+  "categoria": "Memorias DDR5",
+  "marca": "Corsair",
+  "precio": 135000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 2,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM011",
+  "nombre": "Memoria TeamGroup T-Force Delta RGB Kit 32GB (2 x 16 GB) DDR5",
+  "descripcion": "Compatible con Intel XMP 3.0 y AMD EXPO. Capacidad: Kit 32GB (2 x 16 GB). Memoria DDR-5. Latencia CL18. Frecuencia: 6000 MT/s. Voltaje 1.35V.",
+  "categoria": "MEMORIAS DDR5",
+  "marca": "TeamGroup",
+  "precio": 142000.0,
+  "stock": 15,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 2,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "RAM012",
+  "nombre": "RAM G.SKILL TRIDENT Z5 RGB KIT 32GB (2 X 16 GB)",
+  "descripcion": "Frecuencia: DDR5-6400<br>Compatible con Intel XMP 3.0 y AMD EXPO<br>Voltaje 1.1V<br>Latencia CL16<br>Capacidad: Kit 32GB (2 x 16 GB)<br>Tecnología DDR 5",
+  "categoria": "Memorias DDR5",
+  "marca": "G.Skill",
+  "precio": 165000.0,
+  "stock": 24,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "modulos": 2,
+   "formato_modulo": "DIMM"
+  }
+ },
+ {
+  "codigo": "GPU001",
+  "nombre": "Placa de Video MSI GeForce GTX 1650 D6 Ventus XS OC",
+  "descripcion": "<p>4gb de memoria GDDR6</p><p>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a</p><p>Fuente recomendada: 300 Watts</p><p>Consumo: 75 W</p><p>2 ventiladores de 90 mm</p><p>Consultá stock antes de comprar.</p>",
+  "categoria": "PLACAS DE VIDEO",
+  "marca": "MSI",
+  "precio": 210000.0,
+  "stock": 25,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 300
+  }
+ },
+ {
+  "codigo": "GPU002",
+  "nombre": "Tarjeta Gráfica Gigabyte GeForce RTX 3050 WINDFORCE OC 8G",
+  "descripcion": "<p>Dimensiones: 191 x 119 x 41 mm</p><p>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a</p><p>2 ventiladores de 90 mm</p><p>Potencia de la placa: 130 watts</p><p>Fuente recomendada: 450w</p><p>8 Gb de memoria GDDR6</p><p>Garantía oficial 12 meses.</p><p>¡Envío gratis en Mendoza!</p>",
+  "categoria": "PLACAS DE VIDEO",
+  "marca": "Gigabyte",
+  "precio": 315000.0,
+  "stock": 21,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 450
+  }
+ },
+ {
+  "codigo": "GPU003",
+  "nombre": "Tarjeta Gráfica ASUS Dual GeForce RTX 4060 OC 8GB GDDR6",
+  "descripcion": "Potencia de la placa: 115 W<br>Largo: 22.7 cm<br>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a<br>2 ventiladores de 100 mm<br>Fuente recomendada: 550W<br>Memoria 8GB GDDR6",
+  "categoria": "Placas de Video",
+  "marca": "ASUS",
+  "precio": 435000.0,
+  "stock": 19,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 550
+  }
+ },
+ {
+  "codigo": "GPU004",
+  "nombre": "Tarjeta Gráfica Zotac Gaming GeForce RTX 5060 Twin Edge 8GB",
+  "descripcion": "<ul><li>Fuente recomendada: 550w&nbsp;</li><li>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a&nbsp;</li><li>Consumo total de la placa 145 W&nbsp;</li><li>3 ventiladores de 100 mm&nbsp;</li><li>Dimensiones: 221 x 132 x 40 mm&nbsp;</li><li>Memoria 8GB GDDR7&nbsp;</li></ul>",
+  "categoria": "Tarjetas Gráficas",
+  "marca": "Zotac",
+  "precio": 465000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 550
+  }
+ },
+ {
+  "codigo": "GPU005",
+  "nombre": "Tarjeta Gráfica MSI GeForce RTX 4060 Ti Ventus 2X",
+  "descripcion": "<ul><li>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a&nbsp;</li><li>Memoria 8 Gb GDDR6&nbsp;</li><li>Dimensiones: 199 x 132 x 50 mm&nbsp;</li><li>Consumo total de la placa 160 W&nbsp;</li><li>Fuente recomendada: 550W&nbsp;</li><li>3 ventiladores de 100 mm&nbsp;</li><li>Consultá stock antes de comprar.&nbsp;</li><li>Garantía oficial 12 meses.&nbsp;</li></ul>",
+  "categoria": "Placas de Video",
+  "marca": "MSI",
+  "precio": 560000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 550
+  }
+ },
+ {
+  "codigo": "GPU006",
+  "nombre": "ASUS PRIME GEFORCE RTX 5070 12G",
+  "descripcion": "Longitud 304mm. 2 ventiladores de 95 mm. Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a. Consumo total de la placa 250W. Fuente recomendada: 650W. Memoria 12 Gb GDDR7. ¡Envío gratis en Mendoza!.",
+  "categoria": "Tarjetas Gráficas",
+  "marca": "ASUS",
+  "precio": 890000.0,
+  "stock": 13,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 650
+  }
+ },
+ {
+  "codigo": "GPU007",
+  "nombre": "TARJETA GRÁFICA GIGABYTE GEFORCE RTX 4070 SUPER WINDFORCE OC 12G",
+  "descripcion": "TBP 220w. Longitud 261 mm. 2 ventiladores de 100 mm. Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a. Fuente recomendada: 650 watts.",
+  "categoria": "Placas de Video",
+  "marca": "Gigabyte",
+  "precio": 920000.0,
+  "stock": 15,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 650
+  }
+ },
+ {
+  "codigo": "GPU008",
+  "nombre": "VGA ASUS TUF Gaming GeForce RTX 4070 Ti SUPER 16G",
+  "descripcion": "<ul><li>2 ventiladores de 90 mm&nbsp;</li><li>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a&nbsp;</li><li>Dimensiones: 305 x 118 x 55 mm&nbsp;</li><li>Consumo total de la placa 285 W&nbsp;</li><li>Fuente recomendada: 750 W&nbsp;</li><li>¡Envío gratis en Mendoza!&nbsp;</li><li>PRECIO CONTADO / TRANSFERENCIA.&nbsp;</li></ul>",
+  "categoria": "PLACAS DE VIDEO",
+  "marca": "ASUS",
+  "precio": 1250000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 750
+  }
+ },
+ {
+  "codigo": "GPU009",
+  "nombre": "MSI GeForce RTX 4080 SUPER GAMING X SLIM 16GB",
+  "descripcion": "Longitud 322 mm<br>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a<br>Fuente recomendada: 850w<br>3 ventiladores de 95 mm<br>16GB de memoria GDDR6X<br>Consumo total de la placa 320 watts<br>¡Envío gratis en Mendoza!<br>Factura A y B.",
+  "categoria": "Tarjetas Gráficas",
+  "marca": "MSI",
+  "precio": 1650000.0,
+  "stock": 17,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 850
+  }
+ },
+ {
+  "codigo": "GPU010",
+  "nombre": "VGA Sapphire Pulse Radeon RX 6600 8GB",
+  "descripcion": "<ul><li>Consumo: 132 W&nbsp;</li><li>Largo: 193mm&nbsp;</li><li>Fuente recomendada: 500 watts&nbsp;</li><li>3 ventiladores de 100 mm&nbsp;</li><li>8 Gb de memoria GDDR6&nbsp;</li><li>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a&nbsp;</li></ul>",
+  "categoria": "Placas de Video",
+  "marca": "Sapphire",
+  "precio": 330000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 500
+  }
+ },
+ {
+  "codigo": "GPU011",
+  "nombre": "VGA XFX Speedster SWFT 210 Radeon RX 7600",
+  "descripcion": "2 ventiladores de 95 mm. Fuente recomendada: 550w. Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a. Dimensiones: 240 x 132 x 50 mm. VRAM: 8gb. Consumo: 165 Watts.",
+  "categoria": "PLACAS DE VIDEO",
+  "marca": "XFX",
+  "precio": 395000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 550
+  }
+ },
+ {
+  "codigo": "GPU012",
+  "nombre": "Tarjeta Gráfica PowerColor Hellhound Radeon RX 7800 XT 16GB GDDR6",
+  "descripcion": "VRAM: 16 Gb. 3 ventiladores de 90 mm. Consumo: 263W. Dimensiones: 322 x 126 x 38 mm. Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a. Fuente recomendada: 700 Watts. Retiro en local sin cargo. Consultá stock antes de comprar.",
+  "categoria": "Tarjetas Gráficas",
+  "marca": "PowerColor",
+  "precio": 820000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 700
+  }
+ },
+ {
+  "codigo": "GPU013",
+  "nombre": "Placa de Video Sapphire Pulse Radeon RX 9070 XT 16G",
+  "descripcion": "Memoria 16GB GDDR6<br>Dimensiones: 320 x 137 x 55 mm<br>Fuente recomendada: 750W<br>Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a<br>Consumo total de la placa 304 watts<br>3 ventiladores de 95 mm<br>Producto original, sellado.<br>Consultá stock antes de comprar.",
+  "categoria": "Tarjetas Gráficas",
+  "marca": "Sapphire",
+  "precio": 1150000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 750
+  }
+ },
+ {
+  "codigo": "GPU014",
+  "nombre": "VGA ASRock Intel Arc B580 Challenger OC 12GB GDDR6",
+  "descripcion": "2 ventiladores de 100 mm. Fuente recomendada: 600w. Consumo: 190w. Salidas: 1x HDMI 2.1, 3x DisplayPort 1.4a. VRAM: 12GB. Producto original, sellado. Factura A y B.",
+  "categoria": "Placas de Video",
+  "marca": "ASRock",
+  "precio": 415000.0,
+  "stock": 8,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "fuente_recomendada_w": 600
+  }
+ },
+ {
+  "codigo": "ALM001",
+  "nombre": "DISCO SÓLIDO NVME KINGSTON NV3 500 GB",
+  "descripcion": "<p>Lectura hasta 5000 MB/s</p><p>Formato M.2 2280 NVMe</p><p>Resistencia: 600 TBW</p><p>500 GB</p><p>Consultá stock antes de comprar.</p>",
+  "categoria": "Almacenamiento",
+  "marca": "Kingston",
+  "precio": 52000.0,
+  "stock": 7,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "M.2"
+  }
+ },
+ {
+  "codigo": "ALM002",
+  "nombre": "Disco Sólido NVMe Crucial P3 Plus 500GB",
+  "descripcion": "<ul><li>Resistencia: 600 TBW&nbsp;</li><li>Capacidad: 500gb&nbsp;</li><li>PCIe 4.0 x4 NVMe&nbsp;</li><li>Lectura hasta 4700 MB/s&nbsp;</li></ul>",
+  "categoria": "Discos Rígidos",
+  "marca": "Crucial",
+  "precio": 55000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "M.2"
+  }
+ },
+ {
+  "codigo": "ALM003",
+  "nombre": "SSD M.2 NVMe Kingston NV3 1 TB",
+  "descripcion": "Lectura hasta 6000 MB/s. Almacenamiento de 1TB. Resistencia: 600 TBW. PCIe 4.0 x4 NVMe. Retiro en local sin cargo.",
+  "categoria": "Almacenamiento",
+  "marca": "Kingston",
+  "precio": 79000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "M.2"
+  }
+ },
+ {
+  "codigo": "ALM004",
+  "nombre": "SSD M.2 NVMe WD Blue SN580 1TB",
+  "descripcion": "<p>Resistencia: 600 TBW</p><p>Lectura hasta 4150 MB/s</p><p>Capacidad: 1000GB</p><p>Interfaz M.2 NVMe PCIe 4.0</p><p>¡Envío gratis en Mendoza!</p>",
+  "categoria": "Discos SSD",
+  "marca": "Western Digital",
+  "precio": 85000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "M.2"
+  }
+ },
+ {
+  "codigo": "ALM005",
+  "nombre": "SSD Samsung 990 EVO Plus 2 TB",
+  "descripcion": "Resistencia: 600 TBW. Almacenamiento de 2TB. Lectura hasta 7250 MB/s. PCIe 4.0 x4 NVMe. Garantía oficial 12 meses. Consultá stock antes de comprar.",
+  "categoria": "Almacenamiento",
+  "marca": "Samsung",
+  "precio": 189000.0,
+  "stock": 7,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "M.2"
+  }
+ },
+ {
+  "codigo": "ALM006",
+  "nombre": "Disco Sólido Crucial BX500 240 GB",
+  "descripcion": "Resistencia: 600 TBW. Almacenamiento de 240 GB. Lectura hasta 540 MB/s. Retiro en local sin cargo. Garantía oficial 12 meses.",
+  "categoria": "ALMACENAMIENTO",
+  "marca": "Crucial",
+  "precio": 29000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "SATA"
+  }
+ },
+ {
+  "codigo": "ALM007",
+  "nombre": "SSD Kingston A400 480GB",
+  "descripcion": "Resistencia: 600 TBW. SATA 6Gb/s. Almacenamiento de 480 GB. Lectura hasta 500 MB/s. Factura A y B. Consultá stock antes de comprar.",
+  "categoria": "ALMACENAMIENTO",
+  "marca": "Kingston",
+  "precio": 39000.0,
+  "stock": 18,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "SATA"
+  }
+ },
+ {
+  "codigo": "ALM008",
+  "nombre": "Disco SSD Samsung 870 EVO",
+  "descripcion": "<p>SSD 2,5\" SATA 3</p><p>Lectura hasta 560 MB/s</p><p>Capacidad: 1 TB</p><p>Resistencia: 600 TBW</p><p>¡Envío gratis en Mendoza!</p>",
+  "categoria": "Almacenamiento",
+  "marca": "Samsung",
+  "precio": 115000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "SATA"
+  }
+ },
+ {
+  "codigo": "ALM009",
+  "nombre": "HDD SEAGATE BARRACUDA 1TB",
+  "descripcion": "HDD SATA 7200rpm. Almacenamiento de 1TB. Caché 256MB. Lectura hasta 200 MB/s. ¡Envío gratis en Mendoza!.",
+  "categoria": "Discos Rígidos",
+  "marca": "Seagate",
+  "precio": 62000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "SATA"
+  }
+ },
+ {
+  "codigo": "ALM010",
+  "nombre": "HDD WD Blue 2 TB",
+  "descripcion": "HDD SATA 5400rpm. Caché 256MB. Lectura hasta 200 MB/s.",
+  "categoria": "ALMACENAMIENTO",
+  "marca": "Western Digital",
+  "precio": 89000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "conexion": "SATA"
+  }
+ },
+ {
+  "codigo": "FUE001",
+  "nombre": "PSU Fuente genérica",
+  "descripcion": "Ventilador de 120mm silencioso<br>Entrada 220V, PFC activo<br>Potencia nominal 500W<br>Conectores: 1x 24 pines, 2x PCIe 6+2<br>Potencia pico 600w<br>Certificación Sin certificación 80 Plus<br>Garantía oficial 12 meses.",
+  "categoria": "Fuentes de Alimentación",
+  "marca": null,
+  "precio": 32000.0,
+  "stock": 6,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE002",
+  "nombre": "PSU Thermaltake Smart 500 watts",
+  "descripcion": "500w reales. Ventilador de 120mm silencioso. Certificación 80 Plus White. Entrada 220V, PFC activo. Conectores: 1x 24 pines, 2x PCIe 6+2.",
+  "categoria": "Fuentes de Alimentación",
+  "marca": "Thermaltake",
+  "precio": 62000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE003",
+  "nombre": "FUENTE Gamemax GP-550 550 Watts 80+ Bronce",
+  "descripcion": "<ul><li>Potencia: 550w&nbsp;</li><li>Entrada 220V, PFC activo&nbsp;</li><li>Conectores: 1x 24 pines, 2x PCIe 6+2&nbsp;</li><li>Ventilador de 120mm silencioso&nbsp;</li><li>Factura A y B.&nbsp;</li></ul>",
+  "categoria": "Fuentes de Alimentación",
+  "marca": "Gamemax",
+  "precio": 68000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE004",
+  "nombre": "Fuente de Alimentación EVGA 600 W1 600W",
+  "descripcion": "<ul><li>Entrada 220V, PFC activo&nbsp;</li><li>80 Plus White&nbsp;</li><li>Conectores: 1x 24 pines, 2x PCIe 6+2&nbsp;</li><li>Potencia: 600 Watts&nbsp;</li><li>Ventilador de 120mm silencioso&nbsp;</li><li>Consultá stock antes de comprar.&nbsp;</li><li>Retiro en local sin cargo.&nbsp;</li></ul>",
+  "categoria": "FUENTES",
+  "marca": "EVGA",
+  "precio": 72000.0,
+  "stock": 20,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE005",
+  "nombre": "Fuente de Alimentación Corsair CV650",
+  "descripcion": "<ul><li>Eficiencia 80 PLUS BRONZE&nbsp;</li><li>Entrada 220V, PFC activo&nbsp;</li><li>Potencia nominal 650 W&nbsp;</li><li>Conectores: 1x 24 pines, 2x PCIe 6+2&nbsp;</li><li>Ventilador de 120mm silencioso&nbsp;</li><li>Retiro en local sin cargo.&nbsp;</li></ul>",
+  "categoria": "Fuentes de Alimentación",
+  "marca": "Corsair",
+  "precio": 89000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE006",
+  "nombre": "PSU Cooler Master MWE 650 Bronze V2",
+  "descripcion": "<ul><li>Conectores: 1x 24 pines, 2x PCIe 6+2&nbsp;</li><li>650 Watts reales&nbsp;</li><li>Entrada 220V, PFC activo&nbsp;</li><li>Eficiencia 80 Plus Bronce&nbsp;</li><li>Ventilador de 120mm silencioso&nbsp;</li></ul>",
+  "categoria": "FUENTES",
+  "marca": "Cooler Master",
+  "precio": 92000.0,
+  "stock": 14,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE007",
+  "nombre": "PSU Corsair RM750e",
+  "descripcion": "<ul><li>Certificación 80+ GOLD&nbsp;</li><li>Ventilador de 120mm silencioso&nbsp;</li><li>Conectores: 1x 24 pines, 2x PCIe 6+2&nbsp;</li><li>Potencia: 750W&nbsp;</li><li>Entrada 220V, PFC activo&nbsp;</li><li>Consultá stock antes de comprar.&nbsp;</li><li>Producto original, sellado.&nbsp;</li></ul>",
+  "categoria": "Fuentes de Alimentación",
+  "marca": "Corsair",
+  "precio": 145000.0,
+  "stock": 18,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE008",
+  "nombre": "FUENTE MSI MAG A750GL PCIE5 750 WATTS 80 PLUS GOLD",
+  "descripcion": "Ventilador de 120mm silencioso. Conectores: 1x 24 pines, 2x PCIe 6+2. Potencia nominal 750 Watts. Entrada 220V, PFC activo. Certificación 80Plus Gold. Producto original, sellado. Factura A y B.",
+  "categoria": "Fuentes de Alimentación",
+  "marca": "MSI",
+  "precio": 139000.0,
+  "stock": 15,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE009",
+  "nombre": "FUENTE Seasonic Focus GX-850",
+  "descripcion": "<p>Ventilador de 120mm silencioso</p><p>Conectores: 1x 24 pines, 2x PCIe 6+2</p><p>Entrada 220V, PFC activo</p><p>80 Plus Gold</p><p>850 W reales</p><p>¡Envío gratis en Mendoza!</p><p>Factura A y B.</p>",
+  "categoria": "Fuentes de Alimentación",
+  "marca": "Seasonic",
+  "precio": 198000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "FUE010",
+  "nombre": "Fuente Corsair RM1000x 1000W",
+  "descripcion": "Entrada 220V, PFC activo<br>Ventilador de 120mm silencioso<br>Conectores: 1x 24 pines, 2x PCIe 6+2",
+  "categoria": "Fuentes",
+  "marca": "Corsair",
+  "precio": 265000.0,
+  "stock": 18,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "GAB001",
+  "nombre": "Gabinete genérico con fuente",
+  "descripcion": "<ul><li>Soporta coolers de CPU de hasta 160 mm&nbsp;</li><li>Incluye fuente de 500 watts&nbsp;</li><li>Incluye 4 ventiladores de 120 mm&nbsp;</li><li>Soporta Micro-ATX y Mini-ITX&nbsp;</li><li>Panel lateral de vidrio templado&nbsp;</li><li>Producto original, sellado.&nbsp;</li></ul>",
+  "categoria": "GABINETES",
+  "marca": null,
+  "precio": 55000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "si",
+   "potencia_fuente_w": 500
+  }
+ },
+ {
+  "codigo": "GAB002",
+  "nombre": "GABINETE GAMER RGB VIDRIO TEMPLADO",
+  "descripcion": "Soporta fuente ATX (no incluida). Panel lateral de vidrio templado. Soporta coolers de CPU de hasta 155 mm. Incluye 4 ventiladores de 120 mm. Garantía oficial 12 meses. Retiro en local sin cargo.",
+  "categoria": "GABINETES",
+  "marca": null,
+  "precio": 69000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB003",
+  "nombre": "Gabinete Thermaltake Versa H18",
+  "descripcion": "<p>Soporta placas de video de hasta 350 MM</p><p>Mini torre mATX</p><p>Soporta fuente ATX (no incluida)</p><p>Soporta coolers de CPU de hasta 165 mm</p><p>Panel lateral de vidrio templado</p><p>Incluye 3 ventiladores de 120 mm</p><p>Garantía oficial 12 meses.</p>",
+  "categoria": "GABINETES",
+  "marca": "Thermaltake",
+  "precio": 78000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB004",
+  "nombre": "Case Cooler Master MasterBox Q300L",
+  "descripcion": "Soporta fuente ATX (no incluida). Soporta coolers de CPU de hasta 160 mm. Incluye 2 ventiladores de 120 mm. Soporta Micro-ATX y Mini-ITX. Largo máximo de GPU: 36 cm. Panel lateral de vidrio templado. ¡Envío gratis en Mendoza!.",
+  "categoria": "GABINETES",
+  "marca": "Cooler Master",
+  "precio": 85000.0,
+  "stock": 5,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB005",
+  "nombre": "Cooler Master MasterBox NR200P",
+  "descripcion": "<p>Incluye 2 ventiladores de 120 mm</p><p>Soporta coolers de CPU de hasta 155 mm</p><p>Panel lateral de vidrio templado</p><p>Largo máximo de GPU: 33 cm</p><p>Solo Mini-ITX</p><p>Soporta fuente SFX</p><p>Retiro en local sin cargo.</p><p>Consultá stock antes de comprar.</p>",
+  "categoria": "Gabinetes",
+  "marca": "Cooler Master",
+  "precio": 135000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB006",
+  "nombre": "CASE DEEPCOOL CH560",
+  "descripcion": "<p>Soporta mothers E-ATX / ATX / Micro-ATX / Mini-ITX</p><p>Soporta fuente ATX (no incluida)</p><p>Panel lateral de vidrio templado</p><p>Soporta coolers de CPU de hasta 165 mm</p><p>Incluye 4 ventiladores de 120 mm</p>",
+  "categoria": "Gabinetes",
+  "marca": "DeepCool",
+  "precio": 125000.0,
+  "stock": 21,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB007",
+  "nombre": "Corsair 4000D Airflow",
+  "descripcion": "<p>Panel lateral de vidrio templado</p><p>Incluye 3 ventiladores de 120 mm</p><p>Soporta coolers de CPU de hasta 155 mm</p><p>Soporta fuente ATX (no incluida)</p><p>Formato ATX</p><p>VGA hasta 360 mm</p>",
+  "categoria": "Gabinetes",
+  "marca": "Corsair",
+  "precio": 145000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB008",
+  "nombre": "NZXT H5 FLOW",
+  "descripcion": "VGA hasta 365 mm. Soporta coolers de CPU de hasta 155 mm. Soporta fuente ATX (no incluida). Panel lateral de vidrio templado. Incluye 2 ventiladores de 120 mm. Retiro en local sin cargo. ¡Envío gratis en Mendoza!.",
+  "categoria": "GABINETES",
+  "marca": "NZXT",
+  "precio": 139000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB009",
+  "nombre": "LIAN LI LANCOOL 216",
+  "descripcion": "<p>Panel lateral de vidrio templado</p><p>Soporta coolers de CPU de hasta 165 mm</p><p>Soporta fuente ATX (no incluida)</p><p>Incluye 4 ventiladores de 120 mm</p><p>Largo máximo de GPU: 392 mm</p>",
+  "categoria": "GABINETES",
+  "marca": "Lian Li",
+  "precio": 155000.0,
+  "stock": 12,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "GAB010",
+  "nombre": "GABINETE MONTECH AIR 903 MAX",
+  "descripcion": "<ul><li>Panel lateral de vidrio templado&nbsp;</li><li>Soporta fuente ATX (no incluida)&nbsp;</li><li>Soporta placas de video de hasta 400mm&nbsp;</li><li>Incluye 3 ventiladores de 120 mm&nbsp;</li><li>Admite placas hasta E-ATX&nbsp;</li><li>Soporta coolers de CPU de hasta 165 mm&nbsp;</li></ul>",
+  "categoria": "Gabinetes",
+  "marca": "Montech",
+  "precio": 129000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "incluye_fuente": "no"
+  }
+ },
+ {
+  "codigo": "COO001",
+  "nombre": "Cooler genérico Intel 92mm",
+  "descripcion": "<ul><li>Soporta Intel LGA 1200 / 1700&nbsp;</li><li>Ventilador de 120 mm PWM&nbsp;</li><li>Pasta térmica incluida&nbsp;</li><li>Alto 70mm&nbsp;</li><li>TDP soportado 200W&nbsp;</li><li>Retiro en local sin cargo.&nbsp;</li><li>Producto original, sellado.&nbsp;</li></ul>",
+  "categoria": "Refrigeración CPU",
+  "marca": null,
+  "precio": 12000.0,
+  "stock": 9,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 95
+  }
+ },
+ {
+  "codigo": "COO002",
+  "nombre": "Cooler ID-Cooling SE-224-XTS",
+  "descripcion": "Compatible con: Intel LGA1200/1700, AMD AM4/AM5. Pasta térmica incluida. Ventilador de 120 mm PWM. TDP soportado 200W. Retiro en local sin cargo.",
+  "categoria": "Coolers y Disipadores",
+  "marca": "ID-Cooling",
+  "precio": 29000.0,
+  "stock": 8,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 220
+  }
+ },
+ {
+  "codigo": "COO003",
+  "nombre": "Master Hyper 212 Black Edition",
+  "descripcion": "Iluminación ARGB<br>Soporta Intel LGA 1200 / 1700 y AMD AM4 / AM5<br>TDP soportado 250W<br>Ventilador de 120 mm PWM<br>Altura total 159mm<br>Retiro en local sin cargo.<br>¡Envío gratis en Mendoza!",
+  "categoria": "Coolers",
+  "marca": "Cooler Master",
+  "precio": 42000.0,
+  "stock": 8,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 150
+  }
+ },
+ {
+  "codigo": "COO004",
+  "nombre": "Disipador DeepCool AK400",
+  "descripcion": "<p>Compatible con: Intel LGA1200/1700/1851, AMD AM4/AM5</p><p>Pasta térmica incluida</p><p>Ventilador de 120 mm PWM</p><p>TDP soportado 220W</p><p>Altura: 155 MM</p>",
+  "categoria": "Refrigeración CPU",
+  "marca": "DeepCool",
+  "precio": 38000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 220
+  }
+ },
+ {
+  "codigo": "COO005",
+  "nombre": "Cooler CPU Thermalright Peerless Assassin 120 SE",
+  "descripcion": "TDP soportado 180W<br>Iluminación ARGB<br>Ventilador de 120 mm PWM<br>Soporta Intel LGA 1200 / 1700 / 1851 y AMD AM4 / AM5<br>Alto 155mm<br>Producto original, sellado.<br>Consultá stock antes de comprar.",
+  "categoria": "Refrigeración CPU",
+  "marca": "Thermalright",
+  "precio": 45000.0,
+  "stock": 11,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 245
+  }
+ },
+ {
+  "codigo": "COO006",
+  "nombre": "Cooler Noctua NH-D15",
+  "descripcion": "Ventilador de 120 mm PWM. TDP soportado 220W. Iluminación ARGB. Compatible con: Intel LGA1200/1700, AMD AM4/AM5. Factura A y B. PRECIO CONTADO / TRANSFERENCIA.",
+  "categoria": "Coolers",
+  "marca": "NOCTUA",
+  "precio": 165000.0,
+  "stock": 14,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 250
+  }
+ },
+ {
+  "codigo": "COO007",
+  "nombre": "Refrigeración Líquida DeepCool LE520 240mm",
+  "descripcion": "Radiador de 240 mm. Iluminación ARGB. Compatible con: Intel LGA1200/1700, AMD AM4/AM5. TDP soportado 220W. Retiro en local sin cargo.",
+  "categoria": "Refrigeración CPU",
+  "marca": "DeepCool",
+  "precio": 89000.0,
+  "stock": 20,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 250
+  }
+ },
+ {
+  "codigo": "COO008",
+  "nombre": "Refrigeración Líquida Arctic Liquid Freezer III 240",
+  "descripcion": "Iluminación ARGB. Soporta Intel LGA 1700 / 1851 y AMD AM4 / AM5. Radiador de 240 mm. TDP soportado 180W.",
+  "categoria": "Coolers y Disipadores",
+  "marca": "Arctic",
+  "precio": 115000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {
+   "potencia_enfriamiento_w": 300
+  }
+ },
+ {
+  "codigo": "UPS001",
+  "nombre": "UPS APC Back-UPS BX600MI 600 VA 330W",
+  "descripcion": "<p>Capacidad 600va</p><p>4 tomas de 220V</p><p>Recarga completa en 6 a 8 horas</p><p>Autonomía: 5 min</p><p>Batería 12V 7Ah</p><p>Ideal para PC de escritorio + monitor</p><p>Potencia activa 330 watts</p>",
+  "categoria": "Estabilizadores y UPS",
+  "marca": "APC",
+  "precio": 98000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "UPS002",
+  "nombre": "Ups Lyonn CTB-800 800VA 480W",
+  "descripcion": "Batería 12V 9Ah. Recarga completa en 6 a 8 horas. 4 tomas de 220V. Ideal para PC de escritorio + monitor. 480W. Potencia: 800VA. Autonomía: 10 min. Retiro en local sin cargo. Producto original, sellado.",
+  "categoria": "UPS",
+  "marca": "Lyonn",
+  "precio": 89000.0,
+  "stock": 12,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "UPS003",
+  "nombre": "Forza NT-1011 1000VA",
+  "descripcion": "<p>Recarga completa en 6 a 8 horas</p><p>Ideal para PC de escritorio + monitor</p><p>3 tomas de 220V</p><p>Batería 12V 7Ah</p><p>500W</p><p>1000 VA</p><p>Producto original, sellado.</p>",
+  "categoria": "Estabilizadores y UPS",
+  "marca": "Forza",
+  "precio": 112000.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "UPS004",
+  "nombre": "UPS APC BACK-UPS BX1200MI",
+  "descripcion": "<p>Autonomía aprox. 8 minutos a media carga</p><p>650 W reales</p><p>1200 VA</p><p>Recarga completa en 6 a 8 horas</p><p>Batería 12V 9Ah</p><p>3 tomas de 220V</p><p>Ideal para PC de escritorio + monitor</p>",
+  "categoria": "Estabilizadores y UPS",
+  "marca": "APC",
+  "precio": 175000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "UPS005",
+  "nombre": "Lyonn CTB-1200 1200 VA",
+  "descripcion": "Batería 12V 9Ah<br>3 tomas de 220V<br>Ideal para PC de escritorio + monitor<br>720W<br>Potencia: 1200VA<br>Respaldo de 12 min<br>Recarga completa en 6 a 8 horas<br>Consultá stock antes de comprar.",
+  "categoria": "UPS",
+  "marca": "Lyonn",
+  "precio": 139000.0,
+  "stock": 16,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "UPS006",
+  "nombre": "Ups CyberPower UT1500E 1500 VA",
+  "descripcion": "<ul><li>Ideal para PC de escritorio + monitor&nbsp;</li><li>Batería 12V 7Ah&nbsp;</li><li>4 tomas de 220V&nbsp;</li><li>1500 VA&nbsp;</li><li>900 W reales&nbsp;</li><li>Recarga completa en 6 a 8 horas&nbsp;</li><li>Retiro en local sin cargo.&nbsp;</li><li>¡Envío gratis en Mendoza!&nbsp;</li></ul>",
+  "categoria": "UPS",
+  "marca": "CyberPower",
+  "precio": 198000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "UPS007",
+  "nombre": "UPS APC BACK-UPS BX1600MI 1600VA",
+  "descripcion": "<p>Batería 12V 9Ah</p><p>Ideal para PC de escritorio + monitor</p><p>Capacidad 1600va</p><p>Autonomía aprox. 10 minutos a media carga</p><p>Recarga completa en 6 a 8 horas</p><p>900W</p><p>3 tomas de 220V</p>",
+  "categoria": "UPS",
+  "marca": "APC",
+  "precio": 235000.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "UPS008",
+  "nombre": "UPS APC Smart-UPS SMT1500IC 1000W",
+  "descripcion": "Batería 12V 7Ah. Recarga completa en 6 a 8 horas. 4 tomas de 220V. Capacidad 1500va. Ideal para PC de escritorio + monitor. Autonomía: 15 min.",
+  "categoria": "Estabilizadores y UPS",
+  "marca": "APC",
+  "precio": 690000.0,
+  "stock": 25,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB001",
+  "nombre": "Cable Netmak HDMI 2.0",
+  "descripcion": "<p>Longitud 1,8m</p><p>hdmi macho a hdmi macho</p><p>Versión 2.1, 48 Gbps</p><p>Garantía oficial 12 meses.</p><p>PRECIO CONTADO / TRANSFERENCIA.</p>",
+  "categoria": "CABLES",
+  "marca": "NETMAK",
+  "precio": 6500.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB002",
+  "nombre": "Cable Ugreen HDMI 2.1 8K 200 cm",
+  "descripcion": "Versión 2.1, 48 Gbps. Medida: 2 m. hdmi - hdmi.",
+  "categoria": "Cables",
+  "marca": "Ugreen",
+  "precio": 18500.0,
+  "stock": 13,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB003",
+  "nombre": "CABLE NISUTA HDMI 5 M",
+  "descripcion": "Soporta 4K a 60Hz y HDR. HDMI - HDMI. Retiro en local sin cargo.",
+  "categoria": "Cables y Adaptadores",
+  "marca": "Nisuta",
+  "precio": 11000.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB004",
+  "nombre": "CABLE NETMAK HDMI LARGO 1000 CM",
+  "descripcion": "<ul><li>Largo: 10 metros&nbsp;</li><li>HDMI - HDMI&nbsp;</li><li>Soporta 4K a 60Hz y HDR&nbsp;</li></ul>",
+  "categoria": "Cables",
+  "marca": "Netmak",
+  "precio": 19000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB005",
+  "nombre": "CABLE VENTION DISPLAYPORT 1.4",
+  "descripcion": "Display Port macho a Display Port macho<br>¡Envío gratis en Mendoza!<br>PRECIO CONTADO / TRANSFERENCIA.",
+  "categoria": "Cables y Adaptadores",
+  "marca": "Vention",
+  "precio": 15500.0,
+  "stock": 1,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB006",
+  "nombre": "Cable Ugreen DisplayPort a HDMI",
+  "descripcion": "Largo: 1.8m. DP - Hdmi. Versión 2.1, 48 Gbps. Garantía oficial 12 meses. Factura A y B.",
+  "categoria": "CABLES",
+  "marca": "UGREEN",
+  "precio": 14000.0,
+  "stock": 12,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB007",
+  "nombre": "CABLE UGREEN USB-C A HDMI 4K",
+  "descripcion": "Requiere puerto USB-C con soporte DP Alt Mode. Largo: 180 cm. Soporta 4K a 60Hz y HDR. Producto original, sellado.",
+  "categoria": "CABLES",
+  "marca": "UGREEN",
+  "precio": 24000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB008",
+  "nombre": "Cable Vention USB-C a DisplayPort",
+  "descripcion": "Requiere puerto USB-C con soporte DP Alt Mode. USB C - DP. Medida: 2m. Consultá stock antes de comprar.",
+  "categoria": "CABLES",
+  "marca": "Vention",
+  "precio": 26000.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB009",
+  "nombre": "Cable Netmak VGA 1.5m",
+  "descripcion": "Conectores D-Sub a D-Sub<br>Medida: 1.5 mts<br>Garantía oficial 12 meses.<br>Factura A y B.",
+  "categoria": "Cables",
+  "marca": "Netmak",
+  "precio": 5500.0,
+  "stock": 10,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB010",
+  "nombre": "Cable Ugreen USB-C a USB-C 100W",
+  "descripcion": "Carga rápida hasta 100W<br>USB C - USB C<br>Largo: 1m",
+  "categoria": "Cables",
+  "marca": "Ugreen",
+  "precio": 12500.0,
+  "stock": 24,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB011",
+  "nombre": "Cable Nisuta USB-A a USB-C 1 m",
+  "descripcion": "Longitud 1 m. ¡Envío gratis en Mendoza!.",
+  "categoria": "Cables",
+  "marca": "Nisuta",
+  "precio": 4800.0,
+  "stock": 2,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB012",
+  "nombre": "Cable Patch cord UTP Cat6",
+  "descripcion": "<p>Longitud 3 metros</p><p>RJ-45 a RJ-45</p><p>Categoría 6, hasta 1 Gbps</p><p>Retiro en local sin cargo.</p>",
+  "categoria": "Cables",
+  "marca": "Nisuta",
+  "precio": 3900.0,
+  "stock": 0,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ },
+ {
+  "codigo": "CAB013",
+  "nombre": "Cable interlock",
+  "descripcion": "Ideal para conectar la PC a la UPS. C14 macho a C13 macho.",
+  "categoria": "CABLES",
+  "marca": "NETMAK",
+  "precio": 4500.0,
+  "stock": 3,
+  "url": null,
+  "imagen": null,
+  "atributos_declarados": {}
+ }
+]
